@@ -9,7 +9,7 @@ public class Main {
 
         MyPanel panel = new MyPanel();
 
-        frame.setSize(815, 835);
+        frame.setSize(600, 625);
         frame.setLocationRelativeTo(null);
         frame.setResizable(false);
 

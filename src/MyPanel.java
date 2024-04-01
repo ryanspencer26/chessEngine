@@ -1,9 +1,15 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class MyPanel extends JPanel{
 
     private Square[][] board = new Square[8][8];
+
+    private int xp;
+
+    private int yp;
 
     public MyPanel(){
 
@@ -93,6 +99,19 @@ public class MyPanel extends JPanel{
         board[6][6].setPiece(new Pawn(Color.WHITE, "g2"));
         board[6][7].setPiece(new Pawn(Color.WHITE, "h2"));
 
+        addMouseListener(new MouseAdapter() {
+
+            @Override
+            public void mousePressed(MouseEvent e){
+
+                super.mousePressed(e);
+                xp = e.getX();
+                yp = e.getY();
+
+            }
+
+        });
+
     }
 
 
@@ -101,18 +120,18 @@ public class MyPanel extends JPanel{
 
         super.paintComponent(g);
 
-        for(int r = 0, y = 0; r < board.length; r++, y+=100){
+        for(int r = 0, y = 0; r < board.length; r++, y+=75){
 
-            for(int c = 0, x = 0; c < board[r].length; c++, x+=100){
+            for(int c = 0, x = 0; c < board[r].length; c++, x+=75){
 
                 if(board[r][c].isColored())
                     g.setColor(new Color(76, 187, 23));
                 else
                     g.setColor(Color.WHITE);
 
-                g.fillRect(x, y, 100,100);
+                g.fillRect(x, y, 75,75);
                 if(board[r][c].getPiece() != null)
-                    g.drawImage(board[r][c].getPiece().getPic().getImage(), x, y, 100, 100, null);
+                    g.drawImage(board[r][c].getPiece().getPic().getImage(), x, y, 75, 75, null);
 
             }
 
