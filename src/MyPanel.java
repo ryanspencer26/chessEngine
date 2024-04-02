@@ -6,10 +6,7 @@ import java.awt.event.MouseEvent;
 public class MyPanel extends JPanel{
 
     private Square[][] board = new Square[8][8];
-
-    private int xp;
-
-    private int yp;
+    private Square current;
 
     public MyPanel(){
 
@@ -105,8 +102,60 @@ public class MyPanel extends JPanel{
             public void mousePressed(MouseEvent e){
 
                 super.mousePressed(e);
-                xp = e.getX();
-                yp = e.getY();
+
+                if(e.getX() > 525){
+
+                    if(e.getY() > 525)
+                        current = board[7][7];
+
+                    if(e.getY() > 450)
+                        current = board[6][7];
+
+                    if(e.getY() > 375)
+                        current = board[5][7];
+
+                    if(e.getY() > 300)
+                        current = board[4][7];
+
+                    if(e.getY() > 225)
+                        current = board[3][7];
+
+                    if(e.getY() > 150)
+                        current = board[2][7];
+
+                    if(e.getY() > 75)
+                        current = board[1][7];
+
+                    if(e.getY() > 0)
+                        current = board[0][7];
+
+                } else if(e.getX() > 450){
+
+                    if(e.getY() > 525)
+                        current = board[7][7];
+
+                    if(e.getY() > 450)
+                        current = board[6][7];
+
+                    if(e.getY() > 375)
+                        current = board[5][7];
+
+                    if(e.getY() > 300)
+                        current = board[4][7];
+
+                    if(e.getY() > 225)
+                        current = board[3][7];
+
+                    if(e.getY() > 150)
+                        current = board[2][7];
+
+                    if(e.getY() > 75)
+                        current = board[1][7];
+
+                    if(e.getY() > 0)
+                        current = board[0][7];
+
+                } //finish else ifs for x
 
             }
 
