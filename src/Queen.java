@@ -3,7 +3,7 @@ import java.awt.*;
 
 public class Queen extends Piece {
 
-    public final static String possMoves = "straight+diagonal";
+    public final static int value = 9;
 
     public Queen(Color color, String square){
 

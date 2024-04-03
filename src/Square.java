@@ -1,7 +1,7 @@
 public class Square {
 
     private final boolean colored;
-    private final String name;
+    public final String name;
 
     private Piece piece = null;
 

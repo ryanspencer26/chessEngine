@@ -3,7 +3,7 @@ import java.awt.*;
 
 public class Knight extends Piece {
 
-    public final static String possMoves = "L";
+    public final static int value = 3;
 
     public Knight(Color color, String square){
 

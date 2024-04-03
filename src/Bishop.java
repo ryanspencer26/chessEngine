@@ -3,7 +3,7 @@ import java.awt.*;
 
 public class Bishop extends Piece {
 
-    public final static String possMoves = "u/d=2, l/r=1";
+    public final static int value = 3;
 
     public Bishop(Color color, String square){
 
