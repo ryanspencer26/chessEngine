@@ -11,4 +11,10 @@ public class Queen extends Piece {
 
     }
 
+    public int getValue(){
+
+        return value;
+
+    }
+
 }

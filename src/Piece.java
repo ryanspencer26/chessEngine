@@ -24,6 +24,12 @@ public class Piece {
 
     }
 
+    public int getValue(){
+
+        return -1;
+
+    }
+
     public ImageIcon getPic(){
 
         if(color == Color.WHITE){

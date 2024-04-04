@@ -3,7 +3,7 @@ import java.awt.*;
 
 public class King extends Piece {
 
-    public final static String possMoves = "1square";
+    public final static int value = 0;
 
     public King(Color color, String square){
 

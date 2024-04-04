@@ -11,4 +11,10 @@ public class Rook extends Piece {
 
     }
 
+    public int getValue(){
+
+        return value;
+
+    }
+
 }

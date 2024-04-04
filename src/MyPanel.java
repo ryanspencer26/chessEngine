@@ -2,15 +2,22 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 public class MyPanel extends JPanel{
 
+    // NEED TO SHUFFLE TURNS BETWEEN WHITE AND BLACK
+
     private Square[][] board = new Square[8][8];
-    private Square current;
+    private int[] current = new int[2];
+    private ArrayList<Square> possMoves = new ArrayList<Square>();
+    private Color turn;
 
     public MyPanel(){
 
         setBackground(Color.LIGHT_GRAY);
+
+        turn = Color.WHITE;
 
         for(int i = 1, n = 8; i <= 8; i++, n--){
 
@@ -96,11 +103,11 @@ public class MyPanel extends JPanel{
         board[6][6].setPiece(new Pawn(Color.WHITE, "g2"));
         board[6][7].setPiece(new Pawn(Color.WHITE, "h2"));
 
-        for(int r = 0; r < board.length; r++){
+        for (Square[] squares : board) {
 
-            for(int c = 0; c < board[r].length; c++){
+            for (Square square : squares) {
 
-                System.out.print(board[r][c].name + "\t");
+                System.out.print(square.name + "\t");
 
             }
 
@@ -115,221 +122,379 @@ public class MyPanel extends JPanel{
 
                 super.mousePressed(e);
 
+                possMoves = new ArrayList<Square>();
+
                 if(e.getX() > 525){
 
-                    if(e.getY() > 525)
-                        current = board[7][7];
-
-                    else if(e.getY() > 450)
-                        current = board[6][7];
-
-                    else if(e.getY() > 375)
-                        current = board[5][7];
-
-                    else if(e.getY() > 300)
-                        current = board[4][7];
-
-                    else if(e.getY() > 225)
-                        current = board[3][7];
-
-                    else if(e.getY() > 150)
-                        current = board[2][7];
-
-                    else if(e.getY() > 75)
-                        current = board[1][7];
-
-                    else if(e.getY() > 0)
-                        current = board[0][7];
+                    if(e.getY() > 525) {
+                        current[0] = 7;
+                        current[1] = 7;
+                    } else if(e.getY() > 450){
+                        current[0] = 6;
+                        current[1] = 7;
+                    } else if(e.getY() > 375){
+                        current[0] = 5;
+                        current[1] = 7;
+                    } else if(e.getY() > 300){
+                        current[0] = 4;
+                        current[1] = 7;
+                    } else if(e.getY() > 225){
+                        current[0] = 3;
+                        current[1] = 7;
+                    } else if(e.getY() > 150){
+                        current[0] = 2;
+                        current[1] = 7;
+                    } else if(e.getY() > 75){
+                        current[0] = 1;
+                        current[1] = 7;
+                    } else {
+                        current[0] = 0;
+                        current[1] = 7;
+                    }
 
                 } else if(e.getX() > 450){
 
-                    if(e.getY() > 525)
-                        current = board[7][6];
-
-                    else if(e.getY() > 450)
-                        current = board[6][6];
-
-                    else if(e.getY() > 375)
-                        current = board[5][6];
-
-                    else if(e.getY() > 300)
-                        current = board[4][6];
-
-                    else if(e.getY() > 225)
-                        current = board[3][6];
-
-                    else if(e.getY() > 150)
-                        current = board[2][6];
-
-                    else if(e.getY() > 75)
-                        current = board[1][6];
-
-                    else if(e.getY() > 0)
-                        current = board[0][6];
+                    if(e.getY() > 525) {
+                        current[0] = 7;
+                        current[1] = 6;
+                    } else if(e.getY() > 450){
+                        current[0] = 6;
+                        current[1] = 6;
+                    } else if(e.getY() > 375){
+                        current[0] = 5;
+                        current[1] = 6;
+                    } else if(e.getY() > 300){
+                        current[0] = 4;
+                        current[1] = 6;
+                    } else if(e.getY() > 225){
+                        current[0] = 3;
+                        current[1] = 6;
+                    } else if(e.getY() > 150){
+                        current[0] = 2;
+                        current[1] = 6;
+                    } else if(e.getY() > 75){
+                        current[0] = 1;
+                        current[1] = 6;
+                    } else {
+                        current[0] = 0;
+                        current[1] = 6;
+                    }
 
                 } else if(e.getX() > 375){
 
-                    if(e.getY() > 525)
-                        current = board[7][5];
-
-                    else if(e.getY() > 450)
-                        current = board[6][5];
-
-                    else if(e.getY() > 375)
-                        current = board[5][5];
-
-                    else if(e.getY() > 300)
-                        current = board[4][5];
-
-                    else if(e.getY() > 225)
-                        current = board[3][5];
-
-                    else if(e.getY() > 150)
-                        current = board[2][5];
-
-                    else if(e.getY() > 75)
-                        current = board[1][5];
-
-                    else if(e.getY() > 0)
-                        current = board[0][5];
+                    if(e.getY() > 525) {
+                        current[0] = 7;
+                        current[1] = 5;
+                    } else if(e.getY() > 450){
+                        current[0] = 6;
+                        current[1] = 5;
+                    } else if(e.getY() > 375){
+                        current[0] = 5;
+                        current[1] = 5;
+                    } else if(e.getY() > 300){
+                        current[0] = 4;
+                        current[1] = 5;
+                    } else if(e.getY() > 225){
+                        current[0] = 3;
+                        current[1] = 5;
+                    } else if(e.getY() > 150){
+                        current[0] = 2;
+                        current[1] = 5;
+                    } else if(e.getY() > 75){
+                        current[0] = 1;
+                        current[1] = 5;
+                    } else {
+                        current[0] = 0;
+                        current[1] = 5;
+                    }
 
                 } else if(e.getX() > 300){
 
-                    if(e.getY() > 525)
-                        current = board[7][4];
-
-                    else if(e.getY() > 450)
-                        current = board[6][4];
-
-                    else if(e.getY() > 375)
-                        current = board[5][4];
-
-                    else if(e.getY() > 300)
-                        current = board[4][4];
-
-                    else if(e.getY() > 225)
-                        current = board[3][4];
-
-                    else if(e.getY() > 150)
-                        current = board[2][4];
-
-                    else if(e.getY() > 75)
-                        current = board[1][4];
-
-                    else if(e.getY() > 0)
-                        current = board[0][4];
+                    if(e.getY() > 525) {
+                        current[0] = 7;
+                        current[1] = 4;
+                    } else if(e.getY() > 450){
+                        current[0] = 6;
+                        current[1] = 4;
+                    } else if(e.getY() > 375){
+                        current[0] = 5;
+                        current[1] = 4;
+                    } else if(e.getY() > 300){
+                        current[0] = 4;
+                        current[1] = 4;
+                    } else if(e.getY() > 225){
+                        current[0] = 3;
+                        current[1] = 4;
+                    } else if(e.getY() > 150){
+                        current[0] = 2;
+                        current[1] = 4;
+                    } else if(e.getY() > 75){
+                        current[0] = 1;
+                        current[1] = 4;
+                    } else {
+                        current[0] = 0;
+                        current[1] = 4;
+                    }
 
                 } else if(e.getX() > 225){
 
-                    if(e.getY() > 525)
-                        current = board[7][3];
-
-                    else if(e.getY() > 450)
-                        current = board[6][3];
-
-                    else if(e.getY() > 375)
-                        current = board[5][3];
-
-                    else if(e.getY() > 300)
-                        current = board[4][3];
-
-                    else if(e.getY() > 225)
-                        current = board[3][3];
-
-                    else if(e.getY() > 150)
-                        current = board[2][3];
-
-                    else if(e.getY() > 75)
-                        current = board[1][3];
-
-                    else if(e.getY() > 0)
-                        current = board[0][3];
+                    if(e.getY() > 525) {
+                        current[0] = 7;
+                        current[1] = 3;
+                    } else if(e.getY() > 450){
+                        current[0] = 6;
+                        current[1] = 3;
+                    } else if(e.getY() > 375){
+                        current[0] = 5;
+                        current[1] = 3;
+                    } else if(e.getY() > 300){
+                        current[0] = 4;
+                        current[1] = 3;
+                    } else if(e.getY() > 225){
+                        current[0] = 3;
+                        current[1] = 3;
+                    } else if(e.getY() > 150){
+                        current[0] = 2;
+                        current[1] = 3;
+                    } else if(e.getY() > 75){
+                        current[0] = 1;
+                        current[1] = 3;
+                    } else {
+                        current[0] = 0;
+                        current[1] = 3;
+                    }
 
                 } else if(e.getX() > 150){
 
-                    if(e.getY() > 525)
-                        current = board[7][2];
-
-                    else if(e.getY() > 450)
-                        current = board[6][2];
-
-                    else if(e.getY() > 375)
-                        current = board[5][2];
-
-                    else if(e.getY() > 300)
-                        current = board[4][2];
-
-                    else if(e.getY() > 225)
-                        current = board[3][2];
-
-                    else if(e.getY() > 150)
-                        current = board[2][2];
-
-                    else if(e.getY() > 75)
-                        current = board[1][2];
-
-                    else if(e.getY() > 0)
-                        current = board[0][2];
+                    if(e.getY() > 525) {
+                        current[0] = 7;
+                        current[1] = 2;
+                    } else if(e.getY() > 450){
+                        current[0] = 6;
+                        current[1] = 2;
+                    } else if(e.getY() > 375){
+                        current[0] = 5;
+                        current[1] = 2;
+                    } else if(e.getY() > 300){
+                        current[0] = 4;
+                        current[1] = 2;
+                    } else if(e.getY() > 225){
+                        current[0] = 3;
+                        current[1] = 2;
+                    } else if(e.getY() > 150){
+                        current[0] = 2;
+                        current[1] = 2;
+                    } else if(e.getY() > 75){
+                        current[0] = 1;
+                        current[1] = 2;
+                    } else {
+                        current[0] = 0;
+                        current[1] = 2;
+                    }
 
                 }  else if(e.getX() > 75){
 
-                    if(e.getY() > 525)
-                        current = board[7][1];
+                    if(e.getY() > 525) {
+                        current[0] = 7;
+                        current[1] = 1;
+                    } else if(e.getY() > 450){
+                        current[0] = 6;
+                        current[1] = 1;
+                    } else if(e.getY() > 375){
+                        current[0] = 5;
+                        current[1] = 1;
+                    } else if(e.getY() > 300){
+                        current[0] = 4;
+                        current[1] = 1;
+                    } else if(e.getY() > 225){
+                        current[0] = 3;
+                        current[1] = 1;
+                    } else if(e.getY() > 150){
+                        current[0] = 2;
+                        current[1] = 1;
+                    } else if(e.getY() > 75){
+                        current[0] = 1;
+                        current[1] = 1;
+                    } else {
+                        current[0] = 0;
+                        current[1] = 1;
+                    }
 
-                    else if(e.getY() > 450)
-                        current = board[6][1];
+                } else {
 
-                    else if(e.getY() > 375)
-                        current = board[5][1];
-
-                    else if(e.getY() > 300)
-                        current = board[4][1];
-
-                    else if(e.getY() > 225)
-                        current = board[3][1];
-
-                    else if(e.getY() > 150)
-                        current = board[2][1];
-
-                    else if(e.getY() > 75)
-                        current = board[1][1];
-
-                    else if(e.getY() > 0)
-                        current = board[0][1];
-
-                } else if(e.getX() > 0){
-
-                    if(e.getY() > 525)
-                        current = board[7][0];
-
-                    else if(e.getY() > 450)
-                        current = board[6][0];
-
-                    else if(e.getY() > 375)
-                        current = board[5][0];
-
-                    else if(e.getY() > 300)
-                        current = board[4][0];
-
-                    else if(e.getY() > 225)
-                        current = board[3][0];
-
-                    else if(e.getY() > 150)
-                        current = board[2][0];
-
-                    else if(e.getY() > 75)
-                        current = board[1][0];
-
-                    else if(e.getY() > 0)
-                        current = board[0][0];
+                    if(e.getY() > 525) {
+                        current[0] = 7;
+                        current[1] = 0;
+                    } else if(e.getY() > 450){
+                        current[0] = 6;
+                        current[1] = 0;
+                    } else if(e.getY() > 375){
+                        current[0] = 5;
+                        current[1] = 0;
+                    } else if(e.getY() > 300){
+                        current[0] = 4;
+                        current[1] = 0;
+                    } else if(e.getY() > 225){
+                        current[0] = 3;
+                        current[1] = 0;
+                    } else if(e.getY() > 150){
+                        current[0] = 2;
+                        current[1] = 0;
+                    } else if(e.getY() > 75){
+                        current[0] = 1;
+                        current[1] = 0;
+                    } else {
+                        current[0] = 0;
+                        current[1] = 0;
+                    }
 
                 }
 
-                System.out.println(current.name);
+                System.out.println(board[current[0]][current[1]].name);
+                findAllMoves();
 
             }
 
         });
+
+    }
+
+    private void findRookMoves(){
+
+        if(current[0] > 0){
+            for(int r = current[0] - 1; r >= 0; r--){
+                if(board[r][current[1]].getPiece() == null){
+                    possMoves.add(board[r][current[1]]);
+                } else {
+                    if(board[r][current[1]].getPiece().getColor() != board[current[0]][current[1]].getPiece().getColor()){
+                        possMoves.add(board[r][current[1]]);
+                    }
+                    break;
+                }
+            }
+        }
+
+        if(current[0] < board.length - 1){
+            for(int r = current[0] + 1; r < board.length; r++){
+                if(board[r][current[1]].getPiece() == null){
+                    possMoves.add(board[r][current[1]]);
+                } else {
+                    if(board[r][current[1]].getPiece().getColor() != board[current[0]][current[1]].getPiece().getColor()){
+                        possMoves.add(board[r][current[1]]);
+                    }
+                    break;
+                }
+            }
+        }
+
+        if(current[1] > 0){
+            for(int c = current[1] - 1; c >= 0; c--){
+                if(board[current[0]][c].getPiece() == null){
+                    possMoves.add(board[current[0]][c]);
+                } else {
+                    if(board[current[0]][c].getPiece().getColor() != board[current[0]][current[1]].getPiece().getColor()){
+                        possMoves.add(board[current[0]][c]);
+                    }
+                    break;
+                }
+            }
+        }
+
+        if(current[1] < board[current[0]].length - 1){
+            for(int c = current[1] + 1; c < board[current[0]].length; c++){
+                if(board[current[0]][c].getPiece() == null){
+                    possMoves.add(board[current[0]][c]);
+                } else {
+                    if(board[current[0]][c].getPiece().getColor() != board[current[0]][current[1]].getPiece().getColor()){
+                        possMoves.add(board[current[0]][c]);
+                    }
+                    break;
+                }
+            }
+        }
+
+    }
+
+    private void findBishopMoves(){
+
+        if(current[0] < board.length - 1 && current[1] < board[current[0]].length - 1){
+            for(int r = current[0] + 1, c = current[1] + 1; r < board.length && c < board[r].length; r++, c++){
+                if(board[r][c].getPiece() == null){
+                    possMoves.add(board[r][c]);
+                } else {
+                    if(board[r][c].getPiece().getColor() != board[current[0]][current[1]].getPiece().getColor()){
+                        possMoves.add(board[r][c]);
+                    }
+                    break;
+                }
+            }
+        }
+
+        if(current[0] > 0 && current[1] > 0){
+            for(int r = current[0] - 1, c = current[1] - 1; r >= 0 && c >= 0; r--, c--){
+                if(board[r][c].getPiece() == null){
+                    possMoves.add(board[r][c]);
+                } else {
+                    if(board[r][c].getPiece().getColor() != board[current[0]][current[1]].getPiece().getColor()){
+                        possMoves.add(board[r][c]);
+                    }
+                    break;
+                }
+            }
+        }
+
+        if(current[0] > 0 && current[1] < board[current[0]].length - 1){
+            for(int r = current[0] - 1, c = current[1] + 1; r >= 0 && c < board[r].length; r--, c++){
+                if(board[r][c].getPiece() == null){
+                    possMoves.add(board[r][c]);
+                } else {
+                    if(board[r][c].getPiece().getColor() != board[current[0]][current[1]].getPiece().getColor()){
+                        possMoves.add(board[r][c]);
+                    }
+                    break;
+                }
+            }
+        }
+
+        if(current[0] < board.length - 1 && current[1] > 0){
+            for(int r = current[0] + 1, c = current[1] - 1; r < board.length && c >= 0; r++, c--){
+                if(board[r][c].getPiece() == null){
+                    possMoves.add(board[r][c]);
+                } else {
+                    if(board[r][c].getPiece().getColor() != board[current[0]][current[1]].getPiece().getColor()){
+                        possMoves.add(board[r][c]);
+                    }
+                    break;
+                }
+            }
+        }
+
+    }
+
+    // MUST ADD:
+    // - Knights
+    // - Pawns
+    // - Kings
+    private void findAllMoves(){
+
+        if(board[current[0]][current[1]].getPiece() != null) {
+
+            if (board[current[0]][current[1]].getPiece().getValue() == 9) {
+                findRookMoves();
+                findBishopMoves();
+            } else if(board[current[0]][current[1]].getPiece().getValue() == 5){
+                findRookMoves();
+            } else if(board[current[0]][current[1]].getPiece().getValue() == 3 && board[current[0]][current[1]].getPiece().getClass() == Bishop.class){
+                findBishopMoves();
+            } else if(board[current[0]][current[1]].getPiece().getValue() == 3 && board[current[0]][current[1]].getPiece().getClass() == Knight.class){
+//              findKnightMoves();
+            } else if(board[current[0]][current[1]].getPiece().getValue() == 1){
+//              findPawnMoves();
+            } else {
+//              findKingMoves();
+            }
+
+        }
 
     }
 
@@ -347,6 +512,18 @@ public class MyPanel extends JPanel{
                     g.setColor(new Color(76, 187, 23));
                 else
                     g.setColor(Color.WHITE);
+
+                if(!possMoves.isEmpty()){
+                    for (Square possMove : possMoves) {
+
+                        if (board[r][c] == possMove) {
+
+                            g.setColor(new Color(255, 127, 127));
+
+                        }
+
+                    }
+                }
 
                 g.fillRect(x, y, 75,75);
                 if(board[r][c].getPiece() != null)

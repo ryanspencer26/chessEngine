@@ -11,4 +11,10 @@ public class Bishop extends Piece {
 
     }
 
+    public int getValue(){
+
+        return value;
+
+    }
+
 }
