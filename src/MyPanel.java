@@ -924,7 +924,7 @@ public class MyPanel extends JPanel{
 
         // down 2, left 1
         if(curr[0] < board.length - 2 && curr[1] > 0)
-            if(board[curr[0] - 2][curr[1] - 1].getPiece() != null) {
+            if(board[curr[0] + 2][curr[1] - 1].getPiece() != null) {
                 if (board[curr[0] + 2][curr[1] - 1].getPiece().getColor() != board[curr[0]][curr[1]].getPiece().getColor())
                     possMoves.add(board[curr[0] + 2][curr[1] - 1]);
             } else {
