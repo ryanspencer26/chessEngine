@@ -19,6 +19,12 @@ public class Pawn extends Piece {
 
     }
 
+    public int getMoves(){
+
+        return moves;
+
+    }
+
     public void move(){
 
         moves++;

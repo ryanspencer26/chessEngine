@@ -30,6 +30,12 @@ public class Piece {
 
     }
 
+    public int getMoves(){
+
+        return -1;
+
+    }
+
     public ImageIcon getPic(){
 
         if(color == Color.WHITE){
