@@ -6,7 +6,10 @@ import java.util.ArrayList;
 
 public class MyPanel extends JPanel{
 
-    // NEED TO SHUFFLE TURNS BETWEEN WHITE AND BLACK
+    // 1) Make curr a Piece
+    // 2) only set moving to true when curr isn't null
+    // 3) store location in Piece so I can find moves
+    // 4) make nMove a Square rather than an int[] (2d array location)
 
     private Square[][] board = new Square[8][8];
     private int[] curr = new int[2]; // current square
@@ -94,8 +97,6 @@ public class MyPanel extends JPanel{
             public void mousePressed(MouseEvent e){
 
                 super.mousePressed(e);
-
-                possMoves = new ArrayList<Square>();
 
                 if(e.getX() > 525){
 
@@ -981,6 +982,8 @@ public class MyPanel extends JPanel{
     // MUST ADD:
     // - Kings
     private void findAllMoves(){
+
+        possMoves = new ArrayList<Square>();
 
         if(board[curr[0]][curr[1]].getPiece() != null) {
 
