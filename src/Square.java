@@ -24,7 +24,8 @@ public class Square {
     public void setPiece(Piece p){
 
         piece = p;
-        piece.setSquare(this);
+        if(piece != null)
+            piece.setSquare(this);
 
     }
 

@@ -594,181 +594,184 @@ public class MyPanel extends JPanel{
 
     }
 
-    private void findRookMoves(){
-
-        // up
-        if(curr[0] > 0){
-            for(int r = curr[0] - 1; r >= 0; r--){
-                if(board[r][curr[1]].getPiece() == null){
-                    possMoves.add(board[r][curr[1]]);
-                } else {
-                    if(board[r][curr[1]].getPiece().getColor() != board[curr[0]][curr[1]].getPiece().getColor()){
-                        possMoves.add(board[r][curr[1]]);
-                    }
-                    break;
-                }
-            }
-        }
-
-        // down
-        if(curr[0] < board.length - 1){
-            for(int r = curr[0] + 1; r < board.length; r++){
-                if(board[r][curr[1]].getPiece() == null){
-                    possMoves.add(board[r][curr[1]]);
-                } else {
-                    if(board[r][curr[1]].getPiece().getColor() != board[curr[0]][curr[1]].getPiece().getColor()){
-                        possMoves.add(board[r][curr[1]]);
-                    }
-                    break;
-                }
-            }
-        }
-
-        // left
-        if(curr[1] > 0){
-            for(int c = curr[1] - 1; c >= 0; c--){
-                if(board[curr[0]][c].getPiece() == null){
-                    possMoves.add(board[curr[0]][c]);
-                } else {
-                    if(board[curr[0]][c].getPiece().getColor() != board[curr[0]][curr[1]].getPiece().getColor()){
-                        possMoves.add(board[curr[0]][c]);
-                    }
-                    break;
-                }
-            }
-        }
-
-        // right
-        if(curr[1] < board[curr[0]].length - 1){
-            for(int c = curr[1] + 1; c < board[curr[0]].length; c++){
-                if(board[curr[0]][c].getPiece() == null){
-                    possMoves.add(board[curr[0]][c]);
-                } else {
-                    if(board[curr[0]][c].getPiece().getColor() != board[curr[0]][curr[1]].getPiece().getColor()){
-                        possMoves.add(board[curr[0]][c]);
-                    }
-                    break;
-                }
-            }
-        }
-
-    }
-
-    private void findBishopMoves(){
-
-        // down+right
-        if(curr[0] < board.length - 1 && curr[1] < board[curr[0]].length - 1){
-            for(int r = curr[0] + 1, c = curr[1] + 1; r < board.length && c < board[r].length; r++, c++){
-                if(board[r][c].getPiece() == null){
-                    possMoves.add(board[r][c]);
-                } else {
-                    if(board[r][c].getPiece().getColor() != board[curr[0]][curr[1]].getPiece().getColor()){
-                        possMoves.add(board[r][c]);
-                    }
-                    break;
-                }
-            }
-        }
-
-        // up+left
-        if(curr[0] > 0 && curr[1] > 0){
-            for(int r = curr[0] - 1, c = curr[1] - 1; r >= 0 && c >= 0; r--, c--){
-                if(board[r][c].getPiece() == null){
-                    possMoves.add(board[r][c]);
-                } else {
-                    if(board[r][c].getPiece().getColor() != board[curr[0]][curr[1]].getPiece().getColor()){
-                        possMoves.add(board[r][c]);
-                    }
-                    break;
-                }
-            }
-        }
-
-        // up+right
-        if(curr[0] > 0 && curr[1] < board[curr[0]].length - 1){
-            for(int r = curr[0] - 1, c = curr[1] + 1; r >= 0 && c < board[r].length; r--, c++){
-                if(board[r][c].getPiece() == null){
-                    possMoves.add(board[r][c]);
-                } else {
-                    if(board[r][c].getPiece().getColor() != board[curr[0]][curr[1]].getPiece().getColor()){
-                        possMoves.add(board[r][c]);
-                    }
-                    break;
-                }
-            }
-        }
-
-        // down+left
-        if(curr[0] < board.length - 1 && curr[1] > 0){
-            for(int r = curr[0] + 1, c = curr[1] - 1; r < board.length && c >= 0; r++, c--){
-                if(board[r][c].getPiece() == null){
-                    possMoves.add(board[r][c]);
-                } else {
-                    if(board[r][c].getPiece().getColor() != board[curr[0]][curr[1]].getPiece().getColor()){
-                        possMoves.add(board[r][c]);
-                    }
-                    break;
-                }
-            }
-        }
-
-    }
+//    private void findRookMoves(){
+//
+//        // up
+//        if(curr[0] > 0){
+//            for(int r = curr[0] - 1; r >= 0; r--){
+//                if(board[r][curr[1]].getPiece() == null){
+//                    possMoves.add(board[r][curr[1]]);
+//                } else {
+//                    if(board[r][curr[1]].getPiece().getColor() != board[curr[0]][curr[1]].getPiece().getColor()){
+//                        possMoves.add(board[r][curr[1]]);
+//                    }
+//                    break;
+//                }
+//            }
+//        }
+//
+//        // down
+//        if(curr[0] < board.length - 1){
+//            for(int r = curr[0] + 1; r < board.length; r++){
+//                if(board[r][curr[1]].getPiece() == null){
+//                    possMoves.add(board[r][curr[1]]);
+//                } else {
+//                    if(board[r][curr[1]].getPiece().getColor() != board[curr[0]][curr[1]].getPiece().getColor()){
+//                        possMoves.add(board[r][curr[1]]);
+//                    }
+//                    break;
+//                }
+//            }
+//        }
+//
+//        // left
+//        if(curr[1] > 0){
+//            for(int c = curr[1] - 1; c >= 0; c--){
+//                if(board[curr[0]][c].getPiece() == null){
+//                    possMoves.add(board[curr[0]][c]);
+//                } else {
+//                    if(board[curr[0]][c].getPiece().getColor() != board[curr[0]][curr[1]].getPiece().getColor()){
+//                        possMoves.add(board[curr[0]][c]);
+//                    }
+//                    break;
+//                }
+//            }
+//        }
+//
+//        // right
+//        if(curr[1] < board[curr[0]].length - 1){
+//            for(int c = curr[1] + 1; c < board[curr[0]].length; c++){
+//                if(board[curr[0]][c].getPiece() == null){
+//                    possMoves.add(board[curr[0]][c]);
+//                } else {
+//                    if(board[curr[0]][c].getPiece().getColor() != board[curr[0]][curr[1]].getPiece().getColor()){
+//                        possMoves.add(board[curr[0]][c]);
+//                    }
+//                    break;
+//                }
+//            }
+//        }
+//
+//    }
+//
+//    private void findBishopMoves(){
+//
+//        // down+right
+//        if(curr[0] < board.length - 1 && curr[1] < board[curr[0]].length - 1){
+//            for(int r = curr[0] + 1, c = curr[1] + 1; r < board.length && c < board[r].length; r++, c++){
+//                if(board[r][c].getPiece() == null){
+//                    possMoves.add(board[r][c]);
+//                } else {
+//                    if(board[r][c].getPiece().getColor() != board[curr[0]][curr[1]].getPiece().getColor()){
+//                        possMoves.add(board[r][c]);
+//                    }
+//                    break;
+//                }
+//            }
+//        }
+//
+//        // up+left
+//        if(curr[0] > 0 && curr[1] > 0){
+//            for(int r = curr[0] - 1, c = curr[1] - 1; r >= 0 && c >= 0; r--, c--){
+//                if(board[r][c].getPiece() == null){
+//                    possMoves.add(board[r][c]);
+//                } else {
+//                    if(board[r][c].getPiece().getColor() != board[curr[0]][curr[1]].getPiece().getColor()){
+//                        possMoves.add(board[r][c]);
+//                    }
+//                    break;
+//                }
+//            }
+//        }
+//
+//        // up+right
+//        if(curr[0] > 0 && curr[1] < board[curr[0]].length - 1){
+//            for(int r = curr[0] - 1, c = curr[1] + 1; r >= 0 && c < board[r].length; r--, c++){
+//                if(board[r][c].getPiece() == null){
+//                    possMoves.add(board[r][c]);
+//                } else {
+//                    if(board[r][c].getPiece().getColor() != board[curr[0]][curr[1]].getPiece().getColor()){
+//                        possMoves.add(board[r][c]);
+//                    }
+//                    break;
+//                }
+//            }
+//        }
+//
+//        // down+left
+//        if(curr[0] < board.length - 1 && curr[1] > 0){
+//            for(int r = curr[0] + 1, c = curr[1] - 1; r < board.length && c >= 0; r++, c--){
+//                if(board[r][c].getPiece() == null){
+//                    possMoves.add(board[r][c]);
+//                } else {
+//                    if(board[r][c].getPiece().getColor() != board[curr[0]][curr[1]].getPiece().getColor()){
+//                        possMoves.add(board[r][c]);
+//                    }
+//                    break;
+//                }
+//            }
+//        }
+//
+//    }
 
     public void findPawnMoves(){
 
-        if(board[curr[0]][curr[1]].getPiece().getColor() == Color.WHITE){
+        if(curr.getColor() == Color.WHITE){
 
             // first pawn move
-            if(board[curr[0]][curr[1]].getPiece().getMoves() == 0){
+            if(curr.getMoves() == 0){
 
-                for(int r = curr[0] - 1; r >= curr[0] - 2; r--){
-                    if(board[r][curr[1]].getPiece() == null)
-                        possMoves.add(board[r][curr[1]]);
+                for(int r = curr.getSquare().location[0] - 1; r >= curr.getSquare().location[0] - 2; r--){
+                    if(board[r][curr.getSquare().location[1]].getPiece() == null)
+                        possMoves.add(board[r][curr.getSquare().location[1]]);
 
                 }
 
             }
 
             // up 1
-            if(curr[0] > 0 && board[curr[0] - 1][curr[1]].getPiece() == null)
-                possMoves.add(board[curr[0] - 1][curr[1]]);
+            if(curr.getSquare().location[0] > 0 && board[curr.getSquare().location[0] - 1][curr.getSquare().location[1]].getPiece() == null)
+                possMoves.add(board[curr.getSquare().location[0] - 1][curr.getSquare().location[1]]);
 
             // up 1, left 1
-            if(curr[0] * curr[1] > 0 && board[curr[0] - 1][curr[1] - 1].getPiece() != null)
-                if(board[curr[0] - 1][curr[1] - 1].getPiece().getColor() != board[curr[0]][curr[1]].getPiece().getColor())
-                    possMoves.add(board[curr[0] - 1][curr[1] - 1]);
+            if(curr.getSquare().location[0] * curr.getSquare().location[1] > 0 && board[curr.getSquare().location[0] - 1][curr.getSquare().location[1] - 1].getPiece() != null)
+                if(board[curr.getSquare().location[0] - 1][curr.getSquare().location[1] - 1].getPiece().getColor() != curr.getColor())
+                    possMoves.add(board[curr.getSquare().location[0] - 1][curr.getSquare().location[1] - 1]);
 
             // up 1, right 1
-            if((curr[0] > 0 && curr[1] < board[curr[0]].length - 1) && board[curr[0] - 1][curr[1] + 1].getPiece() != null)
-                if(board[curr[0] - 1][curr[1] + 1].getPiece().getColor() != board[curr[0]][curr[1]].getPiece().getColor())
-                    possMoves.add(board[curr[0] - 1][curr[1] + 1]);
+//            if((curr[0] > 0 && curr[1] < board[curr[0]].length - 1) && board[curr[0] - 1][curr[1] + 1].getPiece() != null)
+//                if(board[curr[0] - 1][curr[1] + 1].getPiece().getColor() != curr.getColor())
+//                    possMoves.add(board[curr[0] - 1][curr[1] + 1]);
 
         } else {
 
             // first pawn move
-            if(board[curr[0]][curr[1]].getPiece().getMoves() == 0){
+            if(curr.getMoves() == 0){
 
-                for(int r = curr[0] + 1; r <= curr[0] + 2; r++){
-                    if(board[r][curr[1]].getPiece() == null)
-                        possMoves.add(board[r][curr[1]]);
+                for(int r = curr.getSquare().location[0] + 1; r <= curr.getSquare().location[0] + 2; r++){
+                    if(board[r][curr.getSquare().location[1]].getPiece() == null)
+                        possMoves.add(board[r][curr.getSquare().location[1]]);
 
                 }
 
             }
 
             // down 1
-            if(curr[0] < board.length - 1 && board[curr[0] + 1][curr[1]].getPiece() == null)
-                possMoves.add(board[curr[0] + 1][curr[1]]);
+            if(curr.getSquare().location[0] < board.length - 1)
+                if(board[curr.getSquare().location[0] + 1][curr.getSquare().location[1]].getPiece() == null)
+                    possMoves.add(board[curr.getSquare().location[0] + 1][curr.getSquare().location[1]]);
 
             // down 1, left 1
-            if((curr[0] < board.length - 1 && curr[1] > 0) && board[curr[0] + 1][curr[1] - 1].getPiece() != null)
-                if(board[curr[0] + 1][curr[1] - 1].getPiece().getColor() != board[curr[0]][curr[1]].getPiece().getColor())
-                    possMoves.add(board[curr[0] + 1][curr[1] - 1]);
+            if((curr.getSquare().location[0] < board.length - 1 && curr.getSquare().location[1] > 0))
+                if(board[curr.getSquare().location[0] + 1][curr.getSquare().location[1] - 1].getPiece() != null)
+                    if(board[curr.getSquare().location[0] + 1][curr.getSquare().location[1] - 1].getPiece().getColor() != curr.getColor())
+                        possMoves.add(board[curr.getSquare().location[0] + 1][curr.getSquare().location[1] - 1]);
 
             // down 1, right 1
-            if((curr[0] < board.length - 1 && curr[1] < board[curr[0]].length - 1) && board[curr[0] + 1][curr[1] + 1].getPiece() != null)
-                if(board[curr[0] + 1][curr[1] + 1].getPiece().getColor() != board[curr[0]][curr[1]].getPiece().getColor())
-                    possMoves.add(board[curr[0] + 1][curr[1] + 1]);
+            if((curr.getSquare().location[0] < board.length - 1 && curr.getSquare().location[1] < board[0].length - 1))
+                if(board[curr.getSquare().location[0] + 1][curr.getSquare().location[1] + 1].getPiece() != null)
+                    if(board[curr.getSquare().location[0] + 1][curr.getSquare().location[1] + 1].getPiece().getColor() != curr.getColor())
+                        possMoves.add(board[curr.getSquare().location[0] + 1][curr.getSquare().location[1] + 1]);
 
         }
 
@@ -777,40 +780,39 @@ public class MyPanel extends JPanel{
     public void findKnightMoves(){
 
         // up 2, left 1
-        if(curr[0] > 1 && curr[1] > 0)
-            if(board[curr[0] - 2][curr[1] - 1].getPiece() != null) {
-                if (board[curr[0] - 2][curr[1] - 1].getPiece().getColor() != board[curr[0]][curr[1]].getPiece().getColor())
-                    possMoves.add(board[curr[0] - 2][curr[1] - 1]);
+        if(curr.getSquare().location[0] > 1 && curr.getSquare().location[1] > 0)
+            if(board[curr.getSquare().location[0] - 2][curr.getSquare().location[1] - 1].getPiece() != null) {
+                if (board[curr.getSquare().location[0] - 2][curr.getSquare().location[1] - 1].getPiece().getColor() != curr.getColor())
+                    possMoves.add(board[curr.getSquare().location[0] - 2][curr.getSquare().location[1] - 1]);
             } else {
-                possMoves.add(board[curr[0] - 2][curr[1] - 1]);
+                possMoves.add(board[curr.getSquare().location[0] - 2][curr.getSquare().location[1] - 1]);
             }
 
         // up 2, right 1
-        if(curr[0] > 1 && curr[1] < board[curr[0]].length - 1)
-            if(board[curr[0] - 2][curr[1] + 1].getPiece() != null) {
-                if (board[curr[0] - 2][curr[1] + 1].getPiece().getColor() != board[curr[0]][curr[1]].getPiece().getColor())
-                    possMoves.add(board[curr[0] - 2][curr[1] + 1]);
+        if(curr.getSquare().location[0] > 1 && curr.getSquare().location[1] < board[0].length)
+            if(board[curr.getSquare().location[0] - 2][curr.getSquare().location[1] + 1].getPiece() != null) {
+                if (board[curr.getSquare().location[0] - 2][curr.getSquare().location[1] + 1].getPiece().getColor() != curr.getColor())
+                    possMoves.add(board[curr.getSquare().location[0] - 2][curr.getSquare().location[1] + 1]);
             } else {
-                possMoves.add(board[curr[0] - 2][curr[1] + 1]);
+                possMoves.add(board[curr.getSquare().location[0] - 2][curr.getSquare().location[1] + 1]);
             }
 
         // down 2, left 1
-        if(curr[0] < board.length - 2 && curr[1] > 0)
-            if(board[curr[0] + 2][curr[1] - 1].getPiece() != null) {
-                if (board[curr[0] + 2][curr[1] - 1].getPiece().getColor() != board[curr[0]][curr[1]].getPiece().getColor())
-                    possMoves.add(board[curr[0] + 2][curr[1] - 1]);
+        if(curr.getSquare().location[0] < board.length - 2 && curr.getSquare().location[1] > 0)
+            if(board[curr.getSquare().location[0] + 2][curr.getSquare().location[1] - 1].getPiece() != null) {
+                if (board[curr.getSquare().location[0] + 2][curr.getSquare().location[1] - 1].getPiece().getColor() != curr.getColor())
+                    possMoves.add(board[curr.getSquare().location[0] + 2][curr.getSquare().location[1] - 1]);
             } else {
-                possMoves.add(board[curr[0] + 2][curr[1] - 1]);
+                possMoves.add(board[curr.getSquare().location[0] + 2][curr.getSquare().location[1] - 1]);
             }
 
         // down 2, right 1
-        // +2, +1
-        if(curr[0] < board.length - 2 && curr[1] < board[curr[0]].length - 1)
-            if(board[curr[0] + 2][curr[1] + 1].getPiece() != null) {
-                if (board[curr[0] + 2][curr[1] + 1].getPiece().getColor() != board[curr[0]][curr[1]].getPiece().getColor())
-                    possMoves.add(board[curr[0] + 2][curr[1] + 1]);
+        if(curr.getSquare().location[0] < board.length - 2 && curr.getSquare().location[1] < board[0].length)
+            if(board[curr.getSquare().location[0] + 2][curr.getSquare().location[1] + 1].getPiece() != null) {
+                if (board[curr.getSquare().location[0] + 2][curr.getSquare().location[1] + 1].getPiece().getColor() != curr.getColor())
+                    possMoves.add(board[curr.getSquare().location[0] + 2][curr.getSquare().location[1] + 1]);
             } else {
-                possMoves.add(board[curr[0] + 2][curr[1] + 1]);
+                possMoves.add(board[curr.getSquare().location[0] + 2][curr.getSquare().location[1] + 1]);
             }
 
         // up 1, left 2
@@ -861,12 +863,12 @@ public class MyPanel extends JPanel{
         if(curr != null) {
 
             if (curr.getValue() == 9) {
-                findRookMoves();
-                findBishopMoves();
+//                findRookMoves();
+//                findBishopMoves();
             } else if(curr.getValue() == 5){
-                findRookMoves();
+//                findRookMoves();
             } else if(curr.getValue() == 3 && curr.getClass() == Bishop.class){
-                findBishopMoves();
+//                findBishopMoves();
             } else if(curr.getValue() == 3 && curr.getClass() == Knight.class){
                 findKnightMoves();
             } else if(curr.getValue() == 1){
@@ -881,8 +883,12 @@ public class MyPanel extends JPanel{
 
     public void movePiece(Piece c, Square n){
 
+        Square temp = c.getSquare();
         n.setPiece(c);
-        c.getSquare().setPiece(null);
+        temp.setPiece(null);
+        if(c.getValue() == 1){
+            ((Pawn)(c)).move();
+        }
         possMoves = new ArrayList<Square>();
         moving = false;
         if(turn == Color.WHITE){
@@ -892,6 +898,7 @@ public class MyPanel extends JPanel{
         }
         curr = null;
         nMove = null;
+
     }
 
 
