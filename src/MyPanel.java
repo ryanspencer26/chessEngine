@@ -11,9 +11,11 @@ public class MyPanel extends JPanel{
     // 3) store location in Piece so I can find moves
     // 4) make nMove a Square rather than an int[] (2d array location)
 
+    // already fixed square class/constructor to take/store location in 2d array
+
     private Square[][] board = new Square[8][8];
-    private int[] curr = new int[2]; // current square
-    private int[] nMove = new int[2]; // possible square
+    private Piece curr = null; // current square
+    private Square nMove = null;
     private boolean moving;
     private ArrayList<Square> possMoves = new ArrayList<Square>();
     private Color turn;
@@ -25,28 +27,28 @@ public class MyPanel extends JPanel{
         moving = false;
 
         for(int i = 1, n = 8; i <= 8; i++, n--){
-            board[i-1][0] = new Square(i % 2 == 0, "a" + n);
+            board[i-1][0] = new Square(i % 2 == 0, "a" + n, new int[]{i - 1, 0});
         }
         for(int i = 2, n = 8; i <= 9; i++, n--){
-            board[i-2][1] = new Square(i % 2 == 0, "b" + n);
+            board[i-2][1] = new Square(i % 2 == 0, "b" + n, new int[]{i - 2, 1});
         }
         for(int i = 1, n = 8; i <= 8; i++, n--){
-            board[i-1][2] = new Square(i % 2 == 0, "c" + n);
+            board[i-1][2] = new Square(i % 2 == 0, "c" + n, new int[]{i - 1, 2});
         }
         for(int i = 2, n = 8; i <= 9; i++, n--){
-            board[i-2][3] = new Square(i % 2 == 0, "d" + n);
+            board[i-2][3] = new Square(i % 2 == 0, "d" + n, new int[]{i - 2, 3});
         }
         for(int i = 1, n = 8; i <= 8; i++, n--){
-            board[i-1][4] = new Square(i % 2 == 0, "e" + n);
+            board[i-1][4] = new Square(i % 2 == 0, "e" + n, new int[]{i - 1, 4});
         }
         for(int i = 2, n = 8; i <= 9; i++, n--){
-            board[i-2][5] = new Square(i % 2 == 0, "f" + n);
+            board[i-2][5] = new Square(i % 2 == 0, "f" + n, new int[]{i - 2, 5});
         }
         for(int i = 1, n = 8; i <= 8; i++, n--){
-            board[i-1][6] = new Square(i % 2 == 0, "g" + n);
+            board[i-1][6] = new Square(i % 2 == 0, "g" + n, new int[]{i - 1, 6});
         }
         for(int i = 2, n = 8; i <= 9; i++, n--){
-            board[i-2][7] = new Square(i % 2 == 0, "h" + n);
+            board[i-2][7] = new Square(i % 2 == 0, "h" + n, new int[]{i - 2, 7});
         }
         board[0][0].setPiece(new Rook(Color.BLACK, "a8"));
         board[0][1].setPiece(new Knight(Color.BLACK, "b8"));
@@ -101,621 +103,490 @@ public class MyPanel extends JPanel{
                 if(e.getX() > 525){
 
                     if(e.getY() > 525) {
-                        if(!moving || (board[7][7].getPiece() != null && board[7][7].getPiece().getColor() == turn)){
-                            curr[0] = 7;
-                            curr[1] = 7;
-                            moving = true;
-                        } else {
-                            nMove[0] = 7;
-                            nMove[1] = 7;
+                        if(board[7][7].getPiece() != null && board[7][7].getPiece().getColor() == turn){
+                            curr = board[7][7].getPiece();
+                            nMove = null;
+                        } else if(moving){
+                            nMove = board[7][7];
                         }
                     } else if(e.getY() > 450){
-                        if(!moving || (board[6][7].getPiece() != null && board[6][7].getPiece().getColor() == turn)){
-                            curr[0] = 6;
-                            curr[1] = 7;
-                            moving = true;
-                        } else {
-                            nMove[0] = 6;
-                            nMove[1] = 7;
+                        if(board[6][7].getPiece() != null && board[6][7].getPiece().getColor() == turn){
+                            curr = board[6][7].getPiece();
+                            nMove = null;
+                        } else if(moving){
+                            nMove = board[6][7];
                         }
                     } else if(e.getY() > 375){
-                        if(!moving || (board[5][7].getPiece() != null && board[5][7].getPiece().getColor() == turn)){
-                            curr[0] = 5;
-                            curr[1] = 7;
-                            moving = true;
-                        } else {
-                            nMove[0] = 5;
-                            nMove[1] = 7;
+                        if(board[5][7].getPiece() != null && board[5][7].getPiece().getColor() == turn){
+                            curr = board[5][7].getPiece();
+                            nMove = null;
+                        } else if(moving){
+                            nMove = board[5][7];
                         }
                     } else if(e.getY() > 300){
-                        if(!moving || (board[4][7].getPiece() != null && board[4][7].getPiece().getColor() == turn)){
-                            curr[0] = 4;
-                            curr[1] = 7;
-                            moving = true;
-                        } else {
-                            nMove[0] = 4;
-                            nMove[1] = 7;
+                        if(board[4][7].getPiece() != null && board[4][7].getPiece().getColor() == turn){
+                            curr = board[4][7].getPiece();
+                            nMove = null;
+                        } else if(moving){
+                            nMove = board[4][7];
                         }
                     } else if(e.getY() > 225){
-                        if(!moving || (board[3][7].getPiece() != null && board[3][7].getPiece().getColor() == turn)){
-                            curr[0] = 3;
-                            curr[1] = 7;
-                            moving = true;
-                        } else {
-                            nMove[0] = 3;
-                            nMove[1] = 7;
+                        if(board[3][7].getPiece() != null && board[3][7].getPiece().getColor() == turn){
+                            curr = board[3][7].getPiece();
+                            nMove = null;
+                        } else if(moving){
+                            nMove = board[3][7];
                         }
                     } else if(e.getY() > 150){
-                        if(!moving || (board[2][7].getPiece() != null && board[2][7].getPiece().getColor() == turn)){
-                            curr[0] = 2;
-                            curr[1] = 7;
-                            moving = true;
-                        } else {
-                            nMove[0] = 2;
-                            nMove[1] = 7;
+                        if(board[2][7].getPiece() != null && board[2][7].getPiece().getColor() == turn){
+                            curr = board[2][7].getPiece();
+                            nMove = null;
+                        } else if(moving){
+                            nMove = board[2][7];
                         }
                     } else if(e.getY() > 75){
-                        if(!moving || (board[1][7].getPiece() != null && board[1][7].getPiece().getColor() == turn)){
-                            curr[0] = 1;
-                            curr[1] = 7;
-                            moving = true;
-                        } else {
-                            nMove[0] = 1;
-                            nMove[1] = 7;
+                        if(board[1][7].getPiece() != null && board[1][7].getPiece().getColor() == turn){
+                            curr = board[1][7].getPiece();
+                            nMove = null;
+                        } else if(moving){
+                            nMove = board[1][7];
                         }
                     } else {
-                        if(!moving || (board[0][7].getPiece() != null && board[0][7].getPiece().getColor() == turn)){
-                            curr[0] = 0;
-                            curr[1] = 7;
-                            moving = true;
-                        } else {
-                            nMove[0] = 0;
-                            nMove[1] = 7;
+                        if(board[0][7].getPiece() != null && board[0][7].getPiece().getColor() == turn){
+                            curr = board[0][7].getPiece();
+                            nMove = null;
+                        } else if(moving){
+                            nMove = board[0][7];
                         }
                     }
 
                 } else if(e.getX() > 450){
 
                     if(e.getY() > 525) {
-                        if(!moving || (board[7][6].getPiece() != null && board[7][6].getPiece().getColor() == turn)){
-                            curr[0] = 7;
-                            curr[1] = 6;
-                            moving = true;
-                        } else {
-                            nMove[0] = 7;
-                            nMove[1] = 6;
+                        if(board[7][6].getPiece() != null && board[7][6].getPiece().getColor() == turn){
+                            curr = board[7][6].getPiece();
+                            nMove = null;
+                        } else if(moving){
+                            nMove = board[7][6];
                         }
                     } else if(e.getY() > 450){
-                        if(!moving || (board[6][6].getPiece() != null && board[6][6].getPiece().getColor() == turn)){
-                            curr[0] = 6;
-                            curr[1] = 6;
-                            moving = true;
-                        } else {
-                            nMove[0] = 6;
-                            nMove[1] = 6;
+                        if(board[6][6].getPiece() != null && board[6][6].getPiece().getColor() == turn){
+                            curr = board[6][6].getPiece();
+                            nMove = null;
+                        } else if(moving){
+                            nMove = board[6][6];
                         }
                     } else if(e.getY() > 375){
-                        if(!moving || (board[5][6].getPiece() != null && board[5][6].getPiece().getColor() == turn)){
-                            curr[0] = 5;
-                            curr[1] = 6;
-                            moving = true;
-                        } else {
-                            nMove[0] = 5;
-                            nMove[1] = 6;
+                        if(board[5][6].getPiece() != null && board[5][6].getPiece().getColor() == turn){
+                            curr = board[5][6].getPiece();
+                            nMove = null;
+                        } else if(moving){
+                            nMove = board[5][6];
                         }
                     } else if(e.getY() > 300){
-                        if(!moving || (board[4][6].getPiece() != null && board[4][6].getPiece().getColor() == turn)){
-                            curr[0] = 4;
-                            curr[1] = 6;
-                            moving = true;
-                        } else {
-                            nMove[0] = 4;
-                            nMove[1] = 6;
+                        if(board[4][6].getPiece() != null && board[4][6].getPiece().getColor() == turn){
+                            curr = board[4][6].getPiece();
+                            nMove = null;
+                        } else if(moving){
+                            nMove = board[4][6];
                         }
                     } else if(e.getY() > 225){
-                        if(!moving || (board[3][6].getPiece() != null && board[3][6].getPiece().getColor() == turn)){
-                            curr[0] = 3;
-                            curr[1] = 6;
-                            moving = true;
-                        } else {
-                            nMove[0] = 3;
-                            nMove[1] = 6;
+                        if(board[3][6].getPiece() != null && board[3][6].getPiece().getColor() == turn){
+                            curr = board[3][6].getPiece();
+                            nMove = null;
+                        } else if(moving){
+                            nMove = board[3][6];
                         }
                     } else if(e.getY() > 150){
-                        if(!moving || (board[2][6].getPiece() != null && board[2][6].getPiece().getColor() == turn)){
-                            curr[0] = 2;
-                            curr[1] = 6;
-                            moving = true;
-                        } else {
-                            nMove[0] = 2;
-                            nMove[1] = 6;
+                        if(board[2][6].getPiece() != null && board[2][6].getPiece().getColor() == turn){
+                            curr = board[2][6].getPiece();
+                            nMove = null;
+                        } else if(moving){
+                            nMove = board[2][6];
                         }
                     } else if(e.getY() > 75){
-                        if(!moving || (board[1][6].getPiece() != null && board[1][6].getPiece().getColor() == turn)){
-                            curr[0] = 1;
-                            curr[1] = 6;
-                            moving = true;
-                        } else {
-                            nMove[0] = 1;
-                            nMove[1] = 6;
+                        if(board[1][6].getPiece() != null && board[1][6].getPiece().getColor() == turn){
+                            curr = board[1][6].getPiece();
+                            nMove = null;
+                        } else if(moving){
+                            nMove = board[1][6];
                         }
                     } else {
-                        if(!moving || (board[0][6].getPiece() != null && board[0][6].getPiece().getColor() == turn)){
-                            curr[0] = 0;
-                            curr[1] = 6;
-                            moving = true;
-                        } else {
-                            nMove[0] = 0;
-                            nMove[1] = 6;
+                        if(board[0][6].getPiece() != null && board[0][6].getPiece().getColor() == turn){
+                            curr = board[0][6].getPiece();
+                            nMove = null;
+                        } else if(moving){
+                            nMove = board[0][6];
                         }
                     }
 
                 } else if(e.getX() > 375){
 
                     if(e.getY() > 525) {
-                        if(!moving || (board[7][5].getPiece() != null && board[7][5].getPiece().getColor() == turn)){
-                            curr[0] = 7;
-                            curr[1] = 5;
-                            moving = true;
-                        } else {
-                            nMove[0] = 7;
-                            nMove[1] = 5;
+                        if(board[7][5].getPiece() != null && board[7][5].getPiece().getColor() == turn){
+                            curr = board[7][5].getPiece();
+                            nMove = null;
+                        } else if(moving){
+                            nMove = board[7][5];
                         }
                     } else if(e.getY() > 450){
-                        if(!moving || (board[6][5].getPiece() != null && board[6][5].getPiece().getColor() == turn)){
-                            curr[0] = 6;
-                            curr[1] = 5;
-                            moving = true;
-                        } else {
-                            nMove[0] = 6;
-                            nMove[1] = 5;
+                        if(board[6][5].getPiece() != null && board[6][5].getPiece().getColor() == turn){
+                            curr = board[6][5].getPiece();
+                            nMove = null;
+                        } else if(moving){
+                            nMove = board[6][5];
                         }
                     } else if(e.getY() > 375){
-                        if(!moving || (board[5][5].getPiece() != null && board[5][5].getPiece().getColor() == turn)){
-                            curr[0] = 5;
-                            curr[1] = 5;
-                            moving = true;
-                        } else {
-                            nMove[0] = 5;
-                            nMove[1] = 5;
+                        if(board[5][5].getPiece() != null && board[5][5].getPiece().getColor() == turn){
+                            curr = board[5][5].getPiece();
+                            nMove = null;
+                        } else if(moving){
+                            nMove = board[5][5];
                         }
                     } else if(e.getY() > 300){
-                        if(!moving || (board[4][5].getPiece() != null && board[4][5].getPiece().getColor() == turn)){
-                            curr[0] = 4;
-                            curr[1] = 5;
-                            moving = true;
-                        } else {
-                            nMove[0] = 4;
+                        if(board[4][5].getPiece() != null && board[4][5].getPiece().getColor() == turn){
+                            curr = board[4][5].getPiece();
+                            nMove = null;
+                        } else if(moving){
+                            nMove = board[4][5];
                         }
                     } else if(e.getY() > 225){
-                        if(!moving || (board[3][5].getPiece() != null && board[3][5].getPiece().getColor() == turn)){
-                            curr[0] = 3;
-                            curr[1] = 5;
-                            moving = true;
-                        } else {
-                            nMove[0] = 3;
-                            nMove[1] = 5;
+                        if(board[3][5].getPiece() != null && board[3][5].getPiece().getColor() == turn){
+                            curr = board[3][5].getPiece();
+                            nMove = null;
+                        } else if(moving){
+                            nMove = board[3][5];
                         }
                     } else if(e.getY() > 150){
-                        if(!moving || (board[2][5].getPiece() != null && board[2][5].getPiece().getColor() == turn)){
-                            curr[0] = 2;
-                            curr[1] = 5;
-                            moving = true;
-                        } else {
-                            nMove[0] = 2;
-                            nMove[1] = 5;
+                        if(board[2][5].getPiece() != null && board[2][5].getPiece().getColor() == turn){
+                            curr = board[2][5].getPiece();
+                            nMove = null;
+                        } else if(moving){
+                            nMove = board[2][5];
                         }
                     } else if(e.getY() > 75){
-                        if(!moving || (board[1][5].getPiece() != null && board[1][5].getPiece().getColor() == turn)){
-                            curr[0] = 1;
-                            curr[1] = 5;
-                            moving = true;
-                        } else {
-                            nMove[0] = 1;
-                            nMove[1] = 5;
+                        if(board[1][5].getPiece() != null && board[1][5].getPiece().getColor() == turn){
+                            curr = board[1][5].getPiece();
+                            nMove = null;
+                        } else if(moving){
+                            nMove = board[1][5];
                         }
                     } else {
-                        if(!moving || (board[0][5].getPiece() != null && board[0][5].getPiece().getColor() == turn)){
-                            curr[0] = 0;
-                            curr[1] = 5;
-                            moving = true;
-                        } else {
-                            nMove[0] = 0;
-                            nMove[1] = 5;
+                        if(board[0][5].getPiece() != null && board[0][5].getPiece().getColor() == turn){
+                            curr = board[0][5].getPiece();
+                            nMove = null;
+                        } else if(moving){
+                            nMove = board[0][5];
                         }
                     }
 
                 } else if(e.getX() > 300){
 
                     if(e.getY() > 525) {
-                        if(!moving || (board[7][4].getPiece() != null && board[7][4].getPiece().getColor() == turn)){
-                            curr[0] = 7;
-                            curr[1] = 4;
-                            moving = true;
-                        } else {
-                            nMove[0] = 7;
-                            nMove[1] = 4;
+                        if(board[7][4].getPiece() != null && board[7][4].getPiece().getColor() == turn){
+                            curr = board[7][4].getPiece();
+                            nMove = null;
+                        } else if(moving){
+                            nMove = board[7][4];
                         }
                     } else if(e.getY() > 450){
-                        if(!moving || (board[6][4].getPiece() != null && board[6][4].getPiece().getColor() == turn)){
-                            curr[0] = 6;
-                            curr[1] = 4;
-                            moving = true;
-                        } else {
-                            nMove[0] = 6;
-                            nMove[1] = 4;
+                        if(board[6][4].getPiece() != null && board[6][4].getPiece().getColor() == turn){
+                            curr = board[6][4].getPiece();
+                            nMove = null;
+                        } else if(moving){
+                            nMove = board[6][4];
                         }
                     } else if(e.getY() > 375){
-                        if(!moving || (board[5][4].getPiece() != null && board[5][4].getPiece().getColor() == turn)){
-                            curr[0] = 5;
-                            curr[1] = 4;
-                            moving = true;
-                        } else {
-                            nMove[0] = 5;
-                            nMove[1] = 4;
+                        if(board[5][4].getPiece() != null && board[5][4].getPiece().getColor() == turn){
+                            curr = board[5][4].getPiece();
+                            nMove = null;
+                        } else if(moving){
+                            nMove = board[5][4];
                         }
                     } else if(e.getY() > 300){
-                        if(!moving || (board[4][4].getPiece() != null && board[4][4].getPiece().getColor() == turn)){
-                            curr[0] = 4;
-                            curr[1] = 4;
-                            moving = true;
-                        } else {
-                            nMove[0] = 4;
-                            nMove[1] = 4;
+                        if(board[4][4].getPiece() != null && board[4][4].getPiece().getColor() == turn){
+                            curr = board[4][4].getPiece();
+                            nMove = null;
+                        } else if(moving){
+                            nMove = board[4][4];
                         }
                     } else if(e.getY() > 225){
-                        if(!moving || (board[3][4].getPiece() != null && board[3][4].getPiece().getColor() == turn)){
-                            curr[0] = 3;
-                            curr[1] = 4;
-                            moving = true;
-                        } else {
-                            nMove[0] = 3;
-                            nMove[1] = 4;
+                        if(board[3][4].getPiece() != null && board[3][4].getPiece().getColor() == turn){
+                            curr = board[3][4].getPiece();
+                            nMove = null;
+                        } else if(moving){
+                            nMove = board[3][4];
                         }
                     } else if(e.getY() > 150){
-                        if(!moving || (board[2][4].getPiece() != null && board[2][4].getPiece().getColor() == turn)){
-                            curr[0] = 2;
-                            curr[1] = 4;
-                            moving = true;
-                        } else {
-                            nMove[0] = 2;
-                            nMove[1] = 4;
+                        if(board[2][4].getPiece() != null && board[2][4].getPiece().getColor() == turn){
+                            curr = board[2][4].getPiece();
+                            nMove = null;
+                        } else if(moving){
+                            nMove = board[2][4];
                         }
                     } else if(e.getY() > 75){
-                        if(!moving || (board[1][4].getPiece() != null && board[1][4].getPiece().getColor() == turn)){
-                            curr[0] = 1;
-                            curr[1] = 4;
-                            moving = true;
-                        } else {
-                            nMove[0] = 1;
-                            nMove[1] = 4;
+                        if(board[1][4].getPiece() != null && board[1][4].getPiece().getColor() == turn){
+                            curr = board[1][4].getPiece();
+                            nMove = null;
+                        } else if(moving){
+                            nMove = board[1][4];
                         }
                     } else {
-                        if(!moving || (board[0][4].getPiece() != null && board[0][4].getPiece().getColor() == turn)){
-                            curr[0] = 0;
-                            curr[1] = 4;
-                            moving = true;
-                        } else {
-                            nMove[0] = 0;
-                            nMove[1] = 4;
+                        if(board[0][4].getPiece() != null && board[0][4].getPiece().getColor() == turn){
+                            curr = board[0][4].getPiece();
+                            nMove = null;
+                        } else if(moving){
+                            nMove = board[0][4];
                         }
                     }
 
                 } else if(e.getX() > 225){
 
                     if(e.getY() > 525) {
-                        if(!moving || (board[7][3].getPiece() != null && board[7][3].getPiece().getColor() == turn)){
-                            curr[0] = 7;
-                            curr[1] = 3;
-                            moving = true;
-                        } else {
-                            nMove[0] = 7;
-                            nMove[1] = 3;
+                        if(board[7][3].getPiece() != null && board[7][3].getPiece().getColor() == turn){
+                            curr = board[7][3].getPiece();
+                            nMove = null;
+                        } else if(moving){
+                            nMove = board[7][3];
                         }
                     } else if(e.getY() > 450){
-                        if(!moving || (board[6][3].getPiece() != null && board[6][3].getPiece().getColor() == turn)){
-                            curr[0] = 6;
-                            curr[1] = 3;
-                            moving = true;
-                        } else {
-                            nMove[0] = 6;
-                            nMove[1] = 3;
+                        if(board[6][3].getPiece() != null && board[6][3].getPiece().getColor() == turn){
+                            curr = board[6][3].getPiece();
+                            nMove = null;
+                        } else if(moving){
+                            nMove = board[6][3];
                         }
                     } else if(e.getY() > 375){
-                        if(!moving || (board[5][3].getPiece() != null && board[5][3].getPiece().getColor() == turn)){
-                            curr[0] = 5;
-                            curr[1] = 3;
-                            moving = true;
-                        } else {
-                            nMove[0] = 5;
-                            nMove[1] = 3;
+                        if(board[5][3].getPiece() != null && board[5][3].getPiece().getColor() == turn){
+                            curr = board[5][3].getPiece();
+                            nMove = null;
+                        } else if(moving){
+                            nMove = board[5][3];
                         }
                     } else if(e.getY() > 300){
-                        if(!moving || (board[4][3].getPiece() != null && board[4][3].getPiece().getColor() == turn)){
-                            curr[0] = 4;
-                            curr[1] = 3;
-                            moving = true;
-                        } else {
-                            nMove[0] = 4;
-                            nMove[1] = 3;
+                        if(board[4][3].getPiece() != null && board[4][3].getPiece().getColor() == turn){
+                            curr = board[4][3].getPiece();
+                            nMove = null;
+                        } else if(moving){
+                            nMove = board[4][3];
                         }
                     } else if(e.getY() > 225){
-                        if(!moving || (board[3][3].getPiece() != null && board[3][3].getPiece().getColor() == turn)){
-                            curr[0] = 3;
-                            curr[1] = 3;
-                            moving = true;
-                        } else {
-                            nMove[0] = 3;
-                            nMove[1] = 3;
+                        if(board[3][3].getPiece() != null && board[3][3].getPiece().getColor() == turn){
+                            curr = board[3][3].getPiece();
+                            nMove = null;
+                        } else if(moving){
+                            nMove = board[3][3];
                         }
                     } else if(e.getY() > 150){
-                        if(!moving || (board[2][3].getPiece() != null && board[2][3].getPiece().getColor() == turn)){
-                            curr[0] = 2;
-                            curr[1] = 3;
-                            moving = true;
-                        } else {
-                            nMove[0] = 2;
-                            nMove[1] = 3;
+                        if(board[2][3].getPiece() != null && board[2][3].getPiece().getColor() == turn){
+                            curr = board[2][3].getPiece();
+                            nMove = null;
+                        } else if(moving){
+                            nMove = board[2][3];
                         }
                     } else if(e.getY() > 75){
-                        if(!moving || (board[1][3].getPiece() != null && board[1][3].getPiece().getColor() == turn)){
-                            curr[0] = 1;
-                            curr[1] = 3;
-                            moving = true;
-                        } else {
-                            nMove[0] = 1;
-                            nMove[1] = 3;
+                        if(board[1][3].getPiece() != null && board[1][3].getPiece().getColor() == turn){
+                            curr = board[1][3].getPiece();
+                            nMove = null;
+                        } else if(moving){
+                            nMove = board[1][3];
                         }
                     } else {
-                        if(!moving || (board[0][3].getPiece() != null && board[0][3].getPiece().getColor() == turn)){
-                            curr[0] = 0;
-                            curr[1] = 3;
-                            moving = true;
-                        } else {
-                            nMove[0] = 0;
-                            nMove[1] = 3;
+                        if(board[0][3].getPiece() != null && board[0][3].getPiece().getColor() == turn){
+                            curr = board[0][3].getPiece();
+                            nMove = null;
+                        } else if(moving){
+                            nMove = board[0][3];
                         }
                     }
 
                 } else if(e.getX() > 150){
 
                     if(e.getY() > 525) {
-                        if(!moving || (board[7][2].getPiece() != null && board[7][2].getPiece().getColor() == turn)){
-                            curr[0] = 7;
-                            curr[1] = 2;
-                            moving = true;
-                        } else {
-                            nMove[0] = 7;
-                            nMove[1] = 2;
+                        if(board[7][2].getPiece() != null && board[7][2].getPiece().getColor() == turn){
+                            curr = board[7][2].getPiece();
+                            nMove = null;
+                        } else if(moving){
+                            nMove = board[7][2];
                         }
                     } else if(e.getY() > 450){
-                        if(!moving || (board[6][2].getPiece() != null && board[6][2].getPiece().getColor() == turn)){
-                            curr[0] = 6;
-                            curr[1] = 2;
-                            moving = true;
-                        } else {
-                            nMove[0] = 6;
-                            nMove[1] = 2;
+                        if(board[6][2].getPiece() != null && board[6][2].getPiece().getColor() == turn){
+                            curr = board[6][2].getPiece();
+                            nMove = null;
+                        } else if(moving){
+                            nMove = board[6][2];
                         }
                     } else if(e.getY() > 375){
-                        if(!moving || (board[5][2].getPiece() != null && board[5][2].getPiece().getColor() == turn)){
-                            curr[0] = 5;
-                            curr[1] = 2;
-                            moving = true;
-                        } else {
-                            nMove[0] = 5;
-                            nMove[1] = 2;
+                        if(board[5][2].getPiece() != null && board[5][2].getPiece().getColor() == turn){
+                            curr = board[5][2].getPiece();
+                            nMove = null;
+                        } else if(moving){
+                            nMove = board[5][2];
                         }
                     } else if(e.getY() > 300){
-                        if(!moving || (board[4][2].getPiece() != null && board[4][2].getPiece().getColor() == turn)){
-                            curr[0] = 4;
-                            curr[1] = 2;
-                            moving = true;
-                        } else {
-                            nMove[0] = 4;
-                            nMove[1] = 2;
+                        if(board[4][2].getPiece() != null && board[4][2].getPiece().getColor() == turn){
+                            curr = board[4][2].getPiece();
+                            nMove = null;
+                        } else if(moving){
+                            nMove = board[4][2];
                         }
                     } else if(e.getY() > 225){
-                        if(!moving || (board[3][2].getPiece() != null && board[3][2].getPiece().getColor() == turn)){
-                            curr[0] = 3;
-                            curr[1] = 2;
-                            moving = true;
-                        } else {
-                            nMove[0] = 3;
-                            nMove[1] = 2;
+                        if(board[3][2].getPiece() != null && board[3][2].getPiece().getColor() == turn){
+                            curr = board[3][2].getPiece();
+                            nMove = null;
+                        } else if(moving){
+                            nMove = board[3][2];
                         }
                     } else if(e.getY() > 150){
-                        if(!moving || (board[2][2].getPiece() != null && board[2][2].getPiece().getColor() == turn)){
-                            curr[0] = 2;
-                            curr[1] = 2;
-                            moving = true;
-                        } else {
-                            nMove[0] = 2;
-                            nMove[1] = 2;
+                        if(board[2][2].getPiece() != null && board[2][2].getPiece().getColor() == turn){
+                            curr = board[2][2].getPiece();
+                            nMove = null;
+                        } else if(moving){
+                            nMove = board[2][2];
                         }
                     } else if(e.getY() > 75){
-                        if(!moving || (board[1][2].getPiece() != null && board[1][2].getPiece().getColor() == turn)){
-                            curr[0] = 1;
-                            curr[1] = 2;
-                            moving = true;
-                        } else {
-                            nMove[0] = 1;
-                            nMove[1] = 2;
+                        if(board[1][2].getPiece() != null && board[1][2].getPiece().getColor() == turn){
+                            curr = board[1][2].getPiece();
+                            nMove = null;
+                        } else if(moving){
+                            nMove = board[1][2];
                         }
                     } else {
-                        if(!moving || (board[0][2].getPiece() != null && board[0][2].getPiece().getColor() == turn)){
-                            curr[0] = 0;
-                            curr[1] = 2;
-                            moving = true;
-                        } else {
-                            nMove[0] = 0;
-                            nMove[1] = 2;
+                        if(board[0][2].getPiece() != null && board[0][2].getPiece().getColor() == turn){
+                            curr = board[0][2].getPiece();
+                            nMove = null;
+                        } else if(moving){
+                            nMove = board[0][2];
                         }
                     }
 
                 }  else if(e.getX() > 75){
 
                     if(e.getY() > 525) {
-                        if(!moving || (board[7][1].getPiece() != null && board[7][1].getPiece().getColor() == turn)){
-                            curr[0] = 7;
-                            curr[1] = 1;
-                            moving = true;
-                        } else {
-                            nMove[0] = 7;
-                            nMove[1] = 1;
+                        if(board[7][1].getPiece() != null && board[7][1].getPiece().getColor() == turn){
+                            curr = board[7][1].getPiece();
+                            nMove = null;
+                        } else if(moving){
+                            nMove = board[7][1];
                         }
                     } else if(e.getY() > 450){
-                        if(!moving || (board[6][1].getPiece() != null && board[6][1].getPiece().getColor() == turn)){
-                            curr[0] = 6;
-                            curr[1] = 1;
-                            moving = true;
-                        } else {
-                            nMove[0] = 6;
-                            nMove[1] = 1;
+                        if(board[6][1].getPiece() != null && board[6][1].getPiece().getColor() == turn){
+                            curr = board[6][1].getPiece();
+                            nMove = null;
+                        } else if(moving){
+                            nMove = board[6][1];
                         }
                     } else if(e.getY() > 375){
-                        if(!moving || (board[5][1].getPiece() != null && board[5][1].getPiece().getColor() == turn)){
-                            curr[0] = 5;
-                            curr[1] = 1;
-                            moving = true;
-                        } else {
-                            nMove[0] = 5;
-                            nMove[1] = 1;
+                        if(board[5][1].getPiece() != null && board[5][1].getPiece().getColor() == turn){
+                            curr = board[5][1].getPiece();
+                            nMove = null;
+                        } else if(moving){
+                            nMove = board[5][1];
                         }
                     } else if(e.getY() > 300){
-                        if(!moving || (board[4][1].getPiece() != null && board[4][1].getPiece().getColor() == turn)){
-                            curr[0] = 4;
-                            curr[1] = 1;
-                            moving = true;
-                        } else {
-                            nMove[0] = 4;
-                            nMove[1] = 1;
-                            moving = true;
+                        if(board[4][1].getPiece() != null && board[4][1].getPiece().getColor() == turn){
+                            curr = board[4][1].getPiece();
+                            nMove = null;
+                        } else if(moving){
+                            nMove = board[4][1];
                         }
                     } else if(e.getY() > 225){
-                        if(!moving || (board[3][1].getPiece() != null && board[3][1].getPiece().getColor() == turn)){
-                            curr[0] = 3;
-                            curr[1] = 1;
-                            moving = true;
-                        } else {
-                            nMove[0] = 3;
-                            nMove[1] = 1;
+                        if(board[3][1].getPiece() != null && board[3][1].getPiece().getColor() == turn){
+                            curr = board[3][1].getPiece();
+                            nMove = null;
+                        } else if(moving){
+                            nMove = board[3][1];
                         }
                     } else if(e.getY() > 150){
-                        if(!moving || (board[2][1].getPiece() != null && board[2][1].getPiece().getColor() == turn)){
-                            curr[0] = 2;
-                            curr[1] = 1;
-                            moving = true;
-                        } else {
-                            nMove[0] = 2;
-                            nMove[1] = 1;
+                        if(board[2][1].getPiece() != null && board[2][1].getPiece().getColor() == turn){
+                            curr = board[2][1].getPiece();
+                            nMove = null;
+                        } else if(moving){
+                            nMove = board[2][1];
                         }
                     } else if(e.getY() > 75){
-                        if(!moving || (board[1][1].getPiece() != null && board[1][1].getPiece().getColor() == turn)){
-                            curr[0] = 1;
-                            curr[1] = 1;
-                            moving = true;
-                        } else {
-                            nMove[0] = 1;
-                            nMove[1] = 1;
+                        if(board[1][1].getPiece() != null && board[1][1].getPiece().getColor() == turn){
+                            curr = board[1][1].getPiece();
+                            nMove = null;
+                        } else if(moving){
+                            nMove = board[1][1];
                         }
                     } else {
-                        if(!moving || (board[0][1].getPiece() != null && board[0][1].getPiece().getColor() == turn)){
-                            curr[0] = 0;
-                            curr[1] = 1;
-                            moving = true;
-                        } else {
-                            nMove[0] = 0;
-                            nMove[1] = 1;
+                        if(board[0][1].getPiece() != null && board[0][1].getPiece().getColor() == turn){
+                            curr = board[0][1].getPiece();
+                            nMove = null;
+                        } else if(moving){
+                            nMove = board[0][1];
                         }
                     }
 
                 } else {
 
                     if(e.getY() > 525) {
-                        if(!moving || (board[7][0].getPiece() != null && board[7][0].getPiece().getColor() == turn)){
-                            curr[0] = 7;
-                            curr[1] = 0;
-                            moving = true;
-                        } else {
-                            nMove[0] = 7;
-                            nMove[1] = 0;
+                        if(board[7][0].getPiece() != null && board[7][0].getPiece().getColor() == turn){
+                            curr = board[7][0].getPiece();
+                            nMove = null;
+                        } else if(moving){
+                            nMove = board[7][0];
                         }
                     } else if(e.getY() > 450){
-                        if(!moving || (board[6][0].getPiece() != null && board[6][0].getPiece().getColor() == turn)){
-                            curr[0] = 6;
-                            curr[1] = 0;
-                            moving = true;
-                        } else {
-                            nMove[0] = 6;
-                            nMove[1] = 0;
+                        if(board[6][0].getPiece() != null && board[6][0].getPiece().getColor() == turn){
+                            curr = board[6][0].getPiece();
+                            nMove = null;
+                        } else if(moving){
+                            nMove = board[6][0];
                         }
                     } else if(e.getY() > 375){
-                        if(!moving || (board[5][0].getPiece() != null && board[5][0].getPiece().getColor() == turn)){
-                            curr[0] = 5;
-                            curr[1] = 0;
-                            moving = true;
-                        } else {
-                            nMove[0] = 5;
-                            nMove[1] = 0;
+                        if(board[5][0].getPiece() != null && board[5][0].getPiece().getColor() == turn){
+                            curr = board[5][0].getPiece();
+                            nMove = null;
+                        } else if(moving){
+                            nMove = board[5][0];
                         }
                     } else if(e.getY() > 300){
-                        if(!moving || (board[4][0].getPiece() != null && board[4][0].getPiece().getColor() == turn)){
-                            curr[0] = 4;
-                            curr[1] = 0;
-                            moving = true;
-                        } else {
-                            nMove[0] = 4;
-                            nMove[1] = 0;
+                        if(board[4][0].getPiece() != null && board[4][0].getPiece().getColor() == turn){
+                            curr = board[4][0].getPiece();
+                            nMove = null;
+                        } else if(moving){
+                            nMove = board[4][0];
                         }
                     } else if(e.getY() > 225){
-                        if(!moving || (board[3][0].getPiece() != null && board[3][0].getPiece().getColor() == turn)){
-                            curr[0] = 3;
-                            curr[1] = 0;
-                            moving = true;
-                        } else {
-                            nMove[0] = 3;
-                            nMove[1] = 0;
+                        if(board[3][0].getPiece() != null && board[3][0].getPiece().getColor() == turn){
+                            curr = board[3][0].getPiece();
+                            nMove = null;
+                        } else if(moving){
+                            nMove = board[3][0];
                         }
                     } else if(e.getY() > 150){
-                        if(!moving || (board[2][0].getPiece() != null && board[2][0].getPiece().getColor() == turn)){
-                            curr[0] = 2;
-                            curr[1] = 0;
-                            moving = true;
-                        } else {
-                            nMove[0] = 2;
-                            nMove[1] = 0;
+                        if(board[2][0].getPiece() != null && board[2][0].getPiece().getColor() == turn){
+                            curr = board[2][0].getPiece();
+                            nMove = null;
+                        } else if(moving){
+                            nMove = board[2][0];
                         }
                     } else if(e.getY() > 75){
-                        if(!moving || (board[1][0].getPiece() != null && board[1][0].getPiece().getColor() == turn)){
-                            curr[0] = 1;
-                            curr[1] = 0;
-                            moving = true;
-                        } else {
-                            nMove[0] = 1;
-                            nMove[1] = 0;
+                        if(board[1][0].getPiece() != null && board[1][0].getPiece().getColor() == turn){
+                            curr = board[1][0].getPiece();
+                            nMove = null;
+                        } else if(moving){
+                            nMove = board[1][0];
                         }
                     } else {
-                        if(!moving || (board[0][0].getPiece() != null && board[0][0].getPiece().getColor() == turn)){
-                            curr[0] = 0;
-                            curr[1] = 0;
-                            moving = true;
-                        } else {
-                            nMove[0] = 0;
-                            nMove[1] = 0;
+                        if(board[0][0].getPiece() != null && board[0][0].getPiece().getColor() == turn){
+                            curr = board[0][0].getPiece();
+                            nMove = null;
+                        } else if(moving){
+                            nMove = board[0][0];
                         }
                     }
 
                 }
 
-                if(board[nMove[0]][nMove[1]].getPiece() != null && board[nMove[0]][nMove[1]].getPiece().getColor() == turn){
-                    curr = nMove.clone();
-                    moving = true;
-                    nMove = new int[2];
+                if(curr != null){
+
+                    findAllMoves();
+
                 }
-
-                System.out.println(board[curr[0]][curr[1]].name);
-
 
             }
 
@@ -933,6 +804,7 @@ public class MyPanel extends JPanel{
             }
 
         // down 2, right 1
+        // +2, +1
         if(curr[0] < board.length - 2 && curr[1] < board[curr[0]].length - 1)
             if(board[curr[0] + 2][curr[1] + 1].getPiece() != null) {
                 if (board[curr[0] + 2][curr[1] + 1].getPiece().getColor() != board[curr[0]][curr[1]].getPiece().getColor())
@@ -942,39 +814,39 @@ public class MyPanel extends JPanel{
             }
 
         // up 1, left 2
-        if(curr[0] > 0 && curr[1] > 1)
-            if(board[curr[0] - 1][curr[1] - 2].getPiece() != null) {
-                if (board[curr[0] - 1][curr[1] - 2].getPiece().getColor() != board[curr[0]][curr[1]].getPiece().getColor())
-                    possMoves.add(board[curr[0] - 1][curr[1] - 2]);
+        if(curr.getSquare().location[0] > 0 && curr.getSquare().location[1] > 1)
+            if(board[curr.getSquare().location[0] - 1][curr.getSquare().location[1] - 2].getPiece() != null) {
+                if (board[curr.getSquare().location[0] - 1][curr.getSquare().location[1] - 2].getPiece().getColor() != curr.getColor())
+                    possMoves.add(board[curr.getSquare().location[0] - 1][curr.getSquare().location[1] - 2]);
             } else {
-                possMoves.add(board[curr[0] - 1][curr[1] - 2]);
+                possMoves.add(board[curr.getSquare().location[0] - 1][curr.getSquare().location[1] - 2]);
             }
 
         // up 1, right 2
-        if(curr[0] > 0 && curr[1] < board[curr[0]].length - 2)
-            if(board[curr[0] - 1][curr[1] + 2].getPiece() != null) {
-                if (board[curr[0] - 1][curr[1] + 2].getPiece().getColor() != board[curr[0]][curr[1]].getPiece().getColor())
-                    possMoves.add(board[curr[0] - 1][curr[1] + 2]);
+        if(curr.getSquare().location[0] > 0 && curr.getSquare().location[1] < board[0].length - 2)
+            if(board[curr.getSquare().location[0] - 1][curr.getSquare().location[1] + 2].getPiece() != null) {
+                if (board[curr.getSquare().location[0] - 1][curr.getSquare().location[1] + 2].getPiece().getColor() != curr.getColor())
+                    possMoves.add(board[curr.getSquare().location[0] - 1][curr.getSquare().location[1] + 2]);
             } else {
-                possMoves.add(board[curr[0] - 1][curr[1] + 2]);
+                possMoves.add(board[curr.getSquare().location[0] - 1][curr.getSquare().location[1] + 2]);
             }
 
         // down 1, left 2
-        if(curr[0] < board.length - 1 && curr[1] > 1)
-            if(board[curr[0] + 1][curr[1] - 2].getPiece() != null) {
-                if (board[curr[0] + 1][curr[1] - 2].getPiece().getColor() != board[curr[0]][curr[1]].getPiece().getColor())
-                    possMoves.add(board[curr[0] + 1][curr[1] - 2]);
+        if(curr.getSquare().location[0] < board.length - 1 && curr.getSquare().location[1] > 1)
+            if(board[curr.getSquare().location[0] + 1][curr.getSquare().location[1] - 2].getPiece() != null) {
+                if (board[curr.getSquare().location[0] + 1][curr.getSquare().location[1] - 2].getPiece().getColor() != curr.getColor())
+                    possMoves.add(board[curr.getSquare().location[0] + 1][curr.getSquare().location[1] - 2]);
             } else {
-                possMoves.add(board[curr[0] + 1][curr[1] - 2]);
+                possMoves.add(board[curr.getSquare().location[0] + 1][curr.getSquare().location[1] - 2]);
             }
 
         // down 1, right 2
-        if(curr[0] < board.length - 1 && curr[1] < board[curr[0]].length - 2)
-            if(board[curr[0] + 1][curr[1] + 2].getPiece() != null) {
-                if (board[curr[0] + 1][curr[1] + 2].getPiece().getColor() != board[curr[0]][curr[1]].getPiece().getColor())
-                    possMoves.add(board[curr[0] + 1][curr[1] + 2]);
+        if(curr.getSquare().location[0] < board.length - 1 && curr.getSquare().location[1] < board[0].length - 2)
+            if(board[curr.getSquare().location[0] + 1][curr.getSquare().location[1] + 2].getPiece() != null) {
+                if (board[curr.getSquare().location[0] + 1][curr.getSquare().location[1] + 2].getPiece().getColor() != curr.getColor())
+                    possMoves.add(board[curr.getSquare().location[0] + 1][curr.getSquare().location[1] + 2]);
             } else {
-                possMoves.add(board[curr[0] + 1][curr[1] + 2]);
+                possMoves.add(board[curr.getSquare().location[0] + 1][curr.getSquare().location[1] + 2]);
             }
 
     }
@@ -983,20 +855,21 @@ public class MyPanel extends JPanel{
     // - Kings
     private void findAllMoves(){
 
+        moving = true;
         possMoves = new ArrayList<Square>();
 
-        if(board[curr[0]][curr[1]].getPiece() != null) {
+        if(curr != null) {
 
-            if (board[curr[0]][curr[1]].getPiece().getValue() == 9) {
+            if (curr.getValue() == 9) {
                 findRookMoves();
                 findBishopMoves();
-            } else if(board[curr[0]][curr[1]].getPiece().getValue() == 5){
+            } else if(curr.getValue() == 5){
                 findRookMoves();
-            } else if(board[curr[0]][curr[1]].getPiece().getValue() == 3 && board[curr[0]][curr[1]].getPiece().getClass() == Bishop.class){
+            } else if(curr.getValue() == 3 && curr.getClass() == Bishop.class){
                 findBishopMoves();
-            } else if(board[curr[0]][curr[1]].getPiece().getValue() == 3 && board[curr[0]][curr[1]].getPiece().getClass() == Knight.class){
+            } else if(curr.getValue() == 3 && curr.getClass() == Knight.class){
                 findKnightMoves();
-            } else if(board[curr[0]][curr[1]].getPiece().getValue() == 1){
+            } else if(curr.getValue() == 1){
                 findPawnMoves();
             } else {
 //              findKingMoves();
@@ -1006,10 +879,10 @@ public class MyPanel extends JPanel{
 
     }
 
-    public void movePiece(int[] c, int[]n){
+    public void movePiece(Piece c, Square n){
 
-        board[n[0]][n[1]].setPiece(board[c[0]][c[1]].getPiece());
-        board[c[0]][c[1]].setPiece(null);
+        n.setPiece(c);
+        c.getSquare().setPiece(null);
         possMoves = new ArrayList<Square>();
         moving = false;
         if(turn == Color.WHITE){
@@ -1017,7 +890,8 @@ public class MyPanel extends JPanel{
         } else {
             turn = Color.WHITE;
         }
-
+        curr = null;
+        nMove = null;
     }
 
 
@@ -1025,9 +899,6 @@ public class MyPanel extends JPanel{
     public void paintComponent(Graphics g) {
 
         super.paintComponent(g);
-
-        if(board[curr[0]][curr[1]].getPiece() != null && board[curr[0]][curr[1]].getPiece().getColor() == turn)
-            findAllMoves();
 
         for(int r = 0, y = 0; r < board.length; r++, y+=75){
 
@@ -1055,13 +926,13 @@ public class MyPanel extends JPanel{
                     }
                 }
 
-                if(possMoves.contains(board[nMove[0]][nMove[1]]) && moving){
-
-                    movePiece(curr, nMove);
-
-                }
-
             }
+
+        }
+
+        if(moving && nMove != null && possMoves.contains(nMove)){
+
+            movePiece(curr, nMove);
 
         }
 

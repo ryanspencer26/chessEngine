@@ -4,15 +4,18 @@ import java.awt.*;
 public class Piece {
 
     private Color color;
-    private String square;
+
+    private String squareName;
+
+    private Square square;
 
     public final ImageIcon whitePic;
     public final ImageIcon blackPic;
 
-    public Piece(Color color, String square, ImageIcon whitePic, ImageIcon blackPic){
+    public Piece(Color color, String squareName, ImageIcon whitePic, ImageIcon blackPic){
 
         this.color = color;
-        this.square = square;
+        this.squareName = squareName;
         this.whitePic = whitePic;
         this.blackPic = blackPic;
 
@@ -33,6 +36,18 @@ public class Piece {
     public int getMoves(){
 
         return -1;
+
+    }
+
+    public void setSquare(Square square){
+
+        this.square = square;
+
+    }
+
+    public Square getSquare(){
+
+        return square;
 
     }
 

@@ -3,12 +3,15 @@ public class Square {
     private final boolean colored;
     public final String name;
 
+    public final int[] location;
+
     private Piece piece = null;
 
-    public Square(boolean colored, String name){
+    public Square(boolean colored, String name, int[] location){
 
         this.colored = colored;
         this.name = name;
+        this.location = location;
 
     }
 
@@ -21,6 +24,7 @@ public class Square {
     public void setPiece(Piece p){
 
         piece = p;
+        piece.setSquare(this);
 
     }
 
