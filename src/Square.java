@@ -3,15 +3,15 @@ public class Square {
     private final boolean colored;
     public final String name;
 
-    public final int[] location;
+    public final int[] loc;
 
     private Piece piece = null;
 
-    public Square(boolean colored, String name, int[] location){
+    public Square(boolean colored, String name, int[] loc){
 
         this.colored = colored;
         this.name = name;
-        this.location = location;
+        this.loc = loc;
 
     }
 
