@@ -977,8 +977,9 @@ public class MyPanel extends JPanel{
         }
 
         if(winner != null){
-            JOptionPane.showMessageDialog(this, winner + " is the winner!");
-            System.exit(0);
+            g.setColor(Color.RED);
+            g.drawString(winner + " is the winner!", 300, 312);
+            setIgnoreRepaint(true);
         }
 
         if(moving && nMove != null && possMoves.contains(nMove)){
