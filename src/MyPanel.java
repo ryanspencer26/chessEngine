@@ -8,6 +8,8 @@ public class MyPanel extends JPanel{
 
 // add checks, checkmates
 // King moves, but can currently move into check
+// create 2 ArrayLists for white and black pieces
+// then check each of their scope every move to make sure king is not vulnerable
 
     private Square[][] board = new Square[8][8];
     private Piece curr = null; // current square
@@ -977,9 +979,8 @@ public class MyPanel extends JPanel{
         }
 
         if(winner != null){
-            g.setColor(Color.RED);
-            g.drawString(winner + " is the winner!", 300, 312);
-            setIgnoreRepaint(true);
+            JOptionPane.showMessageDialog(this, winner + " is the winner!");
+            System.exit(0);
         }
 
         if(moving && nMove != null && possMoves.contains(nMove)){
