@@ -15,7 +15,11 @@ public class MyPanel extends JPanel{
     private Piece curr = null; // current square
     private Square nMove = null;
     private boolean moving;
+    private boolean evaluateKingCheck = true;
     private ArrayList<Square> possMoves = new ArrayList<Square>();
+    private ArrayList<Square> scope = new ArrayList<Square>();
+    private ArrayList<Piece> blackPieces = new ArrayList<Piece>();
+    private ArrayList<Piece> whitePieces = new ArrayList<Piece>();
     private Color turn;
     private String winner = null;
 
@@ -49,41 +53,74 @@ public class MyPanel extends JPanel{
         for(int i = 2, n = 8; i <= 9; i++, n--){
             board[i-2][7] = new Square(i % 2 == 0, "h" + n, new int[]{i - 2, 7});
         }
+
         board[0][0].setPiece(new Rook(Color.BLACK, "a8"));
+        blackPieces.add(board[0][0].getPiece());
         board[0][1].setPiece(new Knight(Color.BLACK, "b8"));
+        blackPieces.add(board[0][1].getPiece());
         board[0][2].setPiece(new Bishop(Color.BLACK, "c8"));
+        blackPieces.add(board[0][2].getPiece());
         board[0][3].setPiece(new Queen(Color.BLACK, "d8"));
+        blackPieces.add(board[0][3].getPiece());
         board[0][4].setPiece(new King(Color.BLACK, "e8"));
+        blackPieces.add(board[0][4].getPiece());
         board[0][5].setPiece(new Bishop(Color.BLACK, "f8"));
+        blackPieces.add(board[0][5].getPiece());
         board[0][6].setPiece(new Knight(Color.BLACK, "g8"));
+        blackPieces.add(board[0][6].getPiece());
         board[0][7].setPiece(new Rook(Color.BLACK, "h8"));
+        blackPieces.add(board[0][7].getPiece());
 
         board[1][0].setPiece(new Pawn(Color.BLACK, "a7"));
+        blackPieces.add(board[1][0].getPiece());
         board[1][1].setPiece(new Pawn(Color.BLACK, "b7"));
+        blackPieces.add(board[1][1].getPiece());
         board[1][2].setPiece(new Pawn(Color.BLACK, "c7"));
+        blackPieces.add(board[1][2].getPiece());
         board[1][3].setPiece(new Pawn(Color.BLACK, "d7"));
+        blackPieces.add(board[1][3].getPiece());
         board[1][4].setPiece(new Pawn(Color.BLACK, "e7"));
+        blackPieces.add(board[1][4].getPiece());
         board[1][5].setPiece(new Pawn(Color.BLACK, "f7"));
+        blackPieces.add(board[1][5].getPiece());
         board[1][6].setPiece(new Pawn(Color.BLACK, "g7"));
+        blackPieces.add(board[1][6].getPiece());
         board[1][7].setPiece(new Pawn(Color.BLACK, "h7"));
+        blackPieces.add(board[1][7].getPiece());
 
         board[7][0].setPiece(new Rook(Color.WHITE, "a1"));
+        whitePieces.add(board[7][0].getPiece());
         board[7][1].setPiece(new Knight(Color.WHITE, "b1"));
+        whitePieces.add(board[7][1].getPiece());
         board[7][2].setPiece(new Bishop(Color.WHITE, "c1"));
+        whitePieces.add(board[7][2].getPiece());
         board[7][3].setPiece(new Queen(Color.WHITE, "d1"));
+        whitePieces.add(board[7][3].getPiece());
         board[7][4].setPiece(new King(Color.WHITE, "e1"));
+        whitePieces.add(board[7][4].getPiece());
         board[7][5].setPiece(new Bishop(Color.WHITE, "f1"));
+        whitePieces.add(board[7][5].getPiece());
         board[7][6].setPiece(new Knight(Color.WHITE, "g1"));
+        whitePieces.add(board[7][6].getPiece());
         board[7][7].setPiece(new Rook(Color.WHITE, "h1"));
+        whitePieces.add(board[7][7].getPiece());
 
         board[6][0].setPiece(new Pawn(Color.WHITE, "a2"));
+        whitePieces.add(board[6][0].getPiece());
         board[6][1].setPiece(new Pawn(Color.WHITE, "b2"));
+        whitePieces.add(board[6][1].getPiece());
         board[6][2].setPiece(new Pawn(Color.WHITE, "c2"));
+        whitePieces.add(board[6][2].getPiece());
         board[6][3].setPiece(new Pawn(Color.WHITE, "d2"));
+        whitePieces.add(board[6][3].getPiece());
         board[6][4].setPiece(new Pawn(Color.WHITE, "e2"));
+        whitePieces.add(board[6][4].getPiece());
         board[6][5].setPiece(new Pawn(Color.WHITE, "f2"));
+        whitePieces.add(board[6][5].getPiece());
         board[6][6].setPiece(new Pawn(Color.WHITE, "g2"));
+        whitePieces.add(board[6][6].getPiece());
         board[6][7].setPiece(new Pawn(Color.WHITE, "h2"));
+        whitePieces.add(board[6][7].getPiece());
 
         for (Square[] squares : board) {
             for (Square square : squares) {
@@ -104,6 +141,7 @@ public class MyPanel extends JPanel{
                     if(e.getY() > 525) {
                         if(board[7][7].getPiece() != null && board[7][7].getPiece().getColor() == turn){
                             curr = board[7][7].getPiece();
+                            possMoves = new ArrayList<Square>();
                             nMove = null;
                         } else if(moving){
                             nMove = board[7][7];
@@ -111,6 +149,7 @@ public class MyPanel extends JPanel{
                     } else if(e.getY() > 450){
                         if(board[6][7].getPiece() != null && board[6][7].getPiece().getColor() == turn){
                             curr = board[6][7].getPiece();
+                            possMoves = new ArrayList<Square>();
                             nMove = null;
                         } else if(moving){
                             nMove = board[6][7];
@@ -118,6 +157,7 @@ public class MyPanel extends JPanel{
                     } else if(e.getY() > 375){
                         if(board[5][7].getPiece() != null && board[5][7].getPiece().getColor() == turn){
                             curr = board[5][7].getPiece();
+                            possMoves = new ArrayList<Square>();
                             nMove = null;
                         } else if(moving){
                             nMove = board[5][7];
@@ -125,6 +165,7 @@ public class MyPanel extends JPanel{
                     } else if(e.getY() > 300){
                         if(board[4][7].getPiece() != null && board[4][7].getPiece().getColor() == turn){
                             curr = board[4][7].getPiece();
+                            possMoves = new ArrayList<Square>();
                             nMove = null;
                         } else if(moving){
                             nMove = board[4][7];
@@ -132,6 +173,7 @@ public class MyPanel extends JPanel{
                     } else if(e.getY() > 225){
                         if(board[3][7].getPiece() != null && board[3][7].getPiece().getColor() == turn){
                             curr = board[3][7].getPiece();
+                            possMoves = new ArrayList<Square>();
                             nMove = null;
                         } else if(moving){
                             nMove = board[3][7];
@@ -139,6 +181,7 @@ public class MyPanel extends JPanel{
                     } else if(e.getY() > 150){
                         if(board[2][7].getPiece() != null && board[2][7].getPiece().getColor() == turn){
                             curr = board[2][7].getPiece();
+                            possMoves = new ArrayList<Square>();
                             nMove = null;
                         } else if(moving){
                             nMove = board[2][7];
@@ -146,6 +189,7 @@ public class MyPanel extends JPanel{
                     } else if(e.getY() > 75){
                         if(board[1][7].getPiece() != null && board[1][7].getPiece().getColor() == turn){
                             curr = board[1][7].getPiece();
+                            possMoves = new ArrayList<Square>();
                             nMove = null;
                         } else if(moving){
                             nMove = board[1][7];
@@ -153,6 +197,7 @@ public class MyPanel extends JPanel{
                     } else {
                         if(board[0][7].getPiece() != null && board[0][7].getPiece().getColor() == turn){
                             curr = board[0][7].getPiece();
+                            possMoves = new ArrayList<Square>();
                             nMove = null;
                         } else if(moving){
                             nMove = board[0][7];
@@ -164,6 +209,7 @@ public class MyPanel extends JPanel{
                     if(e.getY() > 525) {
                         if(board[7][6].getPiece() != null && board[7][6].getPiece().getColor() == turn){
                             curr = board[7][6].getPiece();
+                            possMoves = new ArrayList<Square>();
                             nMove = null;
                         } else if(moving){
                             nMove = board[7][6];
@@ -171,6 +217,7 @@ public class MyPanel extends JPanel{
                     } else if(e.getY() > 450){
                         if(board[6][6].getPiece() != null && board[6][6].getPiece().getColor() == turn){
                             curr = board[6][6].getPiece();
+                            possMoves = new ArrayList<Square>();
                             nMove = null;
                         } else if(moving){
                             nMove = board[6][6];
@@ -178,6 +225,7 @@ public class MyPanel extends JPanel{
                     } else if(e.getY() > 375){
                         if(board[5][6].getPiece() != null && board[5][6].getPiece().getColor() == turn){
                             curr = board[5][6].getPiece();
+                            possMoves = new ArrayList<Square>();
                             nMove = null;
                         } else if(moving){
                             nMove = board[5][6];
@@ -185,6 +233,7 @@ public class MyPanel extends JPanel{
                     } else if(e.getY() > 300){
                         if(board[4][6].getPiece() != null && board[4][6].getPiece().getColor() == turn){
                             curr = board[4][6].getPiece();
+                            possMoves = new ArrayList<Square>();
                             nMove = null;
                         } else if(moving){
                             nMove = board[4][6];
@@ -192,6 +241,7 @@ public class MyPanel extends JPanel{
                     } else if(e.getY() > 225){
                         if(board[3][6].getPiece() != null && board[3][6].getPiece().getColor() == turn){
                             curr = board[3][6].getPiece();
+                            possMoves = new ArrayList<Square>();
                             nMove = null;
                         } else if(moving){
                             nMove = board[3][6];
@@ -199,6 +249,7 @@ public class MyPanel extends JPanel{
                     } else if(e.getY() > 150){
                         if(board[2][6].getPiece() != null && board[2][6].getPiece().getColor() == turn){
                             curr = board[2][6].getPiece();
+                            possMoves = new ArrayList<Square>();
                             nMove = null;
                         } else if(moving){
                             nMove = board[2][6];
@@ -206,6 +257,7 @@ public class MyPanel extends JPanel{
                     } else if(e.getY() > 75){
                         if(board[1][6].getPiece() != null && board[1][6].getPiece().getColor() == turn){
                             curr = board[1][6].getPiece();
+                            possMoves = new ArrayList<Square>();
                             nMove = null;
                         } else if(moving){
                             nMove = board[1][6];
@@ -213,6 +265,7 @@ public class MyPanel extends JPanel{
                     } else {
                         if(board[0][6].getPiece() != null && board[0][6].getPiece().getColor() == turn){
                             curr = board[0][6].getPiece();
+                            possMoves = new ArrayList<Square>();
                             nMove = null;
                         } else if(moving){
                             nMove = board[0][6];
@@ -224,6 +277,7 @@ public class MyPanel extends JPanel{
                     if(e.getY() > 525) {
                         if(board[7][5].getPiece() != null && board[7][5].getPiece().getColor() == turn){
                             curr = board[7][5].getPiece();
+                            possMoves = new ArrayList<Square>();
                             nMove = null;
                         } else if(moving){
                             nMove = board[7][5];
@@ -231,6 +285,7 @@ public class MyPanel extends JPanel{
                     } else if(e.getY() > 450){
                         if(board[6][5].getPiece() != null && board[6][5].getPiece().getColor() == turn){
                             curr = board[6][5].getPiece();
+                            possMoves = new ArrayList<Square>();
                             nMove = null;
                         } else if(moving){
                             nMove = board[6][5];
@@ -238,6 +293,7 @@ public class MyPanel extends JPanel{
                     } else if(e.getY() > 375){
                         if(board[5][5].getPiece() != null && board[5][5].getPiece().getColor() == turn){
                             curr = board[5][5].getPiece();
+                            possMoves = new ArrayList<Square>();
                             nMove = null;
                         } else if(moving){
                             nMove = board[5][5];
@@ -245,6 +301,7 @@ public class MyPanel extends JPanel{
                     } else if(e.getY() > 300){
                         if(board[4][5].getPiece() != null && board[4][5].getPiece().getColor() == turn){
                             curr = board[4][5].getPiece();
+                            possMoves = new ArrayList<Square>();
                             nMove = null;
                         } else if(moving){
                             nMove = board[4][5];
@@ -252,6 +309,7 @@ public class MyPanel extends JPanel{
                     } else if(e.getY() > 225){
                         if(board[3][5].getPiece() != null && board[3][5].getPiece().getColor() == turn){
                             curr = board[3][5].getPiece();
+                            possMoves = new ArrayList<Square>();
                             nMove = null;
                         } else if(moving){
                             nMove = board[3][5];
@@ -259,6 +317,7 @@ public class MyPanel extends JPanel{
                     } else if(e.getY() > 150){
                         if(board[2][5].getPiece() != null && board[2][5].getPiece().getColor() == turn){
                             curr = board[2][5].getPiece();
+                            possMoves = new ArrayList<Square>();
                             nMove = null;
                         } else if(moving){
                             nMove = board[2][5];
@@ -266,6 +325,7 @@ public class MyPanel extends JPanel{
                     } else if(e.getY() > 75){
                         if(board[1][5].getPiece() != null && board[1][5].getPiece().getColor() == turn){
                             curr = board[1][5].getPiece();
+                            possMoves = new ArrayList<Square>();
                             nMove = null;
                         } else if(moving){
                             nMove = board[1][5];
@@ -273,6 +333,7 @@ public class MyPanel extends JPanel{
                     } else {
                         if(board[0][5].getPiece() != null && board[0][5].getPiece().getColor() == turn){
                             curr = board[0][5].getPiece();
+                            possMoves = new ArrayList<Square>();
                             nMove = null;
                         } else if(moving){
                             nMove = board[0][5];
@@ -284,6 +345,7 @@ public class MyPanel extends JPanel{
                     if(e.getY() > 525) {
                         if(board[7][4].getPiece() != null && board[7][4].getPiece().getColor() == turn){
                             curr = board[7][4].getPiece();
+                            possMoves = new ArrayList<Square>();
                             nMove = null;
                         } else if(moving){
                             nMove = board[7][4];
@@ -291,6 +353,7 @@ public class MyPanel extends JPanel{
                     } else if(e.getY() > 450){
                         if(board[6][4].getPiece() != null && board[6][4].getPiece().getColor() == turn){
                             curr = board[6][4].getPiece();
+                            possMoves = new ArrayList<Square>();
                             nMove = null;
                         } else if(moving){
                             nMove = board[6][4];
@@ -298,6 +361,7 @@ public class MyPanel extends JPanel{
                     } else if(e.getY() > 375){
                         if(board[5][4].getPiece() != null && board[5][4].getPiece().getColor() == turn){
                             curr = board[5][4].getPiece();
+                            possMoves = new ArrayList<Square>();
                             nMove = null;
                         } else if(moving){
                             nMove = board[5][4];
@@ -305,6 +369,7 @@ public class MyPanel extends JPanel{
                     } else if(e.getY() > 300){
                         if(board[4][4].getPiece() != null && board[4][4].getPiece().getColor() == turn){
                             curr = board[4][4].getPiece();
+                            possMoves = new ArrayList<Square>();
                             nMove = null;
                         } else if(moving){
                             nMove = board[4][4];
@@ -312,6 +377,7 @@ public class MyPanel extends JPanel{
                     } else if(e.getY() > 225){
                         if(board[3][4].getPiece() != null && board[3][4].getPiece().getColor() == turn){
                             curr = board[3][4].getPiece();
+                            possMoves = new ArrayList<Square>();
                             nMove = null;
                         } else if(moving){
                             nMove = board[3][4];
@@ -319,6 +385,7 @@ public class MyPanel extends JPanel{
                     } else if(e.getY() > 150){
                         if(board[2][4].getPiece() != null && board[2][4].getPiece().getColor() == turn){
                             curr = board[2][4].getPiece();
+                            possMoves = new ArrayList<Square>();
                             nMove = null;
                         } else if(moving){
                             nMove = board[2][4];
@@ -326,6 +393,7 @@ public class MyPanel extends JPanel{
                     } else if(e.getY() > 75){
                         if(board[1][4].getPiece() != null && board[1][4].getPiece().getColor() == turn){
                             curr = board[1][4].getPiece();
+                            possMoves = new ArrayList<Square>();
                             nMove = null;
                         } else if(moving){
                             nMove = board[1][4];
@@ -333,6 +401,7 @@ public class MyPanel extends JPanel{
                     } else {
                         if(board[0][4].getPiece() != null && board[0][4].getPiece().getColor() == turn){
                             curr = board[0][4].getPiece();
+                            possMoves = new ArrayList<Square>();
                             nMove = null;
                         } else if(moving){
                             nMove = board[0][4];
@@ -344,6 +413,7 @@ public class MyPanel extends JPanel{
                     if(e.getY() > 525) {
                         if(board[7][3].getPiece() != null && board[7][3].getPiece().getColor() == turn){
                             curr = board[7][3].getPiece();
+                            possMoves = new ArrayList<Square>();
                             nMove = null;
                         } else if(moving){
                             nMove = board[7][3];
@@ -351,6 +421,7 @@ public class MyPanel extends JPanel{
                     } else if(e.getY() > 450){
                         if(board[6][3].getPiece() != null && board[6][3].getPiece().getColor() == turn){
                             curr = board[6][3].getPiece();
+                            possMoves = new ArrayList<Square>();
                             nMove = null;
                         } else if(moving){
                             nMove = board[6][3];
@@ -358,6 +429,7 @@ public class MyPanel extends JPanel{
                     } else if(e.getY() > 375){
                         if(board[5][3].getPiece() != null && board[5][3].getPiece().getColor() == turn){
                             curr = board[5][3].getPiece();
+                            possMoves = new ArrayList<Square>();
                             nMove = null;
                         } else if(moving){
                             nMove = board[5][3];
@@ -365,6 +437,7 @@ public class MyPanel extends JPanel{
                     } else if(e.getY() > 300){
                         if(board[4][3].getPiece() != null && board[4][3].getPiece().getColor() == turn){
                             curr = board[4][3].getPiece();
+                            possMoves = new ArrayList<Square>();
                             nMove = null;
                         } else if(moving){
                             nMove = board[4][3];
@@ -372,6 +445,7 @@ public class MyPanel extends JPanel{
                     } else if(e.getY() > 225){
                         if(board[3][3].getPiece() != null && board[3][3].getPiece().getColor() == turn){
                             curr = board[3][3].getPiece();
+                            possMoves = new ArrayList<Square>();
                             nMove = null;
                         } else if(moving){
                             nMove = board[3][3];
@@ -379,6 +453,7 @@ public class MyPanel extends JPanel{
                     } else if(e.getY() > 150){
                         if(board[2][3].getPiece() != null && board[2][3].getPiece().getColor() == turn){
                             curr = board[2][3].getPiece();
+                            possMoves = new ArrayList<Square>();
                             nMove = null;
                         } else if(moving){
                             nMove = board[2][3];
@@ -386,6 +461,7 @@ public class MyPanel extends JPanel{
                     } else if(e.getY() > 75){
                         if(board[1][3].getPiece() != null && board[1][3].getPiece().getColor() == turn){
                             curr = board[1][3].getPiece();
+                            possMoves = new ArrayList<Square>();
                             nMove = null;
                         } else if(moving){
                             nMove = board[1][3];
@@ -393,6 +469,7 @@ public class MyPanel extends JPanel{
                     } else {
                         if(board[0][3].getPiece() != null && board[0][3].getPiece().getColor() == turn){
                             curr = board[0][3].getPiece();
+                            possMoves = new ArrayList<Square>();
                             nMove = null;
                         } else if(moving){
                             nMove = board[0][3];
@@ -404,6 +481,7 @@ public class MyPanel extends JPanel{
                     if(e.getY() > 525) {
                         if(board[7][2].getPiece() != null && board[7][2].getPiece().getColor() == turn){
                             curr = board[7][2].getPiece();
+                            possMoves = new ArrayList<Square>();
                             nMove = null;
                         } else if(moving){
                             nMove = board[7][2];
@@ -411,6 +489,7 @@ public class MyPanel extends JPanel{
                     } else if(e.getY() > 450){
                         if(board[6][2].getPiece() != null && board[6][2].getPiece().getColor() == turn){
                             curr = board[6][2].getPiece();
+                            possMoves = new ArrayList<Square>();
                             nMove = null;
                         } else if(moving){
                             nMove = board[6][2];
@@ -418,6 +497,7 @@ public class MyPanel extends JPanel{
                     } else if(e.getY() > 375){
                         if(board[5][2].getPiece() != null && board[5][2].getPiece().getColor() == turn){
                             curr = board[5][2].getPiece();
+                            possMoves = new ArrayList<Square>();
                             nMove = null;
                         } else if(moving){
                             nMove = board[5][2];
@@ -425,6 +505,7 @@ public class MyPanel extends JPanel{
                     } else if(e.getY() > 300){
                         if(board[4][2].getPiece() != null && board[4][2].getPiece().getColor() == turn){
                             curr = board[4][2].getPiece();
+                            possMoves = new ArrayList<Square>();
                             nMove = null;
                         } else if(moving){
                             nMove = board[4][2];
@@ -432,6 +513,7 @@ public class MyPanel extends JPanel{
                     } else if(e.getY() > 225){
                         if(board[3][2].getPiece() != null && board[3][2].getPiece().getColor() == turn){
                             curr = board[3][2].getPiece();
+                            possMoves = new ArrayList<Square>();
                             nMove = null;
                         } else if(moving){
                             nMove = board[3][2];
@@ -439,6 +521,7 @@ public class MyPanel extends JPanel{
                     } else if(e.getY() > 150){
                         if(board[2][2].getPiece() != null && board[2][2].getPiece().getColor() == turn){
                             curr = board[2][2].getPiece();
+                            possMoves = new ArrayList<Square>();
                             nMove = null;
                         } else if(moving){
                             nMove = board[2][2];
@@ -446,6 +529,7 @@ public class MyPanel extends JPanel{
                     } else if(e.getY() > 75){
                         if(board[1][2].getPiece() != null && board[1][2].getPiece().getColor() == turn){
                             curr = board[1][2].getPiece();
+                            possMoves = new ArrayList<Square>();
                             nMove = null;
                         } else if(moving){
                             nMove = board[1][2];
@@ -453,6 +537,7 @@ public class MyPanel extends JPanel{
                     } else {
                         if(board[0][2].getPiece() != null && board[0][2].getPiece().getColor() == turn){
                             curr = board[0][2].getPiece();
+                            possMoves = new ArrayList<Square>();
                             nMove = null;
                         } else if(moving){
                             nMove = board[0][2];
@@ -464,6 +549,7 @@ public class MyPanel extends JPanel{
                     if(e.getY() > 525) {
                         if(board[7][1].getPiece() != null && board[7][1].getPiece().getColor() == turn){
                             curr = board[7][1].getPiece();
+                            possMoves = new ArrayList<Square>();
                             nMove = null;
                         } else if(moving){
                             nMove = board[7][1];
@@ -471,6 +557,7 @@ public class MyPanel extends JPanel{
                     } else if(e.getY() > 450){
                         if(board[6][1].getPiece() != null && board[6][1].getPiece().getColor() == turn){
                             curr = board[6][1].getPiece();
+                            possMoves = new ArrayList<Square>();
                             nMove = null;
                         } else if(moving){
                             nMove = board[6][1];
@@ -478,6 +565,7 @@ public class MyPanel extends JPanel{
                     } else if(e.getY() > 375){
                         if(board[5][1].getPiece() != null && board[5][1].getPiece().getColor() == turn){
                             curr = board[5][1].getPiece();
+                            possMoves = new ArrayList<Square>();
                             nMove = null;
                         } else if(moving){
                             nMove = board[5][1];
@@ -485,6 +573,7 @@ public class MyPanel extends JPanel{
                     } else if(e.getY() > 300){
                         if(board[4][1].getPiece() != null && board[4][1].getPiece().getColor() == turn){
                             curr = board[4][1].getPiece();
+                            possMoves = new ArrayList<Square>();
                             nMove = null;
                         } else if(moving){
                             nMove = board[4][1];
@@ -492,6 +581,7 @@ public class MyPanel extends JPanel{
                     } else if(e.getY() > 225){
                         if(board[3][1].getPiece() != null && board[3][1].getPiece().getColor() == turn){
                             curr = board[3][1].getPiece();
+                            possMoves = new ArrayList<Square>();
                             nMove = null;
                         } else if(moving){
                             nMove = board[3][1];
@@ -499,6 +589,7 @@ public class MyPanel extends JPanel{
                     } else if(e.getY() > 150){
                         if(board[2][1].getPiece() != null && board[2][1].getPiece().getColor() == turn){
                             curr = board[2][1].getPiece();
+                            possMoves = new ArrayList<Square>();
                             nMove = null;
                         } else if(moving){
                             nMove = board[2][1];
@@ -506,6 +597,7 @@ public class MyPanel extends JPanel{
                     } else if(e.getY() > 75){
                         if(board[1][1].getPiece() != null && board[1][1].getPiece().getColor() == turn){
                             curr = board[1][1].getPiece();
+                            possMoves = new ArrayList<Square>();
                             nMove = null;
                         } else if(moving){
                             nMove = board[1][1];
@@ -513,6 +605,7 @@ public class MyPanel extends JPanel{
                     } else {
                         if(board[0][1].getPiece() != null && board[0][1].getPiece().getColor() == turn){
                             curr = board[0][1].getPiece();
+                            possMoves = new ArrayList<Square>();
                             nMove = null;
                         } else if(moving){
                             nMove = board[0][1];
@@ -524,6 +617,7 @@ public class MyPanel extends JPanel{
                     if(e.getY() > 525) {
                         if(board[7][0].getPiece() != null && board[7][0].getPiece().getColor() == turn){
                             curr = board[7][0].getPiece();
+                            possMoves = new ArrayList<Square>();
                             nMove = null;
                         } else if(moving){
                             nMove = board[7][0];
@@ -531,6 +625,7 @@ public class MyPanel extends JPanel{
                     } else if(e.getY() > 450){
                         if(board[6][0].getPiece() != null && board[6][0].getPiece().getColor() == turn){
                             curr = board[6][0].getPiece();
+                            possMoves = new ArrayList<Square>();
                             nMove = null;
                         } else if(moving){
                             nMove = board[6][0];
@@ -538,6 +633,7 @@ public class MyPanel extends JPanel{
                     } else if(e.getY() > 375){
                         if(board[5][0].getPiece() != null && board[5][0].getPiece().getColor() == turn){
                             curr = board[5][0].getPiece();
+                            possMoves = new ArrayList<Square>();
                             nMove = null;
                         } else if(moving){
                             nMove = board[5][0];
@@ -545,6 +641,7 @@ public class MyPanel extends JPanel{
                     } else if(e.getY() > 300){
                         if(board[4][0].getPiece() != null && board[4][0].getPiece().getColor() == turn){
                             curr = board[4][0].getPiece();
+                            possMoves = new ArrayList<Square>();
                             nMove = null;
                         } else if(moving){
                             nMove = board[4][0];
@@ -552,6 +649,7 @@ public class MyPanel extends JPanel{
                     } else if(e.getY() > 225){
                         if(board[3][0].getPiece() != null && board[3][0].getPiece().getColor() == turn){
                             curr = board[3][0].getPiece();
+                            possMoves = new ArrayList<Square>();
                             nMove = null;
                         } else if(moving){
                             nMove = board[3][0];
@@ -559,6 +657,7 @@ public class MyPanel extends JPanel{
                     } else if(e.getY() > 150){
                         if(board[2][0].getPiece() != null && board[2][0].getPiece().getColor() == turn){
                             curr = board[2][0].getPiece();
+                            possMoves = new ArrayList<Square>();
                             nMove = null;
                         } else if(moving){
                             nMove = board[2][0];
@@ -566,6 +665,7 @@ public class MyPanel extends JPanel{
                     } else if(e.getY() > 75){
                         if(board[1][0].getPiece() != null && board[1][0].getPiece().getColor() == turn){
                             curr = board[1][0].getPiece();
+                            possMoves = new ArrayList<Square>();
                             nMove = null;
                         } else if(moving){
                             nMove = board[1][0];
@@ -573,6 +673,7 @@ public class MyPanel extends JPanel{
                     } else {
                         if(board[0][0].getPiece() != null && board[0][0].getPiece().getColor() == turn){
                             curr = board[0][0].getPiece();
+                            possMoves = new ArrayList<Square>();
                             nMove = null;
                         } else if(moving){
                             nMove = board[0][0];
@@ -582,7 +683,7 @@ public class MyPanel extends JPanel{
                 }
 
                 if(curr != null){
-                    findAllMoves();
+                    findAllMoves(curr, possMoves);
                 }
 
             }
@@ -591,7 +692,7 @@ public class MyPanel extends JPanel{
 
     }
 
-    private void findRookMoves(){
+    private void findRookMoves(Piece curr, ArrayList<Square> possMoves){
 
         // up
         if(curr.getSquare().loc[0] > 0){
@@ -651,7 +752,7 @@ public class MyPanel extends JPanel{
 
     }
 
-    private void findBishopMoves(){
+    private void findBishopMoves(Piece curr, ArrayList<Square> possMoves){
 
         // down+right
         if(curr.getSquare().loc[0] < board.length - 1 && curr.getSquare().loc[1] < board[0].length - 1){
@@ -711,20 +812,25 @@ public class MyPanel extends JPanel{
 
     }
 
-    public void findPawnMoves(){
+    public void findPawnMoves(Piece curr, ArrayList<Square> possMoves){
 
         // first pawn move
-        if(curr.getMoves() == 0){
-            for(int r = curr.getSquare().loc[0] - 1; r >= curr.getSquare().loc[0] - 2; r--){
-                if(board[r][curr.getSquare().loc[1]].getPiece() == null)
-                    possMoves.add(board[r][curr.getSquare().loc[1]]);
-
+        if(evaluateKingCheck){
+            if(curr.getMoves() == 0){
+                for(int r = curr.getSquare().loc[0] - 1; r >= curr.getSquare().loc[0] - 2; r--){
+                    if(board[r][curr.getSquare().loc[1]].getPiece() == null)
+                        possMoves.add(board[r][curr.getSquare().loc[1]]);
+                }
             }
         }
 
         // up 1
-        if(curr.getSquare().loc[0] > 0 && board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1]].getPiece() == null)
-            possMoves.add(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1]]);
+        if(evaluateKingCheck){
+            if(curr.getSquare().loc[0] > 0 && board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1]].getPiece() == null)
+                possMoves.add(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1]]);
+            if(!evaluateKingCheck)
+                possMoves.remove(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1]]);
+        }
 
         // up 1, left 1
         if(curr.getSquare().loc[0] * curr.getSquare().loc[1] > 0 && board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] - 1].getPiece() != null)
@@ -738,7 +844,7 @@ public class MyPanel extends JPanel{
 
     }
 
-    public void findKnightMoves(){
+    public void findKnightMoves(Piece curr, ArrayList<Square> possMoves){
 
         // up 2, left 1
         if(curr.getSquare().loc[0] > 1 && curr.getSquare().loc[1] > 0)
@@ -814,7 +920,7 @@ public class MyPanel extends JPanel{
 
     }
 
-    public void findKingMoves(){
+    public void findKingMoves(Piece curr, ArrayList<Square> possMoves){
 
         // up 1
         if(curr.getSquare().loc[0] > 0) {
@@ -880,28 +986,48 @@ public class MyPanel extends JPanel{
                 possMoves.add(board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] + 1]);
         }
 
+        if(evaluateKingCheck){
+            if(turn == Color.WHITE){
+                for(Piece piece: blackPieces){
+                    evalChecks(piece, scope);
+                }
+                for (Square square : scope) {
+                    System.out.print(square.toString() + "\t");
+                    this.possMoves.remove(square);
+                }
+            } else {
+                for(Piece piece: whitePieces){
+                    evalChecks(piece, scope);
+                }
+                for (Square square : scope) {
+                    this.possMoves.remove(square);
+                }
+            }
+            scope = new ArrayList<Square>();
+            evaluateKingCheck = true;
+        }
+
     }
 
     // MUST ADD:
     // - Kings
-    private void findAllMoves(){
+    private void findAllMoves(Piece curr, ArrayList<Square> possMoves){
 
         moving = true;
-        possMoves = new ArrayList<Square>();
 
         if (curr.getValue() == 9) {
-            findRookMoves();
-            findBishopMoves();
+            findRookMoves(curr, possMoves);
+            findBishopMoves(curr, possMoves);
         } else if(curr.getValue() == 5){
-            findRookMoves();
+            findRookMoves(curr, possMoves);
         } else if(curr.getValue() == 3 && curr.getClass() == Bishop.class){
-            findBishopMoves();
+            findBishopMoves(curr, possMoves);
         } else if(curr.getValue() == 3 && curr.getClass() == Knight.class){
-            findKnightMoves();
+            findKnightMoves(curr, possMoves);
         } else if(curr.getValue() == 1){
-            findPawnMoves();
+            findPawnMoves(curr, possMoves);
         } else {
-            findKingMoves();
+            findKingMoves(curr, possMoves);
         }
 
     }
@@ -948,6 +1074,26 @@ public class MyPanel extends JPanel{
 
     }
 
+    public void evalChecks(Piece curr, ArrayList<Square> possMoves){
+
+        evaluateKingCheck = false;
+
+        if (curr.getValue() == 9) {
+            findRookMoves(curr, possMoves);
+            findBishopMoves(curr, possMoves);
+        } else if(curr.getValue() == 5){
+            findRookMoves(curr, possMoves);
+        } else if(curr.getValue() == 3 && curr.getClass() == Bishop.class){
+            findBishopMoves(curr, possMoves);
+        } else if(curr.getValue() == 3 && curr.getClass() == Knight.class){
+            findKnightMoves(curr, possMoves);
+        } else if(curr.getValue() == 1){
+            findPawnMoves(curr, possMoves);
+        } else {
+            findKingMoves(curr, possMoves);
+        }
+
+    }
 
     @Override
     public void paintComponent(Graphics g) {
