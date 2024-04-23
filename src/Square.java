@@ -1,4 +1,6 @@
-public class Square {
+import java.io.Serializable;
+
+public class Square implements Serializable, Cloneable{
 
     private final boolean colored;
     public final String name;

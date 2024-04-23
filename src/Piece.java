@@ -1,7 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
+import java.io.Serializable;
 
-public class Piece {
+public class Piece implements Serializable, Cloneable{
 
     private Color color;
 
