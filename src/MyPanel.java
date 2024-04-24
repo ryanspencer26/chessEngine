@@ -697,6 +697,7 @@ public class MyPanel extends JPanel{
 
     }
 
+    // Add testPosition() to if statements in findRookMoves()
     private void findRookMoves(Piece curr, ArrayList<Square> possMoves){
 
         // up
@@ -757,6 +758,7 @@ public class MyPanel extends JPanel{
 
     }
 
+    // Add testPosition() to if statements in findBishopMoves()
     private void findBishopMoves(Piece curr, ArrayList<Square> possMoves){
 
         // down+right
@@ -853,6 +855,7 @@ public class MyPanel extends JPanel{
 
     }
 
+    // Add testPosition() to if statements in findKnightMoves()
     public void findKnightMoves(Piece curr, ArrayList<Square> possMoves){
 
         // up 2, left 1
@@ -928,7 +931,6 @@ public class MyPanel extends JPanel{
             }
 
     }
-
     public void findKingMoves(Piece curr, ArrayList<Square> possMoves){
 
         // up 1
@@ -1012,7 +1014,6 @@ public class MyPanel extends JPanel{
         }
 
     }
-
     public Piece getWhiteKing(Square[][] board){
         for(int r = 0; r < board.length; r++){
             for(int c = 0; c < board[r].length; c++){
@@ -1046,7 +1047,6 @@ public class MyPanel extends JPanel{
         if(testing){
             return true;
         }
-
         testing = true;
         // Need to make deep clone/copy of board
         Square[][] tempBoard = board.clone();
@@ -1067,9 +1067,12 @@ public class MyPanel extends JPanel{
         }
         Piece tempBK = getBlackKing(tempBoard);
         Piece tempWK = getWhiteKing(tempBoard);
-        Square temp = tempTest.getSquare();
+        if(tempBK == null || tempWK == null){
+            throw new AssertionError();
+        }
+        Square tempSquare = tempTest.getSquare();
         tempMove.setPiece(tempTest);
-        temp.setPiece(null);
+        tempSquare.setPiece(null);
         Square[][] reverse = new Square[8][8];
         for(int c1 = 7, c2 = 0; c1 >= 0 && c2 < 8; c1--, c2++){
             for(int r1 = 7, r2 = 0; r1 >= 0 && r2 < 8; r1--, r2++){
@@ -1153,6 +1156,7 @@ public class MyPanel extends JPanel{
             turn = Color.WHITE;
             flipBoard();
         }
+        scope = new ArrayList<Square>();
         curr = null;
         nMove = null;
 
@@ -1185,11 +1189,6 @@ public class MyPanel extends JPanel{
                 }
 
             }
-        }
-
-        if(winner != null){
-            JOptionPane.showMessageDialog(this, winner + " is the winner!");
-            System.exit(0);
         }
 
         if(moving && nMove != null && possMoves.contains(nMove)){
