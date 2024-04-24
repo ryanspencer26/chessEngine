@@ -2,7 +2,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.Serializable;
 import java.util.ArrayList;
 
 public class MyPanel extends JPanel{
@@ -18,7 +17,8 @@ public class MyPanel extends JPanel{
     private Piece whiteKing;
     private Piece blackKing;
     private boolean moving;
-    private boolean evaluatingCheck = true;
+    private boolean testing = false;
+    private boolean evaluatingCheck = false;
     private ArrayList<Square> possMoves = new ArrayList<Square>();
     private ArrayList<Square> scope = new ArrayList<Square>();
     private ArrayList<Piece> blackPieces = new ArrayList<Piece>();
@@ -820,18 +820,20 @@ public class MyPanel extends JPanel{
     public void findPawnMoves(Piece curr, ArrayList<Square> possMoves){
 
         // first pawn move
-        if(evaluatingCheck){
+        if(!evaluatingCheck){
             if(curr.getMoves() == 0){
                 for(int r = curr.getSquare().loc[0] - 1; r >= curr.getSquare().loc[0] - 2; r--){
-                    if(board[r][curr.getSquare().loc[1]].getPiece() == null)
+                    if(board[r][curr.getSquare().loc[1]].getPiece() == null) {
                         if(testPosition(curr, board[r][curr.getSquare().loc[1]]))
                             possMoves.add(board[r][curr.getSquare().loc[1]]);
+
+                    }
                 }
             }
         }
 
         // up 1
-        if(evaluatingCheck){
+        if(!evaluatingCheck){
             if(curr.getSquare().loc[0] > 0 && board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1]].getPiece() == null)
                 if(testPosition(curr, board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1]]))
                     possMoves.add(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1]]);
@@ -935,8 +937,8 @@ public class MyPanel extends JPanel{
                 if(testPosition(curr, board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1]]))
                     possMoves.add(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1]]);
             else if (board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1]].getPiece().getColor() != turn)
-                    if(testPosition(curr, board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1]]))
-                        possMoves.add(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1]]);
+                if(testPosition(curr, board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1]]))
+                    possMoves.add(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1]]);
         }
 
         // down 1
@@ -945,8 +947,8 @@ public class MyPanel extends JPanel{
                 if(testPosition(curr, board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1]]))
                     possMoves.add(board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1]]);
             else if (board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1]].getPiece().getColor() != turn)
-                    if(testPosition(curr, board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1]]))
-                        possMoves.add(board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1]]);
+                if(testPosition(curr, board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1]]))
+                    possMoves.add(board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1]]);
         }
 
         // left 1
@@ -965,8 +967,8 @@ public class MyPanel extends JPanel{
                 if(testPosition(curr, board[curr.getSquare().loc[0]][curr.getSquare().loc[1] + 1]))
                     possMoves.add(board[curr.getSquare().loc[0]][curr.getSquare().loc[1] + 1]);
             else if (board[curr.getSquare().loc[0]][curr.getSquare().loc[1] + 1].getPiece().getColor() != turn)
-                    if(testPosition(curr, board[curr.getSquare().loc[0]][curr.getSquare().loc[1] + 1]))
-                        possMoves.add(board[curr.getSquare().loc[0]][curr.getSquare().loc[1] + 1]);
+                if(testPosition(curr, board[curr.getSquare().loc[0]][curr.getSquare().loc[1] + 1]))
+                    possMoves.add(board[curr.getSquare().loc[0]][curr.getSquare().loc[1] + 1]);
         }
 
         // up 1, left 1
@@ -975,8 +977,8 @@ public class MyPanel extends JPanel{
                 if(testPosition(curr, board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] - 1]))
                     possMoves.add(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] - 1]);
             else if (board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] - 1].getPiece().getColor() != turn)
-                    if(testPosition(curr, board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] - 1]))
-                        possMoves.add(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] - 1]);
+                if(testPosition(curr, board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] - 1]))
+                    possMoves.add(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] - 1]);
         }
 
         // up 1, right 1
@@ -985,18 +987,18 @@ public class MyPanel extends JPanel{
                 if(testPosition(curr, board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] + 1]))
                     possMoves.add(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] + 1]);
             else if (board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] + 1].getPiece().getColor() != turn)
-                    if(testPosition(curr, board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] + 1]))
-                        possMoves.add(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] + 1]);
+                if(testPosition(curr, board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] + 1]))
+                    possMoves.add(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] + 1]);
         }
 
         // down 1, left 1
         if(curr.getSquare().loc[0] < board.length - 1 && curr.getSquare().loc[1] > 0) {
             if (board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] - 1].getPiece() == null)
-                if(testPosition(curr, board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] + 1]))
+                if(testPosition(curr, board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] - 1]))
                     possMoves.add(board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] - 1]);
             else if (board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] - 1].getPiece().getColor() != turn)
-                    if(testPosition(curr, board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] - 1]))
-                        possMoves.add(board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] - 1]);
+                if(testPosition(curr, board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] - 1]))
+                    possMoves.add(board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] - 1]);
         }
 
         // down 1, right 1
@@ -1041,6 +1043,11 @@ public class MyPanel extends JPanel{
 
     public boolean testPosition(Piece test, Square move){
 
+        if(testing){
+            return true;
+        }
+
+        testing = true;
         // Need to make deep clone/copy of board
         Square[][] tempBoard = board.clone();
         Piece tempTest = tempBoard[test.getSquare().loc[0]][test.getSquare().loc[1]].getPiece();
@@ -1060,23 +1067,35 @@ public class MyPanel extends JPanel{
         }
         Piece tempBK = getBlackKing(tempBoard);
         Piece tempWK = getWhiteKing(tempBoard);
-        movePiece(tempTest, tempMove);
+        Square temp = tempTest.getSquare();
+        tempMove.setPiece(tempTest);
+        temp.setPiece(null);
+        Square[][] reverse = new Square[8][8];
+        for(int c1 = 7, c2 = 0; c1 >= 0 && c2 < 8; c1--, c2++){
+            for(int r1 = 7, r2 = 0; r1 >= 0 && r2 < 8; r1--, r2++){
+                reverse[r2][c2] = tempBoard[r1][c1];
+                reverse[r2][c2].loc[0] = r2;
+                reverse[r2][c2].loc[1] = c2;
+            }
+        }
+        tempBoard = reverse;
         if(turn == Color.WHITE){
             for(Piece piece: tempBP){
-                evaluatingCheck = false;
+                evaluatingCheck = true;
                 findAllMoves(piece, scope);
             }
             if(scope.contains(tempBoard[tempWK.getSquare().loc[0]][tempWK.getSquare().loc[1]]))
                 return false;
         } else {
             for(Piece piece: tempWP){
-                evaluatingCheck = false;
+                evaluatingCheck = true;
                 findAllMoves(piece, scope);
             }
             if(scope.contains(tempBoard[tempBK.getSquare().loc[0]][tempBK.getSquare().loc[1]]))
                 return false;
         }
         scope = new ArrayList<Square>();
+        testing = false;
         return true;
 
     }
