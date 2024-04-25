@@ -697,6 +697,16 @@ public class MyPanel extends JPanel{
 
     }
 
+    public Square[][] deepCopyBoard(Square[][] board){
+        Square[][] boardClone = new Square[8][8];
+        for(int r = 0; r < board.length; r++){
+            for(int c = 0; c < board[r].length; c++){
+                boardClone[r][c] = new Square(board[r][c]);
+            }
+        }
+        return boardClone;
+    }
+
     // Add testPosition() to if statements in findRookMoves()
     private void findRookMoves(Piece curr, ArrayList<Square> possMoves){
 
@@ -823,7 +833,7 @@ public class MyPanel extends JPanel{
 
         // first pawn move
         if(!evaluatingCheck){
-            if(curr.getMoves() == 0){
+            if(((Pawn)(curr)).getMoves() == 0){
                 for(int r = curr.getSquare().loc[0] - 1; r >= curr.getSquare().loc[0] - 2; r--){
                     if(board[r][curr.getSquare().loc[1]].getPiece() == null) {
                         if(testPosition(curr, board[r][curr.getSquare().loc[1]]))
@@ -1014,28 +1024,24 @@ public class MyPanel extends JPanel{
         }
 
     }
-    public Piece getWhiteKing(Square[][] board){
-        for(int r = 0; r < board.length; r++){
-            for(int c = 0; c < board[r].length; c++){
-                if(board[r][c].getPiece() != null){
-                    if(board[r][c].getPiece().getColor() == Color.WHITE){
-                        if(board[r][c].getPiece().getValue() < 0)
-                            return board[r][c].getPiece();
-                    }
+    public Piece getWhiteKing(ArrayList<Piece> pieces){
+        for(Piece piece: pieces){
+            if(piece != null){
+                if(piece.getColor() == Color.WHITE){
+                    if(piece.getValue() == -1)
+                        return piece;
                 }
             }
         }
         return null;
     }
 
-    public Piece getBlackKing(Square[][] board){
-        for(int r = 0; r < board.length; r++){
-            for(int c = 0; c < board[r].length; c++){
-                if(board[r][c].getPiece() != null){
-                    if(board[r][c].getPiece().getColor() == Color.BLACK){
-                        if(board[r][c].getPiece().getValue() < 0)
-                            return board[r][c].getPiece();
-                    }
+    public Piece getBlackKing(ArrayList<Piece> pieces){
+        for(Piece piece: pieces){
+            if(piece != null){
+                if(piece.getColor() == Color.BLACK){
+                    if(piece.getValue() == -1)
+                        return piece;
                 }
             }
         }
@@ -1049,7 +1055,10 @@ public class MyPanel extends JPanel{
         }
         testing = true;
         // Need to make deep clone/copy of board
-        Square[][] tempBoard = board.clone();
+        Square[][] tempBoard = deepCopyBoard(board);
+        System.out.println(tempBoard[test.getSquare().loc[0]][test.getSquare().loc[1]]);
+        // tempTest should never be null
+        // not working
         Piece tempTest = tempBoard[test.getSquare().loc[0]][test.getSquare().loc[1]].getPiece();
         Square tempMove = tempBoard[move.loc[0]][move.loc[1]];
         ArrayList<Piece> tempBP = new ArrayList<Piece>();
@@ -1065,8 +1074,8 @@ public class MyPanel extends JPanel{
                 }
             }
         }
-        Piece tempBK = getBlackKing(tempBoard);
-        Piece tempWK = getWhiteKing(tempBoard);
+        Piece tempBK = getBlackKing(tempBP);
+        Piece tempWK = getWhiteKing(tempWP);
         if(tempBK == null || tempWK == null){
             throw new AssertionError();
         }

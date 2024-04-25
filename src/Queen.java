@@ -7,7 +7,7 @@ public class Queen extends Piece {
 
     public Queen(Color color, String square){
 
-        super(color, square, new ImageIcon("Pieces/whiteQueen.png"), new ImageIcon("Pieces/blackQueen.png"));
+        super(color, square, new ImageIcon("Pieces/whiteQueen.png"), new ImageIcon("Pieces/blackQueen.png"), value);
 
     }
 

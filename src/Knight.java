@@ -7,7 +7,7 @@ public class Knight extends Piece {
 
     public Knight(Color color, String square){
 
-        super(color, square, new ImageIcon("Pieces/whiteKnight.png"), new ImageIcon("Pieces/blackKnight.png"));
+        super(color, square, new ImageIcon("Pieces/whiteKnight.png"), new ImageIcon("Pieces/blackKnight.png"), value);
 
     }
 

@@ -17,6 +17,19 @@ public class Square implements Cloneable{
 
     }
 
+    public Square(Square other){
+
+        this.colored = other.colored;
+        this.name = other.name;
+        this.loc = other.loc;
+        if(other.piece != null){
+            this.piece = new Piece(other.piece);
+        } else {
+            this.piece = null;
+        }
+
+    }
+
     public boolean isColored(){
 
         return colored;

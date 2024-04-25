@@ -7,7 +7,7 @@ public class Bishop extends Piece {
 
     public Bishop(Color color, String square){
 
-        super(color, square, new ImageIcon("Pieces/whiteBishop.png"), new ImageIcon("Pieces/blackBishop.png"));
+        super(color, square, new ImageIcon("Pieces/whiteBishop.png"), new ImageIcon("Pieces/blackBishop.png"), value);
 
     }
 

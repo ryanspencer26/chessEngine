@@ -12,13 +12,26 @@ public class Piece implements Cloneable{
 
     public final ImageIcon whitePic;
     public final ImageIcon blackPic;
+    public final int value;
 
-    public Piece(Color color, String squareName, ImageIcon whitePic, ImageIcon blackPic){
+    public Piece(Color color, String squareName, ImageIcon whitePic, ImageIcon blackPic, int value){
 
         this.color = color;
         this.squareName = squareName;
         this.whitePic = whitePic;
         this.blackPic = blackPic;
+        this.value = value;
+
+    }
+
+    public Piece(Piece other){
+
+        this.color = other.color;
+        this.squareName = other.squareName;
+        this.whitePic = other.whitePic;
+        this.blackPic = other.blackPic;
+        this.value = other.value;
+        setSquare(other.square);
 
     }
 
@@ -30,13 +43,7 @@ public class Piece implements Cloneable{
 
     public int getValue(){
 
-        return -1;
-
-    }
-
-    public int getMoves(){
-
-        return -1;
+        return value;
 
     }
 

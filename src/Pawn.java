@@ -9,7 +9,7 @@ public class Pawn extends Piece {
 
     public Pawn(Color color, String square){
 
-        super(color, square, new ImageIcon("Pieces/whitePawn.png"), new ImageIcon("Pieces/blackPawn.png"));
+        super(color, square, new ImageIcon("Pieces/whitePawn.png"), new ImageIcon("Pieces/blackPawn.png"), value);
 
     }
 

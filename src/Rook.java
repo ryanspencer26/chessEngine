@@ -7,7 +7,7 @@ public class Rook extends Piece {
 
     public Rook(Color color, String square){
 
-        super(color, square, new ImageIcon("Pieces/whiteRook.png"), new ImageIcon("Pieces/BlackRook.png"));
+        super(color, square, new ImageIcon("Pieces/whiteRook.png"), new ImageIcon("Pieces/BlackRook.png"), value);
 
     }
 
