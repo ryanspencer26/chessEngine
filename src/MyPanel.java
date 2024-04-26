@@ -1097,7 +1097,7 @@ public class MyPanel extends JPanel{
         if(turn == Color.WHITE){
             for(Piece piece: tempBP){
                 evaluatingCheck = true;
-                findAllMoves(piece, scope, tempBoard, Color.BLACK);
+                findAllMoves(piece, scope, tempBoard, piece.getColor());
             }
             evaluatingCheck = false;
             System.out.print("[");
@@ -1115,7 +1115,7 @@ public class MyPanel extends JPanel{
         } else {
             for(Piece piece: tempWP){
                 evaluatingCheck = true;
-                findAllMoves(piece, scope, tempBoard, Color.WHITE);
+                findAllMoves(piece, scope, tempBoard, piece.getColor());
             }
             evaluatingCheck = false;
             System.out.print("[");
