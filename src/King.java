@@ -11,4 +11,8 @@ public class King extends Piece {
 
     }
 
+    public King(Piece other){
+        super(other.getColor(), other.getSquare().name, new ImageIcon("Pieces/whiteKing.png"), new ImageIcon("Pieces/BlackKing.png"), value);
+    }
+
 }

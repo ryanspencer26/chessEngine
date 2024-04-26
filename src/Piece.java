@@ -24,17 +24,6 @@ public class Piece implements Cloneable{
 
     }
 
-    public Piece(Piece other){
-
-        this.color = other.color;
-        this.squareName = other.squareName;
-        this.whitePic = other.whitePic;
-        this.blackPic = other.blackPic;
-        this.value = other.value;
-        setSquare(other.square);
-
-    }
-
     public Color getColor(){
 
         return color;
@@ -69,6 +58,38 @@ public class Piece implements Cloneable{
 
         return blackPic;
 
+    }
+
+    public String toString(){
+        if(color == Color.WHITE) {
+            if (this instanceof Rook) {
+                return "White Rook";
+            } else if (this instanceof Knight) {
+                return "White Knight";
+            } else if (this instanceof Bishop) {
+                return "White Bishop";
+            } else if (this instanceof Queen) {
+                return "White Queen";
+            } else if (this instanceof King) {
+                return "White King";
+            } else {
+                return "White Pawn";
+            }
+        } else {
+            if (this instanceof Rook) {
+                return "Black Rook";
+            } else if (this instanceof Knight) {
+                return "Black Knight";
+            } else if (this instanceof Bishop) {
+                return "Black Bishop";
+            } else if (this instanceof Queen) {
+                return "Black Queen";
+            } else if (this instanceof King) {
+                return "Black King";
+            } else {
+                return "Black Pawn";
+            }
+        }
     }
 
 }

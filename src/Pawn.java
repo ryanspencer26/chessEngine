@@ -13,6 +13,10 @@ public class Pawn extends Piece {
 
     }
 
+    public Pawn(Piece other){
+        super(other.getColor(), other.getSquare().name, new ImageIcon("Pieces/whitePawn.png"), new ImageIcon("Pieces/BlackPawn.png"), value);
+    }
+
     public int getValue(){
 
         return value;

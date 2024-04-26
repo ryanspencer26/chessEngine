@@ -11,6 +11,10 @@ public class Queen extends Piece {
 
     }
 
+    public Queen(Piece other){
+        super(other.getColor(), other.getSquare().name, new ImageIcon("Pieces/whiteQueen.png"), new ImageIcon("Pieces/BlackQueen.png"), value);
+    }
+
     public int getValue(){
 
         return value;

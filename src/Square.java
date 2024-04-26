@@ -21,11 +21,24 @@ public class Square implements Cloneable{
 
         this.colored = other.colored;
         this.name = other.name;
-        this.loc = other.loc;
-        if(other.piece != null){
-            this.piece = new Piece(other.piece);
-        } else {
+        this.loc = other.loc.clone();
+        if(other.piece == null) {
             this.piece = null;
+        } else {
+            if (other.piece instanceof Rook) {
+                this.piece = new Rook(other.piece);
+            } else if (other.piece instanceof Knight) {
+                this.piece = new Knight(other.piece);
+            } else if (other.piece instanceof Bishop) {
+                this.piece = new Bishop(other.piece);
+            } else if (other.piece instanceof Queen) {
+                this.piece = new Queen(other.piece);
+            } else if (other.piece instanceof King) {
+                this.piece = new King(other.piece);
+            } else {
+                this.piece = new Pawn(other.piece);
+            }
+            this.piece.setSquare(other.piece.getSquare());
         }
 
     }

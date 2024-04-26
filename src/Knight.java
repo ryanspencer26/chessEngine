@@ -11,6 +11,10 @@ public class Knight extends Piece {
 
     }
 
+    public Knight(Piece other){
+        super(other.getColor(), other.getSquare().name, new ImageIcon("Pieces/whiteKnight.png"), new ImageIcon("Pieces/BlackKnight.png"), value);
+    }
+
     public int getValue(){
 
         return value;

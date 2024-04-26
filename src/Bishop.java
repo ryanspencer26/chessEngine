@@ -11,6 +11,10 @@ public class Bishop extends Piece {
 
     }
 
+    public Bishop(Piece other){
+        super(other.getColor(), other.getSquare().name, new ImageIcon("Pieces/whiteBishop.png"), new ImageIcon("Pieces/BlackBishop.png"), value);
+    }
+
     public int getValue(){
 
         return value;

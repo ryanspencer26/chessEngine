@@ -11,6 +11,10 @@ public class Rook extends Piece {
 
     }
 
+    public Rook(Piece other){
+        super(other.getColor(), other.getSquare().name, new ImageIcon("Pieces/whiteRook.png"), new ImageIcon("Pieces/BlackRook.png"), value);
+    }
+
     public int getValue(){
 
         return value;
