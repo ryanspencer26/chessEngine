@@ -705,7 +705,6 @@ public class MyPanel extends JPanel{
         return boardClone;
     }
     private void findRookMoves(Piece curr){
-
         // up
         if(curr.getSquare().loc[0] > 0){
             for(int r = curr.getSquare().loc[0] - 1; r >= 0; r--){
@@ -721,7 +720,6 @@ public class MyPanel extends JPanel{
                 }
             }
         }
-
         // down
         if(curr.getSquare().loc[0] < board.length - 1){
             for(int r = curr.getSquare().loc[0] + 1; r < board.length; r++){
@@ -737,7 +735,6 @@ public class MyPanel extends JPanel{
                 }
             }
         }
-
         // left
         if(curr.getSquare().loc[1] > 0){
             for(int c = curr.getSquare().loc[1] - 1; c >= 0; c--){
@@ -753,7 +750,6 @@ public class MyPanel extends JPanel{
                 }
             }
         }
-
         // right
         if(curr.getSquare().loc[1] < board[0].length - 1){
             for(int c = curr.getSquare().loc[1] + 1; c < board[0].length; c++){
@@ -769,68 +765,61 @@ public class MyPanel extends JPanel{
                 }
             }
         }
-
     }
     private ArrayList<Square> findRookScope(Piece curr, ArrayList<Square> moves, Square[][] board, Color turn){
-
         // up
         if(curr.getSquare().loc[0] > 0){
             for(int r = curr.getSquare().loc[0] - 1; r >= 0; r--){
                 if(board[r][curr.getSquare().loc[1]].getPiece() == null){
                     moves.add(board[r][curr.getSquare().loc[1]]);
                 } else {
-                    if(board[r][curr.getSquare().loc[1]].getPiece().getColor() != curr.getColor()){
+                    if(board[r][curr.getSquare().loc[1]].getPiece().getColor() != turn){
                         moves.add(board[r][curr.getSquare().loc[1]]);
                     }
                     break;
                 }
             }
         }
-
         // down
         if(curr.getSquare().loc[0] < board.length - 1){
             for(int r = curr.getSquare().loc[0] + 1; r < board.length; r++){
                 if(board[r][curr.getSquare().loc[1]].getPiece() == null){
                     moves.add(board[r][curr.getSquare().loc[1]]);
                 } else {
-                    if(board[r][curr.getSquare().loc[1]].getPiece().getColor() != curr.getColor()){
+                    if(board[r][curr.getSquare().loc[1]].getPiece().getColor() != turn){
                         moves.add(board[r][curr.getSquare().loc[1]]);
                     }
                     break;
                 }
             }
         }
-
         // left
         if(curr.getSquare().loc[1] > 0){
             for(int c = curr.getSquare().loc[1] - 1; c >= 0; c--){
                 if(board[curr.getSquare().loc[0]][c].getPiece() == null){
                     moves.add(board[curr.getSquare().loc[0]][c]);
                 } else {
-                    if(board[curr.getSquare().loc[0]][c].getPiece().getColor() != curr.getColor()){
+                    if(board[curr.getSquare().loc[0]][c].getPiece().getColor() != turn){
                         moves.add(board[curr.getSquare().loc[0]][c]);
                     }
                     break;
                 }
             }
         }
-
         // right
         if(curr.getSquare().loc[1] < board[0].length - 1){
             for(int c = curr.getSquare().loc[1] + 1; c < board[0].length; c++){
                 if(board[curr.getSquare().loc[0]][c].getPiece() == null){
                     moves.add(board[curr.getSquare().loc[0]][c]);
                 } else {
-                    if(board[curr.getSquare().loc[0]][c].getPiece().getColor() != curr.getColor()){
+                    if(board[curr.getSquare().loc[0]][c].getPiece().getColor() != turn){
                         moves.add(board[curr.getSquare().loc[0]][c]);
                     }
                     break;
                 }
             }
         }
-
         return moves;
-
     }
     private void findBishopMoves(Piece curr){
 
@@ -900,7 +889,6 @@ public class MyPanel extends JPanel{
 
     }
     private ArrayList<Square> findBishopScope(Piece curr, ArrayList<Square> moves, Square[][] board, Color turn){
-
         // down+right
         if(curr.getSquare().loc[0] < board.length - 1 && curr.getSquare().loc[1] < board[0].length - 1){
             for(int r = curr.getSquare().loc[0] + 1, c = curr.getSquare().loc[1] + 1; r < board.length && c < board[r].length; r++, c++){
@@ -914,7 +902,6 @@ public class MyPanel extends JPanel{
                 }
             }
         }
-
         // up+left
         if(curr.getSquare().loc[0] > 0 && curr.getSquare().loc[1] > 0){
             for(int r = curr.getSquare().loc[0] - 1, c = curr.getSquare().loc[1] - 1; r >= 0 && c >= 0; r--, c--){
@@ -928,7 +915,6 @@ public class MyPanel extends JPanel{
                 }
             }
         }
-
         // up+right
         if(curr.getSquare().loc[0] > 0 && curr.getSquare().loc[1] < board[curr.getSquare().loc[0]].length - 1){
             for(int r = curr.getSquare().loc[0] - 1, c = curr.getSquare().loc[1] + 1; r >= 0 && c < board[r].length; r--, c++){
@@ -942,7 +928,6 @@ public class MyPanel extends JPanel{
                 }
             }
         }
-
         // down+left
         if(curr.getSquare().loc[0] < board.length - 1 && curr.getSquare().loc[1] > 0){
             for(int r = curr.getSquare().loc[0] + 1, c = curr.getSquare().loc[1] - 1; r < board.length && c >= 0; r++, c--){
@@ -956,9 +941,7 @@ public class MyPanel extends JPanel{
                 }
             }
         }
-
         return moves;
-
     }
 
     public void findPawnMoves(Piece curr){
@@ -1008,7 +991,6 @@ public class MyPanel extends JPanel{
                 }
             }
         }
-
         // up 1
         if(!evaluatingCheck){
             if(curr.getSquare().loc[0] > 0 && board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1]].getPiece() == null)
@@ -1401,6 +1383,16 @@ public class MyPanel extends JPanel{
             System.out.println();
         }
         System.out.println("\n");
+        tempBoard[move.loc[0]][move.loc[1]].setPiece(tempBoard[test.getSquare().loc[0]][test.getSquare().loc[1]].getPiece());
+        tempBoard[test.getSquare().loc[0]][test.getSquare().loc[1]].getPiece().setSquare(tempBoard[move.loc[0]][move.loc[1]]);
+        tempBoard[test.getSquare().loc[0]][test.getSquare().loc[1]].setPiece(null);
+        tempBoard = flipBoard(tempBoard);
+        for(int r = 0; r < tempBoard.length; r++){
+            for(int c = 0; c < tempBoard[r].length; c++){
+                System.out.print(tempBoard[r][c].name + "\t");
+            }
+            System.out.println();
+        }
         ArrayList<Piece> tempBP = new ArrayList<Piece>();
         ArrayList<Piece> tempWP = new ArrayList<Piece>();
         for(int r = 0; r < tempBoard.length; r++){
@@ -1416,20 +1408,10 @@ public class MyPanel extends JPanel{
         }
         Piece tempBK = getBlackKing(tempBP);
         Piece tempWK = getWhiteKing(tempWP);
-        tempBoard[move.loc[0]][move.loc[1]].setPiece(tempBoard[test.getSquare().loc[0]][test.getSquare().loc[1]].getPiece());
-        tempBoard[test.getSquare().loc[0]][test.getSquare().loc[1]].getPiece().setSquare(tempBoard[move.loc[0]][move.loc[1]]);
-        tempBoard[test.getSquare().loc[0]][test.getSquare().loc[1]].setPiece(null);
-        tempBoard = flipBoard(tempBoard);
-        for(int r = 0; r < tempBoard.length; r++){
-            for(int c = 0; c < tempBoard[r].length; c++){
-                System.out.print(tempBoard[r][c].name + "\t");
-            }
-            System.out.println();
-        }
-
         // THIS IF ELSE STATEMENT IS THE BUG
         // NEVER RETURNS FALSE
-        if(tempBoard[0][0].name.equals("a8")){
+        if(tempBoard[0][0].name.equals("h1")){
+            System.out.println("White King: " + tempWK.getSquare());
             for(Piece piece: tempBP){
                 evaluatingCheck = true;
                 findScope(piece, scope, tempBoard, Color.BLACK);
@@ -1439,8 +1421,10 @@ public class MyPanel extends JPanel{
                     evaluatingCheck = false;
                     return false;
                 }
+                scope.clear();
             }
         } else {
+            System.out.println("Black King: " + tempBK.getSquare());
             for(Piece piece: tempWP){
                 evaluatingCheck = true;
                 findScope(piece, scope, tempBoard, Color.WHITE);
@@ -1450,11 +1434,11 @@ public class MyPanel extends JPanel{
                     evaluatingCheck = false;
                     return false;
                 }
+                scope.clear();
             }
         }
-        scope.clear();
         evaluatingCheck = false;
-        System.out.println("King not in scope (Valid)");
+        System.out.println("King not in scope (" + move.name + " = Valid)");
         return true;
 
     }
@@ -1529,7 +1513,7 @@ public class MyPanel extends JPanel{
             turn = Color.WHITE;
             board = flipBoard(board);
         }
-        scope = new ArrayList<Square>();
+        scope.clear();
         curr = null;
         nMove = null;
 
