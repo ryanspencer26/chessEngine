@@ -12,7 +12,7 @@ public class Piece implements Cloneable{
 
     public final ImageIcon whitePic;
     public final ImageIcon blackPic;
-    public final int value;
+    private int value;
 
     public Piece(Color color, String squareName, ImageIcon whitePic, ImageIcon blackPic, int value){
 
