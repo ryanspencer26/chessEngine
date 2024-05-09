@@ -10,7 +10,8 @@ public class Main {
         gameFrame.setSize(600, 625);
         gameFrame.setLocationRelativeTo(null);
         gameFrame.setResizable(false);
-        gameFrame.add(new MyPanel());
+        MyPanel panel = new MyPanel();
+        gameFrame.add(panel);
 
         JFrame menuFrame = new JFrame("Menu");
         menuFrame.setSize(600, 625);

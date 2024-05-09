@@ -5,7 +5,7 @@ public class Square implements Cloneable{
     private final boolean colored;
     public final String name;
 
-    public final int[] loc;
+    public int[] loc;
 
     private Piece piece = null;
 
@@ -20,7 +20,7 @@ public class Square implements Cloneable{
     public Square(Square other){
 
         this.colored = other.colored;
-        this.name = other.name;
+        this.name = other.name.substring(0);
         this.loc = other.loc.clone();
         if(other.piece == null) {
             this.piece = null;

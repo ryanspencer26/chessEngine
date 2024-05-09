@@ -978,12 +978,12 @@ public class MyPanel extends JPanel{
 
         // up 1, left 1
         if(curr.getSquare().loc[0] * curr.getSquare().loc[1] > 0 && board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] - 1].getPiece() != null)
-            if(!board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] - 1].getPiece().getColor().equals(curr.getColor()))
+            if(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] - 1].getPiece().getColor() != curr.getColor())
                 moves.add(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] - 1]);
 
         // up 1, right 1
         if((curr.getSquare().loc[0] > 0 && curr.getSquare().loc[1] < board[0].length - 1) && board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] + 1].getPiece() != null)
-            if(!board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] + 1].getPiece().getColor().equals(curr.getColor()))
+            if(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] + 1].getPiece().getColor() != curr.getColor())
                 moves.add(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] + 1]);
 
         return moves;
@@ -1351,22 +1351,20 @@ public class MyPanel extends JPanel{
 
         Square [][] tempBoard = deepCopyBoard(this.board);
         System.out.println("\n");
-        for(int r = 0; r < tempBoard.length; r++){
-            for(int c = 0; c < tempBoard[r].length; c++){
-                System.out.print(tempBoard[r][c].name + "\t");
-            }
-            System.out.println();
-        }
-        System.out.println("\n");
         Square tempSquare = tempBoard[test.getSquare().loc[0]][test.getSquare().loc[1]];
         tempBoard[move.loc[0]][move.loc[1]].setPiece(tempBoard[test.getSquare().loc[0]][test.getSquare().loc[1]].getPiece());
         tempSquare.setPiece(null);
         System.out.println(tempBoard[move.loc[0]][move.loc[1]].getPiece());
         tempBoard = flipBoard(tempBoard);
+        System.out.println("\n");
+        for(int r = 0; r < tempBoard.length; r++){
+            for(int c = 0; c < tempBoard[r].length; c++){
+                System.out.print(tempBoard[r][c].name + "(" + tempBoard[r][c].getPiece() + ")\t");
+            }
+            System.out.println();
+        }
         Piece tempBK = getBlackKing(tempBoard);
         Piece tempWK = getWhiteKing(tempBoard);
-        // THIS IF ELSE STATEMENT IS THE BUG
-        // NEVER RETURNS FALSE
         if(tempBoard[0][0].name.equals("h1")){
             System.out.println("White King: " + tempWK.getSquare());
             for(int r = 0; r < tempBoard.length; r++){
@@ -1375,14 +1373,16 @@ public class MyPanel extends JPanel{
                         findScope(tempBoard[r][c].getPiece(), scope, tempBoard);
                         System.out.println("Scope for piece at " + tempBoard[r][c].name + ": " + scope);
                         System.out.println(tempBoard[r][c].name + ": [" + tempBoard[r][c].loc[0] + "] [" + tempBoard[r][c].loc[1] + "]");
-                        if(scope.contains(tempWK.getSquare())) {
-                            System.out.println(move.name + " is not valid.");
-                            return false;
+                        for(Square square: scope){
+                            if(square.name.equals(tempBK.getSquare().name)){
+                                System.out.println(move.name + " is not valid.");
+                                return false;
+                            }
                         }
                     }
                 }
             }
-        } else {
+        } else if (tempBoard[0][0].name.equals("a8")){
             System.out.println("Black King: " + tempBK.getSquare());
             for(int r = 0; r < tempBoard.length; r++){
                 for(int c = 0; c < tempBoard[r].length; c++){
@@ -1390,9 +1390,11 @@ public class MyPanel extends JPanel{
                         findScope(tempBoard[r][c].getPiece(), scope, tempBoard);
                         System.out.println("Scope for piece at " + tempBoard[r][c].name + ": " + scope);
                         System.out.println(tempBoard[r][c].name + ": [" + tempBoard[r][c].loc[0] + "] [" + tempBoard[r][c].loc[1] + "]");
-                        if(scope.contains(tempBK.getSquare())) {
-                            System.out.println(move.name + " is not valid.");
-                            return false;
+                        for(Square square: scope){
+                            if(square.name.equals(tempBK.getSquare().name)){
+                                System.out.println(move.name + " is not valid.");
+                                return false;
+                            }
                         }
                     }
                 }
@@ -1425,15 +1427,6 @@ public class MyPanel extends JPanel{
     }
 
     public void findScope(Piece curr, ArrayList<Square> moves, Square[][] board){
-
-        System.out.println();
-        for(int r = 0; r < board.length; r++){
-            for(int c = 0; c < board[r].length; c++){
-                System.out.print(board[r][c].name + "\t");
-            }
-            System.out.println();
-        }
-        System.out.println();
 
         scope.clear();
 
