@@ -4,6 +4,7 @@ import java.awt.*;
 public class Rook extends Piece {
 
     public final static int value = 5;
+    public int moves;
 
     public Rook(Color color, String square){
 
@@ -19,6 +20,14 @@ public class Rook extends Piece {
 
         return value;
 
+    }
+
+    public void move(){
+        moves++;
+    }
+
+    public int getMoves(){
+        return moves;
     }
 
 }
