@@ -685,7 +685,7 @@ public class MyPanel extends JPanel{
 
                 }
 
-                if(curr != null){
+                if(curr != null && !gameOver){
                     findAllMoves(curr);
                 }
 
@@ -1562,7 +1562,7 @@ public class MyPanel extends JPanel{
         }
 
         g.setColor(new Color(255, 127, 127));
-        if (!possMoves.isEmpty()) {
+        if (!possMoves.isEmpty() && !gameOver) {
             for (int r = 0, y = 0; r < board.length; r++, y += 75) {
                 for (int c = 0, x = 0; c < board[r].length; c++, x += 75) {
                     if (possMoves.contains(board[r][c])) {
@@ -1572,7 +1572,7 @@ public class MyPanel extends JPanel{
             }
         }
 
-        if(moving && nMove != null && possMoves.contains(nMove))
+        if(moving && nMove != null && possMoves.contains(nMove) && !gameOver)
             movePiece(curr, nMove);
 
         if(whiteKing != whiteKing.getSquare().getPiece()){
@@ -1581,14 +1581,14 @@ public class MyPanel extends JPanel{
             int textWidth = g.getFontMetrics().stringWidth("Black Wins!");
             g.drawString("Black Wins!", (300 - textWidth / 2), 325);
             gameOver = true;
-            this.setFocusable(false);
+            this.removeAll();
         } else if(blackKing != blackKing.getSquare().getPiece()){
             g.setColor(new Color(255, 127, 127));
             g.setFont(new Font("SansSerif", Font.PLAIN, 65));
             int textWidth = g.getFontMetrics().stringWidth("White Wins!");
             g.drawString("White Wins!", (300 - textWidth / 2), 325);
             gameOver = true;
-            this.setFocusable(false);
+            this.removeAll();
         }
         if(gameOver) {
             timer++;
@@ -1648,7 +1648,6 @@ public class MyPanel extends JPanel{
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-
         repaint();
 
     }
