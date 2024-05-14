@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -12,6 +14,8 @@ public class MyPanel extends JPanel{
     private final Piece whiteKing;
     private final Piece blackKing;
     private boolean moving;
+    private boolean gameOver;
+    private int timer;
     private boolean whiteCastle = false;
     private boolean blackCastle = false;
     private ArrayList<Square> possMoves = new ArrayList<Square>();
@@ -691,15 +695,15 @@ public class MyPanel extends JPanel{
 
     }
 
-    public Square[][] deepCopyBoard(Square[][] board){
-        Square[][] boardClone = new Square[8][8];
-        for(int r = 0; r < board.length; r++){
-            for(int c = 0; c < board[r].length; c++){
-                boardClone[r][c] = new Square(board[r][c]);
-            }
-        }
-        return boardClone;
-    }
+//    public Square[][] deepCopyBoard(Square[][] board){
+//        Square[][] boardClone = new Square[8][8];
+//        for(int r = 0; r < board.length; r++){
+//            for(int c = 0; c < board[r].length; c++){
+//                boardClone[r][c] = new Square(board[r][c]);
+//            }
+//        }
+//        return boardClone;
+//    }
     private void findRookMoves(Piece curr){
         // up
         if(curr.getSquare().loc[0] > 0){
@@ -984,92 +988,100 @@ public class MyPanel extends JPanel{
     public void findKnightMoves(Piece curr){
 
         // up 2, left 1
-        if(curr.getSquare().loc[0] > 1 && curr.getSquare().loc[1] > 0)
-            if(board[curr.getSquare().loc[0] - 2][curr.getSquare().loc[1] - 1].getPiece() != null) {
+        if(curr.getSquare().loc[0] > 1 && curr.getSquare().loc[1] > 0) {
+            if (board[curr.getSquare().loc[0] - 2][curr.getSquare().loc[1] - 1].getPiece() != null) {
                 if (board[curr.getSquare().loc[0] - 2][curr.getSquare().loc[1] - 1].getPiece().getColor() != curr.getColor())
                     //if(testPosition(curr, board[curr.getSquare().loc[0] - 2][curr.getSquare().loc[1] - 1]))
-                        possMoves.add(board[curr.getSquare().loc[0] - 2][curr.getSquare().loc[1] - 1]);
+                    possMoves.add(board[curr.getSquare().loc[0] - 2][curr.getSquare().loc[1] - 1]);
             } else {
                 //if(testPosition(curr, board[curr.getSquare().loc[0] - 2][curr.getSquare().loc[1] - 1]))
-                    possMoves.add(board[curr.getSquare().loc[0] - 2][curr.getSquare().loc[1] - 1]);
+                possMoves.add(board[curr.getSquare().loc[0] - 2][curr.getSquare().loc[1] - 1]);
             }
+        }
 
         // up 2, right 1
-        if(curr.getSquare().loc[0] > 1 && curr.getSquare().loc[1] < board[0].length)
-            if(board[curr.getSquare().loc[0] - 2][curr.getSquare().loc[1] + 1].getPiece() != null) {
+        if(curr.getSquare().loc[0] > 1 && curr.getSquare().loc[1] < board[0].length) {
+            if (board[curr.getSquare().loc[0] - 2][curr.getSquare().loc[1] + 1].getPiece() != null) {
                 if (board[curr.getSquare().loc[0] - 2][curr.getSquare().loc[1] + 1].getPiece().getColor() != curr.getColor())
                     //if(testPosition(curr, board[curr.getSquare().loc[0] - 2][curr.getSquare().loc[1] + 1]))
-                        possMoves.add(board[curr.getSquare().loc[0] - 2][curr.getSquare().loc[1] + 1]);
+                    possMoves.add(board[curr.getSquare().loc[0] - 2][curr.getSquare().loc[1] + 1]);
             } else {
                 //if(testPosition(curr, board[curr.getSquare().loc[0] - 2][curr.getSquare().loc[1] + 1]))
-                    possMoves.add(board[curr.getSquare().loc[0] - 2][curr.getSquare().loc[1] + 1]);
+                possMoves.add(board[curr.getSquare().loc[0] - 2][curr.getSquare().loc[1] + 1]);
             }
+        }
 
         // down 2, left 1
-        if(curr.getSquare().loc[0] < board.length - 2 && curr.getSquare().loc[1] > 0)
-            if(board[curr.getSquare().loc[0] + 2][curr.getSquare().loc[1] - 1].getPiece() != null) {
+        if(curr.getSquare().loc[0] < board.length - 2 && curr.getSquare().loc[1] > 0) {
+            if (board[curr.getSquare().loc[0] + 2][curr.getSquare().loc[1] - 1].getPiece() != null) {
                 if (board[curr.getSquare().loc[0] + 2][curr.getSquare().loc[1] - 1].getPiece().getColor() != curr.getColor())
                     //if(testPosition(curr, board[curr.getSquare().loc[0] + 2][curr.getSquare().loc[1] - 1]))
-                        possMoves.add(board[curr.getSquare().loc[0] + 2][curr.getSquare().loc[1] - 1]);
+                    possMoves.add(board[curr.getSquare().loc[0] + 2][curr.getSquare().loc[1] - 1]);
             } else {
                 //if(testPosition(curr, board[curr.getSquare().loc[0] + 2][curr.getSquare().loc[1] - 1]))
-                    possMoves.add(board[curr.getSquare().loc[0] + 2][curr.getSquare().loc[1] - 1]);
+                possMoves.add(board[curr.getSquare().loc[0] + 2][curr.getSquare().loc[1] - 1]);
             }
+        }
 
         // down 2, right 1
-        if(curr.getSquare().loc[0] < board.length - 2 && curr.getSquare().loc[1] < board[0].length)
-            if(board[curr.getSquare().loc[0] + 2][curr.getSquare().loc[1] + 1].getPiece() != null) {
+        if(curr.getSquare().loc[0] < board.length - 2 && curr.getSquare().loc[1] < board[0].length) {
+            if (board[curr.getSquare().loc[0] + 2][curr.getSquare().loc[1] + 1].getPiece() != null) {
                 if (board[curr.getSquare().loc[0] + 2][curr.getSquare().loc[1] + 1].getPiece().getColor() != curr.getColor())
                     //if(testPosition(curr, board[curr.getSquare().loc[0] + 2][curr.getSquare().loc[1] + 1]))
-                        possMoves.add(board[curr.getSquare().loc[0] + 2][curr.getSquare().loc[1] + 1]);
+                    possMoves.add(board[curr.getSquare().loc[0] + 2][curr.getSquare().loc[1] + 1]);
             } else {
                 //if(testPosition(curr, board[curr.getSquare().loc[0] + 2][curr.getSquare().loc[1] + 1]))
-                    possMoves.add(board[curr.getSquare().loc[0] + 2][curr.getSquare().loc[1] + 1]);
+                possMoves.add(board[curr.getSquare().loc[0] + 2][curr.getSquare().loc[1] + 1]);
             }
+        }
 
         // up 1, left 2
-        if(curr.getSquare().loc[0] > 0 && curr.getSquare().loc[1] > 1)
-            if(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] - 2].getPiece() != null) {
+        if(curr.getSquare().loc[0] > 0 && curr.getSquare().loc[1] > 1) {
+            if (board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] - 2].getPiece() != null) {
                 if (board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] - 2].getPiece().getColor() != curr.getColor())
                     //if(testPosition(curr, board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] - 2]))
-                        possMoves.add(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] - 2]);
+                    possMoves.add(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] - 2]);
             } else {
                 //if(testPosition(curr, board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] - 2]))
-                    possMoves.add(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] - 2]);
+                possMoves.add(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] - 2]);
             }
+        }
 
         // up 1, right 2
-        if(curr.getSquare().loc[0] > 0 && curr.getSquare().loc[1] < board[0].length - 2)
-            if(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] + 2].getPiece() != null) {
+        if(curr.getSquare().loc[0] > 0 && curr.getSquare().loc[1] < board[0].length - 2) {
+            if (board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] + 2].getPiece() != null) {
                 if (board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] + 2].getPiece().getColor() != curr.getColor())
                     //if(testPosition(curr, board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] - 2]))
-                        possMoves.add(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] - 2]);
+                    possMoves.add(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] - 2]);
             } else {
                 //if(testPosition(curr, board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] - 2]))
-                    possMoves.add(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] - 2]);
+                possMoves.add(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] + 2]);
             }
+        }
 
         // down 1, left 2
-        if(curr.getSquare().loc[0] < board.length - 1 && curr.getSquare().loc[1] > 1)
-            if(board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] - 2].getPiece() != null) {
+        if(curr.getSquare().loc[0] < board.length - 1 && curr.getSquare().loc[1] > 1) {
+            if (board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] - 2].getPiece() != null) {
                 if (board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] - 2].getPiece().getColor() != curr.getColor())
                     //if(testPosition(curr, board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] - 2]))
-                        possMoves.add(board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] - 2]);
+                    possMoves.add(board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] - 2]);
             } else {
                 //if(testPosition(curr, board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] - 2]))
-                    possMoves.add(board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] - 2]);
+                possMoves.add(board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] - 2]);
             }
+        }
 
         // down 1, right 2
-        if(curr.getSquare().loc[0] < board.length - 1 && curr.getSquare().loc[1] < board[0].length - 2)
-            if(board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] + 2].getPiece() != null) {
+        if(curr.getSquare().loc[0] < board.length - 1 && curr.getSquare().loc[1] < board[0].length - 2) {
+            if (board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] + 2].getPiece() != null) {
                 if (board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] + 2].getPiece().getColor() != curr.getColor())
                     //if(testPosition(curr, board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] + 2]))
-                        possMoves.add(board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] + 2]);
+                    possMoves.add(board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] + 2]);
             } else {
                 //if(testPosition(curr, board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] + 2]))
-                    possMoves.add(board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] + 2]);
+                possMoves.add(board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] + 2]);
             }
+        }
 
     }
     public void findKnightScope(Piece curr, Square[][] board){
@@ -1342,25 +1354,25 @@ public class MyPanel extends JPanel{
         }
 
     }
-    public Piece getWhiteKing(Square[][] board){
-        for(int r = 0; r < board.length; r++){
-            for(int c = 0; c < board[r].length; c++){
-                if(board[r][c].getPiece() != null && board[r][c].getPiece().getColor() == Color.WHITE && board[r][c].getPiece().getValue() == -1)
-                    return board[r][c].getPiece();
-            }
-        }
-        return null;
-    }
+//    public Piece getWhiteKing(Square[][] board){
+//        for(int r = 0; r < board.length; r++){
+//            for(int c = 0; c < board[r].length; c++){
+//                if(board[r][c].getPiece() != null && board[r][c].getPiece().getColor() == Color.WHITE && board[r][c].getPiece().getValue() == -1)
+//                    return board[r][c].getPiece();
+//            }
+//        }
+//        return null;
+//    }
 
-    public Piece getBlackKing(Square[][] board){
-        for(int r = 0; r < board.length; r++){
-            for(int c = 0; c < board[r].length; c++){
-                if(board[r][c].getPiece() != null && board[r][c].getPiece().getColor() == Color.BLACK && board[r][c].getPiece().getValue() == -1)
-                    return board[r][c].getPiece();
-            }
-        }
-        return null;
-    }
+//    public Piece getBlackKing(Square[][] board){
+//        for(int r = 0; r < board.length; r++){
+//            for(int c = 0; c < board[r].length; c++){
+//                if(board[r][c].getPiece() != null && board[r][c].getPiece().getColor() == Color.BLACK && board[r][c].getPiece().getValue() == -1)
+//                    return board[r][c].getPiece();
+//            }
+//        }
+//        return null;
+//    }
 
     // NOT WORKING
     // always returns true
@@ -1448,26 +1460,26 @@ public class MyPanel extends JPanel{
 
     }
 
-    public void findScope(Piece curr, Square[][] board){
-
-        scope.clear();
-
-        if (curr instanceof Queen && curr.getValue() == 9) {
-            findRookScope(curr, board);
-            findBishopScope(curr, board);
-        } else if(curr instanceof Rook && curr.getValue() == 5){
-            findRookScope(curr, board);
-        } else if(curr instanceof Bishop && curr.getValue() == 3){
-            findBishopScope(curr, board);
-        } else if(curr instanceof Knight && curr.getValue() == 3){
-            findKnightScope(curr, board);
-        } else if(curr instanceof Pawn && curr.getValue() == 1){
-            findPawnScope(curr, board);
-        } else {
-            findKingScope(curr, board);
-        }
-
-    }
+//    public void findScope(Piece curr, Square[][] board){
+//
+//        scope.clear();
+//
+//        if (curr instanceof Queen && curr.getValue() == 9) {
+//            findRookScope(curr, board);
+//            findBishopScope(curr, board);
+//        } else if(curr instanceof Rook && curr.getValue() == 5){
+//            findRookScope(curr, board);
+//        } else if(curr instanceof Bishop && curr.getValue() == 3){
+//            findBishopScope(curr, board);
+//        } else if(curr instanceof Knight && curr.getValue() == 3){
+//            findKnightScope(curr, board);
+//        } else if(curr instanceof Pawn && curr.getValue() == 1){
+//            findPawnScope(curr, board);
+//        } else {
+//            findKingScope(curr, board);
+//        }
+//
+//    }
 
     public Square[][] flipBoard(Square[][] board){
         Square[][] tempBoard = new Square[8][8];
@@ -1560,10 +1572,75 @@ public class MyPanel extends JPanel{
             }
         }
 
-        if(moving && nMove != null && possMoves.contains(nMove)){
+        if(moving && nMove != null && possMoves.contains(nMove))
             movePiece(curr, nMove);
-            System.out.println("\nWhite King: " + whiteKing.getSquare().name);
-            System.out.println("Black King: " + blackKing.getSquare().name + "\n");
+
+        if(whiteKing != whiteKing.getSquare().getPiece()){
+            g.setColor(new Color(255, 127, 127));
+            g.setFont(new Font("SansSerif", Font.PLAIN, 65));
+            int textWidth = g.getFontMetrics().stringWidth("Black Wins!");
+            g.drawString("Black Wins!", (300 - textWidth / 2), 325);
+            gameOver = true;
+            this.setFocusable(false);
+        } else if(blackKing != blackKing.getSquare().getPiece()){
+            g.setColor(new Color(255, 127, 127));
+            g.setFont(new Font("SansSerif", Font.PLAIN, 65));
+            int textWidth = g.getFontMetrics().stringWidth("White Wins!");
+            g.drawString("White Wins!", (300 - textWidth / 2), 325);
+            gameOver = true;
+            this.setFocusable(false);
+        }
+        if(gameOver) {
+            timer++;
+        }
+
+        if(timer > 150){
+            if(whiteKing != whiteKing.getSquare().getPiece() || blackKing != blackKing.getSquare().getPiece()){
+                JFrame playAgain = new JFrame("Menu");
+                playAgain.setSize(600, 625);
+                playAgain.setLocationRelativeTo(null);
+                playAgain.setResizable(false);
+                playAgain.add(new PlayMenu());
+                playAgain.setVisible(true);
+                playAgain.addKeyListener(new KeyListener() {
+                    @Override
+                    public void keyTyped(KeyEvent e) {
+
+                    }
+                    @Override
+                    public void keyPressed(KeyEvent e) {
+                        if(e.getKeyCode() == KeyEvent.VK_DOWN){
+                            PlayMenu.quit = true;
+                            PlayMenu.start = false;
+                            System.out.println("down");
+                        }
+                        if(e.getKeyCode() == KeyEvent.VK_UP){
+                            PlayMenu.start = true;
+                            PlayMenu.quit = false;
+                            System.out.println("up");
+                        }
+                        if(e.getKeyCode() == KeyEvent.VK_ENTER){
+                            if(PlayMenu.start){
+                                playAgain.setVisible(false);
+                                JFrame gameFrame = new JFrame("Chess");
+                                gameFrame.setSize(600, 625);
+                                gameFrame.setLocationRelativeTo(null);
+                                gameFrame.setResizable(false);
+                                gameFrame.add(new MyPanel());
+                                gameFrame.setVisible(true);
+                            } else if(PlayMenu.quit){
+                                System.exit(0);
+                            }
+                            System.out.println("enter");
+                        }
+                    }
+                    @Override
+                    public void keyReleased(KeyEvent e) {
+
+                    }
+                });
+                this.setVisible(false);
+            }
         }
 
         try {
