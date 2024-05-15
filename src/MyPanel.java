@@ -1211,26 +1211,26 @@ public class MyPanel extends JPanel{
         }
         if(((King)(curr)).getMoves() == 0 && curr.getSquare().name.contains("e")){
             if(curr.getColor() == Color.WHITE){
-                if(board[7][0].getPiece().getClass() == Rook.class && board[7][0].getPiece().getColor() == curr.getColor() && ((Rook)(board[7][0].getPiece())).getMoves() == 0) {
+                if(board[7][0].getPiece() != null && board[7][0].getPiece().getClass() == Rook.class && board[7][0].getPiece().getColor() == curr.getColor() && ((Rook)(board[7][0].getPiece())).getMoves() == 0) {
                     if(board[7][1].getPiece() == null && board[7][2].getPiece() == null && board[7][3].getPiece() == null) {
                         possMoves.add(board[7][2]);
                         whiteCastle = true;
                     }
                 }
-                if(board[7][7].getPiece().getClass() == Rook.class && board[7][7].getPiece().getColor() == curr.getColor() && ((Rook)(board[7][7].getPiece())).getMoves() == 0) {
+                if(board[7][7].getPiece() != null && board[7][7].getPiece().getClass() == Rook.class && board[7][7].getPiece().getColor() == curr.getColor() && ((Rook)(board[7][7].getPiece())).getMoves() == 0) {
                     if(board[7][6].getPiece() == null && board[7][5].getPiece() == null) {
                         possMoves.add(board[7][6]);
                         whiteCastle = true;
                     }
                 }
             } else {
-                if(board[7][0].getPiece().getClass() == Rook.class && board[7][0].getPiece().getColor() == curr.getColor() && ((Rook)(board[7][0].getPiece())).getMoves() == 0) {
+                if(board[7][0].getPiece() != null && board[7][0].getPiece().getClass() == Rook.class && board[7][0].getPiece().getColor() == curr.getColor() && ((Rook)(board[7][0].getPiece())).getMoves() == 0) {
                     if(board[7][1].getPiece() == null && board[7][2].getPiece() == null) {
                         possMoves.add(board[7][1]);
                         blackCastle = true;
                     }
                 }
-                if(board[7][7].getPiece().getClass() == Rook.class && board[7][7].getPiece().getColor() == curr.getColor() && ((Rook)(board[7][7].getPiece())).getMoves() == 0) {
+                if(board[7][7].getPiece() != null && board[7][7].getPiece().getClass() == Rook.class && board[7][7].getPiece().getColor() == curr.getColor() && ((Rook)(board[7][7].getPiece())).getMoves() == 0) {
                     if(board[7][6].getPiece() == null && board[7][5].getPiece() == null && board[7][4].getPiece() == null) {
                         possMoves.add(board[7][5]);
                         blackCastle = true;
@@ -1442,6 +1442,12 @@ public class MyPanel extends JPanel{
         temp.setPiece(null);
         if(c.getValue() == 1){
             ((Pawn)(c)).move();
+            if(c.getSquare().loc[0] == 0){
+                if(c.getColor() == Color.WHITE)
+                    c.getSquare().setPiece(new Queen(Color.WHITE, c.getSquare().name));
+                else
+                    c.getSquare().setPiece(new Queen(Color.BLACK, c.getSquare().name));
+            }
         } else if(c.getValue() == 5){
             ((Rook)(c)).move();
         } else if(c.getValue() == -1) {
