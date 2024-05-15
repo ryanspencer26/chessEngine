@@ -12,6 +12,7 @@ public class MyPanel extends JPanel{
     private Piece curr = null; // current square
     private Square nMove = null;
     private boolean moving;
+    private boolean check = false;
     private boolean whiteWin = false;
     private boolean blackWin = false;
     private int timer;
@@ -1209,7 +1210,7 @@ public class MyPanel extends JPanel{
                     possMoves.add(board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] + 1]);
             }
         }
-        if(((King)(curr)).getMoves() == 0 && curr.getSquare().name.contains("e")){
+        if(((King)(curr)).getMoves() == 0 && curr.getSquare().name.contains("e") && !check){
             if(curr.getColor() == Color.WHITE){
                 if(board[7][0].getPiece() != null && board[7][0].getPiece().getClass() == Rook.class && board[7][0].getPiece().getColor() == curr.getColor() && ((Rook)(board[7][0].getPiece())).getMoves() == 0) {
                     if(board[7][1].getPiece() == null && board[7][2].getPiece() == null && board[7][3].getPiece() == null) {
@@ -1354,8 +1355,10 @@ public class MyPanel extends JPanel{
                         findScope(tempBoard[r][c].getPiece(), tempBoard);
                         System.out.println("Scope for piece at " + tempBoard[r][c].name + ": " + scope);
                         System.out.println(tempBoard[r][c].name + ": [" + tempBoard[r][c].loc[0] + "] [" + tempBoard[r][c].loc[1] + "]");
-                        if(scope.contains(tempWK))
+                        if(scope.contains(tempWK)) {
+                            check = true;
                             return false;
+                        }
                     }
                 }
             }
@@ -1367,8 +1370,10 @@ public class MyPanel extends JPanel{
                         findScope(tempBoard[r][c].getPiece(), tempBoard);
                         System.out.println("Scope for piece at " + tempBoard[r][c].name + ": " + scope);
                         System.out.println(tempBoard[r][c].name + ": [" + tempBoard[r][c].loc[0] + "] [" + tempBoard[r][c].loc[1] + "]");
-                        if(scope.contains(tempBK))
+                        if(scope.contains(tempBK)) {
+                            check = true;
                             return false;
+                        }
 
                     }
                 }
@@ -1476,6 +1481,7 @@ public class MyPanel extends JPanel{
         }
         possMoves.clear();
         moving = false;
+        check = false;
         if(turn == Color.WHITE){
             turn = Color.BLACK;
             board = flipBoard(board);
