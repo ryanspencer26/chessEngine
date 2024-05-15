@@ -11,17 +11,14 @@ public class MyPanel extends JPanel{
     private Square[][] board = new Square[8][8];
     private Piece curr = null; // current square
     private Square nMove = null;
-    private final Piece whiteKing;
-    private final Piece blackKing;
     private boolean moving;
-    private boolean gameOver;
+    private boolean whiteWin = false;
+    private boolean blackWin = false;
     private int timer;
     private boolean whiteCastle = false;
     private boolean blackCastle = false;
     private ArrayList<Square> possMoves = new ArrayList<Square>();
-    private ArrayList<Square> scope = new ArrayList<Square>();
-    private ArrayList<Piece> blackPieces = new ArrayList<Piece>();
-    private ArrayList<Piece> whitePieces = new ArrayList<Piece>();
+    private ArrayList<String> scope = new ArrayList<String>();
     private Color turn;
 
     public MyPanel(){
@@ -56,74 +53,40 @@ public class MyPanel extends JPanel{
         }
 
         board[0][0].setPiece(new Rook(Color.BLACK, "a8"));
-        blackPieces.add(board[0][0].getPiece());
         board[0][1].setPiece(new Knight(Color.BLACK, "b8"));
-        blackPieces.add(board[0][1].getPiece());
         board[0][2].setPiece(new Bishop(Color.BLACK, "c8"));
-        blackPieces.add(board[0][2].getPiece());
         board[0][3].setPiece(new Queen(Color.BLACK, "d8"));
-        blackPieces.add(board[0][3].getPiece());
         board[0][4].setPiece(new King(Color.BLACK, "e8"));
-        blackPieces.add(board[0][4].getPiece());
-        blackKing = board[0][4].getPiece();
         board[0][5].setPiece(new Bishop(Color.BLACK, "f8"));
-        blackPieces.add(board[0][5].getPiece());
         board[0][6].setPiece(new Knight(Color.BLACK, "g8"));
-        blackPieces.add(board[0][6].getPiece());
         board[0][7].setPiece(new Rook(Color.BLACK, "h8"));
-        blackPieces.add(board[0][7].getPiece());
 
         board[1][0].setPiece(new Pawn(Color.BLACK, "a7"));
-        blackPieces.add(board[1][0].getPiece());
         board[1][1].setPiece(new Pawn(Color.BLACK, "b7"));
-        blackPieces.add(board[1][1].getPiece());
         board[1][2].setPiece(new Pawn(Color.BLACK, "c7"));
-        blackPieces.add(board[1][2].getPiece());
         board[1][3].setPiece(new Pawn(Color.BLACK, "d7"));
-        blackPieces.add(board[1][3].getPiece());
         board[1][4].setPiece(new Pawn(Color.BLACK, "e7"));
-        blackPieces.add(board[1][4].getPiece());
         board[1][5].setPiece(new Pawn(Color.BLACK, "f7"));
-        blackPieces.add(board[1][5].getPiece());
         board[1][6].setPiece(new Pawn(Color.BLACK, "g7"));
-        blackPieces.add(board[1][6].getPiece());
         board[1][7].setPiece(new Pawn(Color.BLACK, "h7"));
-        blackPieces.add(board[1][7].getPiece());
 
         board[7][0].setPiece(new Rook(Color.WHITE, "a1"));
-        whitePieces.add(board[7][0].getPiece());
         board[7][1].setPiece(new Knight(Color.WHITE, "b1"));
-        whitePieces.add(board[7][1].getPiece());
         board[7][2].setPiece(new Bishop(Color.WHITE, "c1"));
-        whitePieces.add(board[7][2].getPiece());
         board[7][3].setPiece(new Queen(Color.WHITE, "d1"));
-        whitePieces.add(board[7][3].getPiece());
         board[7][4].setPiece(new King(Color.WHITE, "e1"));
-        whitePieces.add(board[7][4].getPiece());
-        whiteKing = board[7][4].getPiece();
         board[7][5].setPiece(new Bishop(Color.WHITE, "f1"));
-        whitePieces.add(board[7][5].getPiece());
         board[7][6].setPiece(new Knight(Color.WHITE, "g1"));
-        whitePieces.add(board[7][6].getPiece());
         board[7][7].setPiece(new Rook(Color.WHITE, "h1"));
-        whitePieces.add(board[7][7].getPiece());
 
         board[6][0].setPiece(new Pawn(Color.WHITE, "a2"));
-        whitePieces.add(board[6][0].getPiece());
         board[6][1].setPiece(new Pawn(Color.WHITE, "b2"));
-        whitePieces.add(board[6][1].getPiece());
         board[6][2].setPiece(new Pawn(Color.WHITE, "c2"));
-        whitePieces.add(board[6][2].getPiece());
         board[6][3].setPiece(new Pawn(Color.WHITE, "d2"));
-        whitePieces.add(board[6][3].getPiece());
         board[6][4].setPiece(new Pawn(Color.WHITE, "e2"));
-        whitePieces.add(board[6][4].getPiece());
         board[6][5].setPiece(new Pawn(Color.WHITE, "f2"));
-        whitePieces.add(board[6][5].getPiece());
         board[6][6].setPiece(new Pawn(Color.WHITE, "g2"));
-        whitePieces.add(board[6][6].getPiece());
         board[6][7].setPiece(new Pawn(Color.WHITE, "h2"));
-        whitePieces.add(board[6][7].getPiece());
 
         for (Square[] squares : board) {
             for (Square square : squares) {
@@ -685,7 +648,7 @@ public class MyPanel extends JPanel{
 
                 }
 
-                if(curr != null && !gameOver){
+                if(curr != null && (!whiteWin && !blackWin)){
                     findAllMoves(curr);
                 }
 
@@ -695,25 +658,25 @@ public class MyPanel extends JPanel{
 
     }
 
-//    public Square[][] deepCopyBoard(Square[][] board){
-//        Square[][] boardClone = new Square[8][8];
-//        for(int r = 0; r < board.length; r++){
-//            for(int c = 0; c < board[r].length; c++){
-//                boardClone[r][c] = new Square(board[r][c]);
-//            }
-//        }
-//        return boardClone;
-//    }
+    public Square[][] deepCopyBoard(Square[][] board){
+        Square[][] boardClone = new Square[8][8];
+        for(int r = 0; r < board.length; r++){
+            for(int c = 0; c < board[r].length; c++){
+                boardClone[r][c] = new Square(board[r][c]);
+            }
+        }
+        return boardClone;
+    }
     private void findRookMoves(Piece curr){
         // up
         if(curr.getSquare().loc[0] > 0){
             for(int r = curr.getSquare().loc[0] - 1; r >= 0; r--){
                 if(board[r][curr.getSquare().loc[1]].getPiece() == null){
-                    //if(testPosition(curr, board[r][curr.getSquare().loc[1]]))
+                    if(testPosition(curr, board[r][curr.getSquare().loc[1]]))
                         possMoves.add(board[r][curr.getSquare().loc[1]]);
                 } else {
                     if(board[r][curr.getSquare().loc[1]].getPiece().getColor() != curr.getColor()){
-                        //if(testPosition(curr, board[r][curr.getSquare().loc[1]]))
+                        if(testPosition(curr, board[r][curr.getSquare().loc[1]]))
                             possMoves.add(board[r][curr.getSquare().loc[1]]);
                     }
                     break;
@@ -724,11 +687,11 @@ public class MyPanel extends JPanel{
         if(curr.getSquare().loc[0] < board.length - 1){
             for(int r = curr.getSquare().loc[0] + 1; r < board.length; r++){
                 if(board[r][curr.getSquare().loc[1]].getPiece() == null){
-                    //if(testPosition(curr, board[r][curr.getSquare().loc[1]]))
+                    if(testPosition(curr, board[r][curr.getSquare().loc[1]]))
                         possMoves.add(board[r][curr.getSquare().loc[1]]);
                 } else {
                     if(board[r][curr.getSquare().loc[1]].getPiece().getColor() != curr.getColor()){
-                        //if(testPosition(curr, board[r][curr.getSquare().loc[1]]))
+                        if(testPosition(curr, board[r][curr.getSquare().loc[1]]))
                             possMoves.add(board[r][curr.getSquare().loc[1]]);
                     }
                     break;
@@ -739,11 +702,11 @@ public class MyPanel extends JPanel{
         if(curr.getSquare().loc[1] > 0){
             for(int c = curr.getSquare().loc[1] - 1; c >= 0; c--){
                 if(board[curr.getSquare().loc[0]][c].getPiece() == null){
-                    //if(testPosition(curr, board[curr.getSquare().loc[0]][curr.getSquare().loc[1]]))
+                    if(testPosition(curr, board[curr.getSquare().loc[0]][curr.getSquare().loc[1]]))
                         possMoves.add(board[curr.getSquare().loc[0]][c]);
                 } else {
                     if(board[curr.getSquare().loc[0]][c].getPiece().getColor() != curr.getColor()){
-                        //if(testPosition(curr, board[curr.getSquare().loc[0]][curr.getSquare().loc[1]]))
+                        if(testPosition(curr, board[curr.getSquare().loc[0]][curr.getSquare().loc[1]]))
                             possMoves.add(board[curr.getSquare().loc[0]][c]);
                     }
                     break;
@@ -754,11 +717,11 @@ public class MyPanel extends JPanel{
         if(curr.getSquare().loc[1] < board[0].length - 1){
             for(int c = curr.getSquare().loc[1] + 1; c < board[0].length; c++){
                 if(board[curr.getSquare().loc[0]][c].getPiece() == null){
-                    //if(testPosition(curr, board[curr.getSquare().loc[0]][curr.getSquare().loc[1]]))
+                    if(testPosition(curr, board[curr.getSquare().loc[0]][curr.getSquare().loc[1]]))
                         possMoves.add(board[curr.getSquare().loc[0]][c]);
                 } else {
                     if(board[curr.getSquare().loc[0]][c].getPiece().getColor() != curr.getColor()){
-                        //if(testPosition(curr, board[curr.getSquare().loc[0]][curr.getSquare().loc[1]]))
+                        if(testPosition(curr, board[curr.getSquare().loc[0]][curr.getSquare().loc[1]]))
                             possMoves.add(board[curr.getSquare().loc[0]][c]);
                     }
                     break;
@@ -771,10 +734,10 @@ public class MyPanel extends JPanel{
         if(curr.getSquare().loc[0] > 0){
             for(int r = curr.getSquare().loc[0] - 1; r >= 0; r--){
                 if(board[r][curr.getSquare().loc[1]].getPiece() == null){
-                    scope.add(board[r][curr.getSquare().loc[1]]);
+                    scope.add(board[r][curr.getSquare().loc[1]].name);
                 } else {
                     if(!board[r][curr.getSquare().loc[1]].getPiece().getColor().equals(curr.getColor())){
-                        scope.add(board[r][curr.getSquare().loc[1]]);
+                        scope.add(board[r][curr.getSquare().loc[1]].name);
                     }
                     break;
                 }
@@ -784,10 +747,10 @@ public class MyPanel extends JPanel{
         if(curr.getSquare().loc[0] < board.length - 1){
             for(int r = curr.getSquare().loc[0] + 1; r < board.length; r++){
                 if(board[r][curr.getSquare().loc[1]].getPiece() == null){
-                    scope.add(board[r][curr.getSquare().loc[1]]);
+                    scope.add(board[r][curr.getSquare().loc[1]].name);
                 } else {
                     if(!board[r][curr.getSquare().loc[1]].getPiece().getColor().equals(curr.getColor())){
-                        scope.add(board[r][curr.getSquare().loc[1]]);
+                        scope.add(board[r][curr.getSquare().loc[1]].name);
                     }
                     break;
                 }
@@ -797,10 +760,10 @@ public class MyPanel extends JPanel{
         if(curr.getSquare().loc[1] > 0){
             for(int c = curr.getSquare().loc[1] - 1; c >= 0; c--){
                 if(board[curr.getSquare().loc[0]][c].getPiece() == null){
-                    scope.add(board[curr.getSquare().loc[0]][c]);
+                    scope.add(board[curr.getSquare().loc[0]][c].name);
                 } else {
                     if(!board[curr.getSquare().loc[0]][c].getPiece().getColor().equals(curr.getColor())){
-                        scope.add(board[curr.getSquare().loc[0]][c]);
+                        scope.add(board[curr.getSquare().loc[0]][c].name);
                     }
                     break;
                 }
@@ -810,10 +773,10 @@ public class MyPanel extends JPanel{
         if(curr.getSquare().loc[1] < board[0].length - 1){
             for(int c = curr.getSquare().loc[1] + 1; c < board[0].length; c++){
                 if(board[curr.getSquare().loc[0]][c].getPiece() == null){
-                    scope.add(board[curr.getSquare().loc[0]][c]);
+                    scope.add(board[curr.getSquare().loc[0]][c].name);
                 } else {
                     if(!board[curr.getSquare().loc[0]][c].getPiece().getColor().equals(curr.getColor())){
-                        scope.add(board[curr.getSquare().loc[0]][c]);
+                        scope.add(board[curr.getSquare().loc[0]][c].name);
                     }
                     break;
                 }
@@ -826,11 +789,11 @@ public class MyPanel extends JPanel{
         if(curr.getSquare().loc[0] < board.length - 1 && curr.getSquare().loc[1] < board[0].length - 1){
             for(int r = curr.getSquare().loc[0] + 1, c = curr.getSquare().loc[1] + 1; r < board.length && c < board[r].length; r++, c++){
                 if(board[r][c].getPiece() == null){
-                    //if(testPosition(curr, board[r][c]))
+                    if(testPosition(curr, board[r][c]))
                         possMoves.add(board[r][c]);
                 } else {
                     if(board[r][c].getPiece().getColor() != curr.getColor()){
-                        //if(testPosition(curr, board[r][c]))
+                        if(testPosition(curr, board[r][c]))
                             possMoves.add(board[r][c]);
                     }
                     break;
@@ -842,7 +805,7 @@ public class MyPanel extends JPanel{
         if(curr.getSquare().loc[0] > 0 && curr.getSquare().loc[1] > 0){
             for(int r = curr.getSquare().loc[0] - 1, c = curr.getSquare().loc[1] - 1; r >= 0 && c >= 0; r--, c--){
                 if(board[r][c].getPiece() == null){
-                    //if(testPosition(curr, board[r][c]))
+                    if(testPosition(curr, board[r][c]))
                         possMoves.add(board[r][c]);
                 } else {
                     if(board[r][c].getPiece().getColor() != curr.getColor()){
@@ -858,11 +821,11 @@ public class MyPanel extends JPanel{
         if(curr.getSquare().loc[0] > 0 && curr.getSquare().loc[1] < board[curr.getSquare().loc[0]].length - 1){
             for(int r = curr.getSquare().loc[0] - 1, c = curr.getSquare().loc[1] + 1; r >= 0 && c < board[r].length; r--, c++){
                 if(board[r][c].getPiece() == null){
-                    //if(testPosition(curr, board[r][c]))
+                    if(testPosition(curr, board[r][c]))
                         possMoves.add(board[r][c]);
                 } else {
                     if(board[r][c].getPiece().getColor() != curr.getColor()){
-                        //if(testPosition(curr, board[r][c]))
+                        if(testPosition(curr, board[r][c]))
                             possMoves.add(board[r][c]);
                     }
                     break;
@@ -874,11 +837,11 @@ public class MyPanel extends JPanel{
         if(curr.getSquare().loc[0] < board.length - 1 && curr.getSquare().loc[1] > 0){
             for(int r = curr.getSquare().loc[0] + 1, c = curr.getSquare().loc[1] - 1; r < board.length && c >= 0; r++, c--){
                 if(board[r][c].getPiece() == null){
-                    //if(testPosition(curr, board[r][c]))
+                    if(testPosition(curr, board[r][c]))
                         possMoves.add(board[r][c]);
                 } else {
                     if(board[r][c].getPiece().getColor() != curr.getColor()){
-                        //if(testPosition(curr, board[r][c]))
+                        if(testPosition(curr, board[r][c]))
                             possMoves.add(board[r][c]);
                     }
                     break;
@@ -892,10 +855,10 @@ public class MyPanel extends JPanel{
         if(curr.getSquare().loc[0] < board.length - 1 && curr.getSquare().loc[1] < board[0].length - 1){
             for(int r = curr.getSquare().loc[0] + 1, c = curr.getSquare().loc[1] + 1; r < board.length && c < board[r].length; r++, c++){
                 if(board[r][c].getPiece() == null){
-                    scope.add(board[r][c]);
+                    scope.add(board[r][c].name);
                 } else {
                     if(!board[r][c].getPiece().getColor().equals(curr.getColor())){
-                        scope.add(board[r][c]);
+                        scope.add(board[r][c].name);
                     }
                     break;
                 }
@@ -905,10 +868,10 @@ public class MyPanel extends JPanel{
         if(curr.getSquare().loc[0] > 0 && curr.getSquare().loc[1] > 0){
             for(int r = curr.getSquare().loc[0] - 1, c = curr.getSquare().loc[1] - 1; r >= 0 && c >= 0; r--, c--){
                 if(board[r][c].getPiece() == null){
-                    scope.add(board[r][c]);
+                    scope.add(board[r][c].name);
                 } else {
                     if(!board[r][c].getPiece().getColor().equals(curr.getColor())){
-                        scope.add(board[r][c]);
+                        scope.add(board[r][c].name);
                     }
                     break;
                 }
@@ -918,10 +881,10 @@ public class MyPanel extends JPanel{
         if(curr.getSquare().loc[0] > 0 && curr.getSquare().loc[1] < board[curr.getSquare().loc[0]].length - 1){
             for(int r = curr.getSquare().loc[0] - 1, c = curr.getSquare().loc[1] + 1; r >= 0 && c < board[r].length; r--, c++){
                 if(board[r][c].getPiece() == null){
-                    scope.add(board[r][c]);
+                    scope.add(board[r][c].name);
                 } else {
                     if(!board[r][c].getPiece().getColor().equals(curr.getColor())){
-                        scope.add(board[r][c]);
+                        scope.add(board[r][c].name);
                     }
                     break;
                 }
@@ -931,10 +894,10 @@ public class MyPanel extends JPanel{
         if(curr.getSquare().loc[0] < board.length - 1 && curr.getSquare().loc[1] > 0){
             for(int r = curr.getSquare().loc[0] + 1, c = curr.getSquare().loc[1] - 1; r < board.length && c >= 0; r++, c--){
                 if(board[r][c].getPiece() == null){
-                    scope.add(board[r][c]);
+                    scope.add(board[r][c].name);
                 } else {
                     if(!board[r][c].getPiece().getColor().equals(curr.getColor())){
-                        scope.add(board[r][c]);
+                        scope.add(board[r][c].name);
                     }
                     break;
                 }
@@ -946,43 +909,41 @@ public class MyPanel extends JPanel{
 
         // first pawn move
         if(((Pawn)(curr)).getMoves() == 0){
-            for(int r = curr.getSquare().loc[0] - 1; r >= curr.getSquare().loc[0] - 2; r--){
-                if(board[r][curr.getSquare().loc[1]].getPiece() == null) {
-                    //if(testPosition(curr, board[r][curr.getSquare().loc[1]]))
-                        possMoves.add(board[r][curr.getSquare().loc[1]]);
-                }
+            if(board[curr.getSquare().loc[0] - 2][curr.getSquare().loc[1]].getPiece() == null && board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1]].getPiece() == null) {
+                if(testPosition(curr, board[curr.getSquare().loc[0] - 2][curr.getSquare().loc[1]]))
+                    possMoves.add(board[curr.getSquare().loc[0] - 2][curr.getSquare().loc[1]]);
             }
         }
 
         // up 1
         if(curr.getSquare().loc[0] > 0 && board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1]].getPiece() == null)
-            //if(testPosition(curr, board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1]]))
+            if(testPosition(curr, board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1]]))
                 possMoves.add(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1]]);
 
         // up 1, left 1
         if(curr.getSquare().loc[0] * curr.getSquare().loc[1] > 0 && board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] - 1].getPiece() != null)
             if(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] - 1].getPiece().getColor() != turn)
-                //if(testPosition(curr, board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] - 1]))
+                if(testPosition(curr, board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] - 1]))
                     possMoves.add(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] - 1]);
 
         // up 1, right 1
         if((curr.getSquare().loc[0] > 0 && curr.getSquare().loc[1] < board[0].length - 1) && board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] + 1].getPiece() != null)
             if(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] + 1].getPiece().getColor() != turn)
-                //if(testPosition(curr, board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] + 1]))
+                if(testPosition(curr, board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] + 1]))
                     possMoves.add(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] + 1]);
 
     }
     public void findPawnScope(Piece curr, Square[][] board){
 
-        // up 1, left 1
-        if(curr.getSquare().loc[0] * curr.getSquare().loc[1] > 0 && board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] - 1].getPiece() != null)
-            if(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] - 1].getPiece().getColor() != curr.getColor())
-                scope.add(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] - 1]);
+        // down 1, left 1
+        if(curr.getSquare().loc[0] < board.length - 1 && curr.getSquare().loc[1] > 0 && board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] - 1].getPiece() != null)
+            if(board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] - 1].getPiece().getColor() != curr.getColor())
+                scope.add(board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] - 1].name);
 
-        // up 1, right 1
-        if((curr.getSquare().loc[0] > 0 && curr.getSquare().loc[1] < board[0].length - 1) && board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] + 1].getPiece() != null)
-            if(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] + 1].getPiece().getColor() != curr.getColor())
-                scope.add(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] + 1]);
+        // down 1, right 1
+        if((curr.getSquare().loc[0] < board.length - 1 && curr.getSquare().loc[1] < board[0].length - 1) && board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] + 1].getPiece() != null)
+            if(board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] + 1].getPiece().getColor() != curr.getColor())
+                scope.add(board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] + 1].name);
 
     }
     public void findKnightMoves(Piece curr){
@@ -991,23 +952,23 @@ public class MyPanel extends JPanel{
         if(curr.getSquare().loc[0] > 1 && curr.getSquare().loc[1] > 0) {
             if (board[curr.getSquare().loc[0] - 2][curr.getSquare().loc[1] - 1].getPiece() != null) {
                 if (board[curr.getSquare().loc[0] - 2][curr.getSquare().loc[1] - 1].getPiece().getColor() != curr.getColor())
-                    //if(testPosition(curr, board[curr.getSquare().loc[0] - 2][curr.getSquare().loc[1] - 1]))
-                    possMoves.add(board[curr.getSquare().loc[0] - 2][curr.getSquare().loc[1] - 1]);
+                    if(testPosition(curr, board[curr.getSquare().loc[0] - 2][curr.getSquare().loc[1] - 1]))
+                        possMoves.add(board[curr.getSquare().loc[0] - 2][curr.getSquare().loc[1] - 1]);
             } else {
-                //if(testPosition(curr, board[curr.getSquare().loc[0] - 2][curr.getSquare().loc[1] - 1]))
-                possMoves.add(board[curr.getSquare().loc[0] - 2][curr.getSquare().loc[1] - 1]);
+                if(testPosition(curr, board[curr.getSquare().loc[0] - 2][curr.getSquare().loc[1] - 1]))
+                    possMoves.add(board[curr.getSquare().loc[0] - 2][curr.getSquare().loc[1] - 1]);
             }
         }
 
         // up 2, right 1
-        if(curr.getSquare().loc[0] > 1 && curr.getSquare().loc[1] < board[0].length) {
+        if(curr.getSquare().loc[0] > 1 && curr.getSquare().loc[1] < board[0].length - 1) {
             if (board[curr.getSquare().loc[0] - 2][curr.getSquare().loc[1] + 1].getPiece() != null) {
                 if (board[curr.getSquare().loc[0] - 2][curr.getSquare().loc[1] + 1].getPiece().getColor() != curr.getColor())
-                    //if(testPosition(curr, board[curr.getSquare().loc[0] - 2][curr.getSquare().loc[1] + 1]))
-                    possMoves.add(board[curr.getSquare().loc[0] - 2][curr.getSquare().loc[1] + 1]);
+                    if(testPosition(curr, board[curr.getSquare().loc[0] - 2][curr.getSquare().loc[1] + 1]))
+                        possMoves.add(board[curr.getSquare().loc[0] - 2][curr.getSquare().loc[1] + 1]);
             } else {
-                //if(testPosition(curr, board[curr.getSquare().loc[0] - 2][curr.getSquare().loc[1] + 1]))
-                possMoves.add(board[curr.getSquare().loc[0] - 2][curr.getSquare().loc[1] + 1]);
+                if(testPosition(curr, board[curr.getSquare().loc[0] - 2][curr.getSquare().loc[1] + 1]))
+                    possMoves.add(board[curr.getSquare().loc[0] - 2][curr.getSquare().loc[1] + 1]);
             }
         }
 
@@ -1015,23 +976,23 @@ public class MyPanel extends JPanel{
         if(curr.getSquare().loc[0] < board.length - 2 && curr.getSquare().loc[1] > 0) {
             if (board[curr.getSquare().loc[0] + 2][curr.getSquare().loc[1] - 1].getPiece() != null) {
                 if (board[curr.getSquare().loc[0] + 2][curr.getSquare().loc[1] - 1].getPiece().getColor() != curr.getColor())
-                    //if(testPosition(curr, board[curr.getSquare().loc[0] + 2][curr.getSquare().loc[1] - 1]))
-                    possMoves.add(board[curr.getSquare().loc[0] + 2][curr.getSquare().loc[1] - 1]);
+                    if(testPosition(curr, board[curr.getSquare().loc[0] + 2][curr.getSquare().loc[1] - 1]))
+                        possMoves.add(board[curr.getSquare().loc[0] + 2][curr.getSquare().loc[1] - 1]);
             } else {
-                //if(testPosition(curr, board[curr.getSquare().loc[0] + 2][curr.getSquare().loc[1] - 1]))
-                possMoves.add(board[curr.getSquare().loc[0] + 2][curr.getSquare().loc[1] - 1]);
+                if(testPosition(curr, board[curr.getSquare().loc[0] + 2][curr.getSquare().loc[1] - 1]))
+                    possMoves.add(board[curr.getSquare().loc[0] + 2][curr.getSquare().loc[1] - 1]);
             }
         }
 
         // down 2, right 1
-        if(curr.getSquare().loc[0] < board.length - 2 && curr.getSquare().loc[1] < board[0].length) {
+        if(curr.getSquare().loc[0] < board.length - 2 && curr.getSquare().loc[1] < board[0].length - 1) {
             if (board[curr.getSquare().loc[0] + 2][curr.getSquare().loc[1] + 1].getPiece() != null) {
                 if (board[curr.getSquare().loc[0] + 2][curr.getSquare().loc[1] + 1].getPiece().getColor() != curr.getColor())
-                    //if(testPosition(curr, board[curr.getSquare().loc[0] + 2][curr.getSquare().loc[1] + 1]))
-                    possMoves.add(board[curr.getSquare().loc[0] + 2][curr.getSquare().loc[1] + 1]);
+                    if(testPosition(curr, board[curr.getSquare().loc[0] + 2][curr.getSquare().loc[1] + 1]))
+                        possMoves.add(board[curr.getSquare().loc[0] + 2][curr.getSquare().loc[1] + 1]);
             } else {
-                //if(testPosition(curr, board[curr.getSquare().loc[0] + 2][curr.getSquare().loc[1] + 1]))
-                possMoves.add(board[curr.getSquare().loc[0] + 2][curr.getSquare().loc[1] + 1]);
+                if(testPosition(curr, board[curr.getSquare().loc[0] + 2][curr.getSquare().loc[1] + 1]))
+                    possMoves.add(board[curr.getSquare().loc[0] + 2][curr.getSquare().loc[1] + 1]);
             }
         }
 
@@ -1039,11 +1000,11 @@ public class MyPanel extends JPanel{
         if(curr.getSquare().loc[0] > 0 && curr.getSquare().loc[1] > 1) {
             if (board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] - 2].getPiece() != null) {
                 if (board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] - 2].getPiece().getColor() != curr.getColor())
-                    //if(testPosition(curr, board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] - 2]))
-                    possMoves.add(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] - 2]);
+                    if(testPosition(curr, board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] - 2]))
+                        possMoves.add(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] - 2]);
             } else {
-                //if(testPosition(curr, board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] - 2]))
-                possMoves.add(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] - 2]);
+                if(testPosition(curr, board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] - 2]))
+                    possMoves.add(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] - 2]);
             }
         }
 
@@ -1051,11 +1012,11 @@ public class MyPanel extends JPanel{
         if(curr.getSquare().loc[0] > 0 && curr.getSquare().loc[1] < board[0].length - 2) {
             if (board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] + 2].getPiece() != null) {
                 if (board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] + 2].getPiece().getColor() != curr.getColor())
-                    //if(testPosition(curr, board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] - 2]))
-                    possMoves.add(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] - 2]);
+                    if(testPosition(curr, board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] + 2]))
+                        possMoves.add(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] + 2]);
             } else {
-                //if(testPosition(curr, board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] - 2]))
-                possMoves.add(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] + 2]);
+                if(testPosition(curr, board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] + 2]))
+                    possMoves.add(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] + 2]);
             }
         }
 
@@ -1063,11 +1024,11 @@ public class MyPanel extends JPanel{
         if(curr.getSquare().loc[0] < board.length - 1 && curr.getSquare().loc[1] > 1) {
             if (board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] - 2].getPiece() != null) {
                 if (board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] - 2].getPiece().getColor() != curr.getColor())
-                    //if(testPosition(curr, board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] - 2]))
-                    possMoves.add(board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] - 2]);
+                    if(testPosition(curr, board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] - 2]))
+                        possMoves.add(board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] - 2]);
             } else {
-                //if(testPosition(curr, board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] - 2]))
-                possMoves.add(board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] - 2]);
+                if(testPosition(curr, board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] - 2]))
+                    possMoves.add(board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] - 2]);
             }
         }
 
@@ -1075,11 +1036,11 @@ public class MyPanel extends JPanel{
         if(curr.getSquare().loc[0] < board.length - 1 && curr.getSquare().loc[1] < board[0].length - 2) {
             if (board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] + 2].getPiece() != null) {
                 if (board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] + 2].getPiece().getColor() != curr.getColor())
-                    //if(testPosition(curr, board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] + 2]))
-                    possMoves.add(board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] + 2]);
+                    if(testPosition(curr, board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] + 2]))
+                        possMoves.add(board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] + 2]);
             } else {
-                //if(testPosition(curr, board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] + 2]))
-                possMoves.add(board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] + 2]);
+                if(testPosition(curr, board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] + 2]))
+                    possMoves.add(board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] + 2]);
             }
         }
 
@@ -1090,72 +1051,72 @@ public class MyPanel extends JPanel{
         if(curr.getSquare().loc[0] > 1 && curr.getSquare().loc[1] > 0)
             if(board[curr.getSquare().loc[0] - 2][curr.getSquare().loc[1] - 1].getPiece() != null) {
                 if (!board[curr.getSquare().loc[0] - 2][curr.getSquare().loc[1] - 1].getPiece().getColor().equals(curr.getColor()))
-                    scope.add(board[curr.getSquare().loc[0] - 2][curr.getSquare().loc[1] - 1]);
+                    scope.add(board[curr.getSquare().loc[0] - 2][curr.getSquare().loc[1] - 1].name);
             } else {
-                scope.add(board[curr.getSquare().loc[0] - 2][curr.getSquare().loc[1] - 1]);
+                scope.add(board[curr.getSquare().loc[0] - 2][curr.getSquare().loc[1] - 1].name);
             }
 
         // up 2, right 1
-        if(curr.getSquare().loc[0] > 1 && curr.getSquare().loc[1] < board[0].length)
+        if(curr.getSquare().loc[0] > 1 && curr.getSquare().loc[1] < board[0].length - 1)
             if(board[curr.getSquare().loc[0] - 2][curr.getSquare().loc[1] + 1].getPiece() != null) {
                 if (!board[curr.getSquare().loc[0] - 2][curr.getSquare().loc[1] + 1].getPiece().getColor().equals(curr.getColor()))
-                    scope.add(board[curr.getSquare().loc[0] - 2][curr.getSquare().loc[1] + 1]);
+                    scope.add(board[curr.getSquare().loc[0] - 2][curr.getSquare().loc[1] + 1].name);
             } else {
-                scope.add(board[curr.getSquare().loc[0] - 2][curr.getSquare().loc[1] + 1]);
+                scope.add(board[curr.getSquare().loc[0] - 2][curr.getSquare().loc[1] + 1].name);
             }
 
         // down 2, left 1
         if(curr.getSquare().loc[0] < board.length - 2 && curr.getSquare().loc[1] > 0)
             if(board[curr.getSquare().loc[0] + 2][curr.getSquare().loc[1] - 1].getPiece() != null) {
                 if (!board[curr.getSquare().loc[0] + 2][curr.getSquare().loc[1] - 1].getPiece().getColor().equals(curr.getColor()))
-                    scope.add(board[curr.getSquare().loc[0] + 2][curr.getSquare().loc[1] - 1]);
+                    scope.add(board[curr.getSquare().loc[0] + 2][curr.getSquare().loc[1] - 1].name);
             } else {
-                scope.add(board[curr.getSquare().loc[0] + 2][curr.getSquare().loc[1] - 1]);
+                scope.add(board[curr.getSquare().loc[0] + 2][curr.getSquare().loc[1] - 1].name);
             }
 
         // down 2, right 1
-        if(curr.getSquare().loc[0] < board.length - 2 && curr.getSquare().loc[1] < board[0].length)
+        if(curr.getSquare().loc[0] < board.length - 2 && curr.getSquare().loc[1] < board[0].length - 1)
             if(board[curr.getSquare().loc[0] + 2][curr.getSquare().loc[1] + 1].getPiece() != null) {
                 if (!board[curr.getSquare().loc[0] + 2][curr.getSquare().loc[1] + 1].getPiece().getColor().equals(curr.getColor()))
-                    scope.add(board[curr.getSquare().loc[0] + 2][curr.getSquare().loc[1] + 1]);
+                    scope.add(board[curr.getSquare().loc[0] + 2][curr.getSquare().loc[1] + 1].name);
             } else {
-                scope.add(board[curr.getSquare().loc[0] + 2][curr.getSquare().loc[1] + 1]);
+                scope.add(board[curr.getSquare().loc[0] + 2][curr.getSquare().loc[1] + 1].name);
             }
 
         // up 1, left 2
         if(curr.getSquare().loc[0] > 0 && curr.getSquare().loc[1] > 1)
             if(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] - 2].getPiece() != null) {
                 if (!board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] - 2].getPiece().getColor().equals(curr.getColor()))
-                    scope.add(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] - 2]);
+                    scope.add(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] - 2].name);
             } else {
-                scope.add(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] - 2]);
+                scope.add(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] - 2].name);
             }
 
         // up 1, right 2
         if(curr.getSquare().loc[0] > 0 && curr.getSquare().loc[1] < board[0].length - 2)
             if(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] + 2].getPiece() != null) {
                 if (!board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] + 2].getPiece().getColor().equals(curr.getColor()))
-                    scope.add(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] + 2]);
+                    scope.add(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] + 2].name);
             } else {
-                scope.add(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] + 2]);
+                scope.add(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] + 2].name);
             }
 
         // down 1, left 2
         if(curr.getSquare().loc[0] < board.length - 1 && curr.getSquare().loc[1] > 1)
             if(board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] - 2].getPiece() != null) {
                 if (!board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] - 2].getPiece().getColor().equals(curr.getColor()))
-                    scope.add(board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] - 2]);
+                    scope.add(board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] - 2].name);
             } else {
-                scope.add(board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] - 2]);
+                scope.add(board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] - 2].name);
             }
 
         // down 1, right 2
         if(curr.getSquare().loc[0] < board.length - 1 && curr.getSquare().loc[1] < board[0].length - 2)
             if(board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] + 2].getPiece() != null) {
                 if (!board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] + 2].getPiece().getColor().equals(curr.getColor()))
-                    scope.add(board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] + 2]);
+                    scope.add(board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] + 2].name);
             } else {
-                scope.add(board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] + 2]);
+                scope.add(board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] + 2].name);
             }
 
     }
@@ -1164,10 +1125,10 @@ public class MyPanel extends JPanel{
         // up 1
         if(curr.getSquare().loc[0] > 0) {
             if (board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1]].getPiece() == null) {
-                //if (testPosition(curr, board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1]]))
+                if (testPosition(curr, board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1]]))
                     possMoves.add(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1]]);
             } else if (board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1]].getPiece().getColor() != turn) {
-                //if (testPosition(curr, board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1]]))
+                if (testPosition(curr, board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1]]))
                     possMoves.add(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1]]);
             }
         }
@@ -1175,10 +1136,10 @@ public class MyPanel extends JPanel{
         // down 1
         if(curr.getSquare().loc[0] < board[0].length - 1) {
             if (board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1]].getPiece() == null) {
-                //if (testPosition(curr, board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1]]))
+                if (testPosition(curr, board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1]]))
                     possMoves.add(board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1]]);
             } else if (board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1]].getPiece().getColor() != turn) {
-                //if (testPosition(curr, board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1]]))
+                if (testPosition(curr, board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1]]))
                     possMoves.add(board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1]]);
             }
         }
@@ -1186,10 +1147,10 @@ public class MyPanel extends JPanel{
         // left 1
         if(curr.getSquare().loc[1] > 0) {
             if (board[curr.getSquare().loc[0]][curr.getSquare().loc[1] - 1].getPiece() == null) {
-                //if (testPosition(curr, board[curr.getSquare().loc[0]][curr.getSquare().loc[1] - 1]))
+                if (testPosition(curr, board[curr.getSquare().loc[0]][curr.getSquare().loc[1] - 1]))
                     possMoves.add(board[curr.getSquare().loc[0]][curr.getSquare().loc[1] - 1]);
             } else if (board[curr.getSquare().loc[0]][curr.getSquare().loc[1] - 1].getPiece().getColor() != turn) {
-                //if (testPosition(curr, board[curr.getSquare().loc[0]][curr.getSquare().loc[1] - 1]))
+                if (testPosition(curr, board[curr.getSquare().loc[0]][curr.getSquare().loc[1] - 1]))
                     possMoves.add(board[curr.getSquare().loc[0]][curr.getSquare().loc[1] - 1]);
             }
         }
@@ -1197,10 +1158,10 @@ public class MyPanel extends JPanel{
         // right 1
         if(curr.getSquare().loc[1] < board.length - 1) {
             if (board[curr.getSquare().loc[0]][curr.getSquare().loc[1] + 1].getPiece() == null) {
-                //if (testPosition(curr, board[curr.getSquare().loc[0]][curr.getSquare().loc[1] + 1]))
+                if (testPosition(curr, board[curr.getSquare().loc[0]][curr.getSquare().loc[1] + 1]))
                     possMoves.add(board[curr.getSquare().loc[0]][curr.getSquare().loc[1] + 1]);
             } else if (board[curr.getSquare().loc[0]][curr.getSquare().loc[1] + 1].getPiece().getColor() != turn) {
-                //if (testPosition(curr, board[curr.getSquare().loc[0]][curr.getSquare().loc[1] + 1]))
+                if (testPosition(curr, board[curr.getSquare().loc[0]][curr.getSquare().loc[1] + 1]))
                     possMoves.add(board[curr.getSquare().loc[0]][curr.getSquare().loc[1] + 1]);
             }
         }
@@ -1208,10 +1169,10 @@ public class MyPanel extends JPanel{
         // up 1, left 1
         if(curr.getSquare().loc[0] * curr.getSquare().loc[1] > 0) {
             if (board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] - 1].getPiece() == null) {
-                //if (testPosition(curr, board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] - 1]))
+                if (testPosition(curr, board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] - 1]))
                     possMoves.add(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] - 1]);
             } else if (board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] - 1].getPiece().getColor() != turn) {
-                //if (testPosition(curr, board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] - 1]))
+                if (testPosition(curr, board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] - 1]))
                     possMoves.add(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] - 1]);
             }
         }
@@ -1219,10 +1180,10 @@ public class MyPanel extends JPanel{
         // up 1, right 1
         if((curr.getSquare().loc[0] > 0 && curr.getSquare().loc[1] < board[0].length - 1)) {
             if (board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] + 1].getPiece() == null) {
-                //if (testPosition(curr, board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] + 1]))
+                if (testPosition(curr, board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] + 1]))
                     possMoves.add(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] + 1]);
             } else if (board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] + 1].getPiece().getColor() != turn) {
-                //if (testPosition(curr, board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] + 1]))
+                if (testPosition(curr, board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] + 1]))
                     possMoves.add(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] + 1]);
             }
         }
@@ -1230,10 +1191,10 @@ public class MyPanel extends JPanel{
         // down 1, left 1
         if(curr.getSquare().loc[0] < board.length - 1 && curr.getSquare().loc[1] > 0) {
             if (board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] - 1].getPiece() == null) {
-                //if (testPosition(curr, board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] - 1]))
+                if (testPosition(curr, board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] - 1]))
                     possMoves.add(board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] - 1]);
             } else if (board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] - 1].getPiece().getColor() != turn) {
-                //if (testPosition(curr, board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] - 1]))
+                if (testPosition(curr, board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] - 1]))
                     possMoves.add(board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] - 1]);
             }
         }
@@ -1241,10 +1202,10 @@ public class MyPanel extends JPanel{
         // down 1, right 1
         if((curr.getSquare().loc[0] < board.length - 1 && curr.getSquare().loc[1] < board[0].length - 1)) {
             if (board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] + 1].getPiece() == null) {
-                //if (testPosition(curr, board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] + 1]))
+                if (testPosition(curr, board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] + 1]))
                     possMoves.add(board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] + 1]);
             } else if (board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] + 1].getPiece().getColor() != turn) {
-                //if (testPosition(curr, board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] + 1]))
+                if (testPosition(curr, board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] + 1]))
                     possMoves.add(board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] + 1]);
             }
         }
@@ -1284,158 +1245,139 @@ public class MyPanel extends JPanel{
         // up 1
         if(curr.getSquare().loc[0] > 0) {
             if (board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1]].getPiece() == null) {
-                scope.add(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1]]);
+                scope.add(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1]].name);
             } else if (!board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1]].getPiece().getColor().equals(curr.getColor())) {
-                scope.add(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1]]);
+                scope.add(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1]].name);
             }
         }
 
         // down 1
         if(curr.getSquare().loc[0] < board[0].length - 1) {
             if (board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1]].getPiece() == null) {
-                scope.add(board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1]]);
+                scope.add(board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1]].name);
             } else if (!board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1]].getPiece().getColor().equals(curr.getColor())) {
-                scope.add(board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1]]);
+                scope.add(board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1]].name);
             }
         }
 
         // left 1
         if(curr.getSquare().loc[1] > 0) {
             if (board[curr.getSquare().loc[0]][curr.getSquare().loc[1] - 1].getPiece() == null) {
-                scope.add(board[curr.getSquare().loc[0]][curr.getSquare().loc[1] - 1]);
+                scope.add(board[curr.getSquare().loc[0]][curr.getSquare().loc[1] - 1].name);
             } else if (!board[curr.getSquare().loc[0]][curr.getSquare().loc[1] - 1].getPiece().getColor().equals(curr.getColor())) {
-                scope.add(board[curr.getSquare().loc[0]][curr.getSquare().loc[1] - 1]);
+                scope.add(board[curr.getSquare().loc[0]][curr.getSquare().loc[1] - 1].name);
             }
         }
 
         // right 1
         if(curr.getSquare().loc[1] < board.length - 1) {
             if (board[curr.getSquare().loc[0]][curr.getSquare().loc[1] + 1].getPiece() == null) {
-                scope.add(board[curr.getSquare().loc[0]][curr.getSquare().loc[1] + 1]);
+                scope.add(board[curr.getSquare().loc[0]][curr.getSquare().loc[1] + 1].name);
             } else if (!board[curr.getSquare().loc[0]][curr.getSquare().loc[1] + 1].getPiece().getColor().equals(curr.getColor())) {
-                scope.add(board[curr.getSquare().loc[0]][curr.getSquare().loc[1] + 1]);
+                scope.add(board[curr.getSquare().loc[0]][curr.getSquare().loc[1] + 1].name);
             }
         }
 
         // up 1, left 1
         if(curr.getSquare().loc[0] * curr.getSquare().loc[1] > 0) {
             if (board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] - 1].getPiece() == null) {
-                scope.add(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] - 1]);
+                scope.add(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] - 1].name);
             } else if (!board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] - 1].getPiece().getColor().equals(curr.getColor())) {
-                scope.add(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] - 1]);
+                scope.add(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] - 1].name);
             }
         }
 
         // up 1, right 1
         if((curr.getSquare().loc[0] > 0 && curr.getSquare().loc[1] < board[0].length - 1)) {
             if (board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] + 1].getPiece() == null) {
-                scope.add(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] + 1]);
+                scope.add(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] + 1].name);
             } else if (!board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] + 1].getPiece().getColor().equals(curr.getColor())) {
-                scope.add(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] + 1]);
+                scope.add(board[curr.getSquare().loc[0] - 1][curr.getSquare().loc[1] + 1].name);
             }
         }
 
         // down 1, left 1
         if(curr.getSquare().loc[0] < board.length - 1 && curr.getSquare().loc[1] > 0) {
             if (board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] - 1].getPiece() == null) {
-                scope.add(board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] - 1]);
+                scope.add(board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] - 1].name);
             } else if (!board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] - 1].getPiece().getColor().equals(curr.getColor())) {
-                scope.add(board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] - 1]);
+                scope.add(board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] - 1].name);
             }
         }
 
         // down 1, right 1
         if((curr.getSquare().loc[0] < board.length - 1 && curr.getSquare().loc[1] < board[0].length - 1)) {
             if (board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] + 1].getPiece() == null) {
-                scope.add(board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] + 1]);
+                scope.add(board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] + 1].name);
             } else if (!board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] + 1].getPiece().getColor().equals(curr.getColor())) {
-                scope.add(board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] + 1]);
+                scope.add(board[curr.getSquare().loc[0] + 1][curr.getSquare().loc[1] + 1].name);
             }
         }
 
     }
-//    public Piece getWhiteKing(Square[][] board){
-//        for(int r = 0; r < board.length; r++){
-//            for(int c = 0; c < board[r].length; c++){
-//                if(board[r][c].getPiece() != null && board[r][c].getPiece().getColor() == Color.WHITE && board[r][c].getPiece().getValue() == -1)
-//                    return board[r][c].getPiece();
-//            }
-//        }
-//        return null;
-//    }
+    public String getWhiteKing(Square[][] board){
+        for(int r = 0; r < board.length; r++){
+            for(int c = 0; c < board[r].length; c++){
+                if(board[r][c].getPiece() != null && board[r][c].getPiece().getColor() == Color.WHITE && board[r][c].getPiece().getValue() == -1)
+                    return board[r][c].name;
+            }
+        }
+        return null;
+    }
 
-//    public Piece getBlackKing(Square[][] board){
-//        for(int r = 0; r < board.length; r++){
-//            for(int c = 0; c < board[r].length; c++){
-//                if(board[r][c].getPiece() != null && board[r][c].getPiece().getColor() == Color.BLACK && board[r][c].getPiece().getValue() == -1)
-//                    return board[r][c].getPiece();
-//            }
-//        }
-//        return null;
-//    }
+    public String getBlackKing(Square[][] board){
+        for(int r = 0; r < board.length; r++){
+            for(int c = 0; c < board[r].length; c++){
+                if(board[r][c].getPiece() != null && board[r][c].getPiece().getColor() == Color.BLACK && board[r][c].getPiece().getValue() == -1)
+                    return board[r][c].name;
+            }
+        }
+        return null;
+    }
 
-    // NOT WORKING
-    // always returns true
-//    public boolean testPosition(Piece test, Square move){
-//
-//        Square [][] tempBoard = deepCopyBoard(this.board);
-//
-//        Square tempSquare = tempBoard[test.getSquare().loc[0]][test.getSquare().loc[1]];
-//        tempBoard[move.loc[0]][move.loc[1]].setPiece(tempBoard[test.getSquare().loc[0]][test.getSquare().loc[1]].getPiece());
-//        tempSquare.setPiece(null);
-//
-//        System.out.println(tempBoard[move.loc[0]][move.loc[1]].getPiece());
-//        tempBoard = flipBoard(tempBoard);
-//        System.out.println("\n");
-//        for(int r = 0; r < tempBoard.length; r++){
-//            for(int c = 0; c < tempBoard[r].length; c++){
-//                System.out.print(tempBoard[r][c].name + "(" + tempBoard[r][c].loc[0] + "," + tempBoard[r][c].loc[1] + ")\t");
-//            }
-//            System.out.println();
-//        }
-//
-//        Piece tempBK = getBlackKing(tempBoard);
-//        Piece tempWK = getWhiteKing(tempBoard);
-//
-//        if(tempBoard[0][0].name.equals("h1")){
-//            System.out.println("White King: " + tempWK.getSquare());
-//            for(int r = 0; r < tempBoard.length; r++){
-//                for(int c = 0; c < tempBoard[r].length; c++){
-//                    if(tempBoard[r][c].getPiece() != null && tempBoard[r][c].getPiece().getColor() == Color.BLACK){
-//                        findScope(tempBoard[r][c].getPiece(), tempBoard);
-//                        System.out.println("Scope for piece at " + tempBoard[r][c].name + ": " + scope);
-//                        System.out.println(tempBoard[r][c].name + ": [" + tempBoard[r][c].loc[0] + "] [" + tempBoard[r][c].loc[1] + "]");
-//                        for(Square square: scope){
-//                            if(square.name.equals(tempBK.getSquare().name)){
-//                                System.out.println(move.name + " is not valid.");
-//                                return false;
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        } else if (tempBoard[0][0].name.equals("a8")){
-//            System.out.println("Black King: " + tempBK.getSquare());
-//            for(int r = 0; r < tempBoard.length; r++){
-//                for(int c = 0; c < tempBoard[r].length; c++){
-//                    if(tempBoard[r][c].getPiece() != null && tempBoard[r][c].getPiece().getColor() == Color.WHITE){
-//                        findScope(tempBoard[r][c].getPiece(), tempBoard);
-//                        System.out.println("Scope for piece at " + tempBoard[r][c].name + ": " + scope);
-//                        System.out.println(tempBoard[r][c].name + ": [" + tempBoard[r][c].loc[0] + "] [" + tempBoard[r][c].loc[1] + "]");
-//                        for(Square square: scope){
-//                            if(square.name.equals(tempBK.getSquare().name)){
-//                                System.out.println(move.name + " is not valid.");
-//                                return false;
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//        System.out.println("King not in scope (" + move.name + " = Valid)");
-//        return true;
-//
-//    }
+    public boolean testPosition(Piece test, Square move){
+
+        Square [][] tempBoard = deepCopyBoard(this.board);
+
+        Square tempSquare = tempBoard[test.getSquare().loc[0]][test.getSquare().loc[1]];
+        tempBoard[move.loc[0]][move.loc[1]].setPiece(tempBoard[test.getSquare().loc[0]][test.getSquare().loc[1]].getPiece());
+        tempSquare.setPiece(null);
+
+        String tempBK = getBlackKing(tempBoard);
+        String tempWK = getWhiteKing(tempBoard);
+
+        if(test.getColor() == Color.WHITE){
+            System.out.println("White King: " + tempWK);
+            for(int r = 0; r < tempBoard.length; r++){
+                for(int c = 0; c < tempBoard[r].length; c++){
+                    if(tempBoard[r][c].getPiece() != null && tempBoard[r][c].getPiece().getColor() == Color.BLACK){
+                        findScope(tempBoard[r][c].getPiece(), tempBoard);
+                        System.out.println("Scope for piece at " + tempBoard[r][c].name + ": " + scope);
+                        System.out.println(tempBoard[r][c].name + ": [" + tempBoard[r][c].loc[0] + "] [" + tempBoard[r][c].loc[1] + "]");
+                        if(scope.contains(tempWK))
+                            return false;
+                    }
+                }
+            }
+        } else {
+            System.out.println("Black King: " + tempBK);
+            for(int r = 0; r < tempBoard.length; r++){
+                for(int c = 0; c < tempBoard[r].length; c++){
+                    if(tempBoard[r][c].getPiece() != null && tempBoard[r][c].getPiece().getColor() == Color.WHITE){
+                        findScope(tempBoard[r][c].getPiece(), tempBoard);
+                        System.out.println("Scope for piece at " + tempBoard[r][c].name + ": " + scope);
+                        System.out.println(tempBoard[r][c].name + ": [" + tempBoard[r][c].loc[0] + "] [" + tempBoard[r][c].loc[1] + "]");
+                        if(scope.contains(tempBK))
+                            return false;
+
+                    }
+                }
+            }
+        }
+        System.out.println("King not in scope (" + move.name + " = Valid)");
+        return true;
+
+    }
 
     private void findAllMoves(Piece curr){
 
@@ -1460,26 +1402,26 @@ public class MyPanel extends JPanel{
 
     }
 
-//    public void findScope(Piece curr, Square[][] board){
-//
-//        scope.clear();
-//
-//        if (curr instanceof Queen && curr.getValue() == 9) {
-//            findRookScope(curr, board);
-//            findBishopScope(curr, board);
-//        } else if(curr instanceof Rook && curr.getValue() == 5){
-//            findRookScope(curr, board);
-//        } else if(curr instanceof Bishop && curr.getValue() == 3){
-//            findBishopScope(curr, board);
-//        } else if(curr instanceof Knight && curr.getValue() == 3){
-//            findKnightScope(curr, board);
-//        } else if(curr instanceof Pawn && curr.getValue() == 1){
-//            findPawnScope(curr, board);
-//        } else {
-//            findKingScope(curr, board);
-//        }
-//
-//    }
+    public void findScope(Piece curr, Square[][] board){
+
+        scope.clear();
+
+        if (curr instanceof Queen && curr.getValue() == 9) {
+            findRookScope(curr, board);
+            findBishopScope(curr, board);
+        } else if(curr instanceof Rook && curr.getValue() == 5){
+            findRookScope(curr, board);
+        } else if(curr instanceof Bishop && curr.getValue() == 3){
+            findBishopScope(curr, board);
+        } else if(curr instanceof Knight && curr.getValue() == 3){
+            findKnightScope(curr, board);
+        } else if(curr instanceof Pawn && curr.getValue() == 1){
+            findPawnScope(curr, board);
+        } else {
+            findKingScope(curr, board);
+        }
+
+    }
 
     public Square[][] flipBoard(Square[][] board){
         Square[][] tempBoard = new Square[8][8];
@@ -1526,7 +1468,7 @@ public class MyPanel extends JPanel{
                 }
             }
         }
-        possMoves = new ArrayList<Square>();
+        possMoves.clear();
         moving = false;
         if(turn == Color.WHITE){
             turn = Color.BLACK;
@@ -1535,7 +1477,6 @@ public class MyPanel extends JPanel{
             turn = Color.WHITE;
             board = flipBoard(board);
         }
-        scope.clear();
         curr = null;
         nMove = null;
 
@@ -1562,7 +1503,7 @@ public class MyPanel extends JPanel{
         }
 
         g.setColor(new Color(255, 127, 127));
-        if (!possMoves.isEmpty() && !gameOver) {
+        if (!possMoves.isEmpty() && (!whiteWin && !blackWin)) {
             for (int r = 0, y = 0; r < board.length; r++, y += 75) {
                 for (int c = 0, x = 0; c < board[r].length; c++, x += 75) {
                     if (possMoves.contains(board[r][c])) {
@@ -1572,30 +1513,58 @@ public class MyPanel extends JPanel{
             }
         }
 
-        if(moving && nMove != null && possMoves.contains(nMove) && !gameOver)
+        if(moving && nMove != null && possMoves.contains(nMove) && (!whiteWin && !blackWin)){
             movePiece(curr, nMove);
+            if(turn == Color.WHITE){
+                for(int r = 0; r < board.length; r++){
+                    for(int c = 0; c < board[r].length; c++){
+                        if(board[r][c].getPiece() != null && board[r][c].getPiece().getColor() == turn)
+                            findAllMoves(board[r][c].getPiece());
+                    }
+                }
+                if(possMoves.isEmpty())
+                    blackWin = true;
+            } else {
+                for(int r = 0; r < board.length; r++){
+                    for(int c = 0; c < board[r].length; c++){
+                        if(board[r][c].getPiece() != null && board[r][c].getPiece().getColor() == turn)
+                            findAllMoves(board[r][c].getPiece());
 
-        if(whiteKing != whiteKing.getSquare().getPiece()){
+                    }
+                }
+                if(possMoves.isEmpty())
+                    whiteWin = true;
+            }
+            possMoves.clear();
+        }
+
+        if(blackWin){
+            g.setColor(Color.GRAY);
+            g.fillRect(100, 175, 400, 250);
             g.setColor(new Color(255, 127, 127));
             g.setFont(new Font("SansSerif", Font.PLAIN, 65));
-            int textWidth = g.getFontMetrics().stringWidth("Black Wins!");
-            g.drawString("Black Wins!", (300 - textWidth / 2), 325);
-            gameOver = true;
+            int textWidth1 = g.getFontMetrics().stringWidth("Checkmate!");
+            g.drawString("Checkmate!", (300 - textWidth1 / 2), 275);
+            int textWidth2 = g.getFontMetrics().stringWidth("Black Won");
+            g.drawString("Black Won", (300 - textWidth2 / 2), 375);
             this.removeAll();
-        } else if(blackKing != blackKing.getSquare().getPiece()){
+        } else if(whiteWin){
+            g.setColor(Color.GRAY);
+            g.fillRect(100, 175, 400, 250);
             g.setColor(new Color(255, 127, 127));
             g.setFont(new Font("SansSerif", Font.PLAIN, 65));
-            int textWidth = g.getFontMetrics().stringWidth("White Wins!");
-            g.drawString("White Wins!", (300 - textWidth / 2), 325);
-            gameOver = true;
+            int textWidth1 = g.getFontMetrics().stringWidth("Checkmate!");
+            g.drawString("Checkmate!", (300 - textWidth1 / 2), 275);
+            int textWidth2 = g.getFontMetrics().stringWidth("White Won");
+            g.drawString("White Won", (300 - textWidth2 / 2), 375);
             this.removeAll();
         }
-        if(gameOver) {
+        if(whiteWin || blackWin) {
             timer++;
         }
 
-        if(timer > 150){
-            if(whiteKing != whiteKing.getSquare().getPiece() || blackKing != blackKing.getSquare().getPiece()){
+        if(timer > 100){
+            if(whiteWin || blackWin){
                 JFrame playAgain = new JFrame("Menu");
                 playAgain.setSize(600, 625);
                 playAgain.setLocationRelativeTo(null);
